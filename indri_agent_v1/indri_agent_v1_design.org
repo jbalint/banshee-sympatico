@@ -1,6 +1,44 @@
 Indri Agent v1
 
 * Requirements
-** Index build will be 100% external
-** API will support 
-** Outstanding queries will be considered dead after 30 seconds idle
+  + Index build will be 100% external, only query support in v1
+  + Many indexes will be supported via pre-registered paths
+  + API will support stateful queries
+  + Outstanding queries will be considered dead after 30 seconds idle
+	+ Further ops MAY return an error
+  + Use C++ API wrapped in Java
+  + Exposed as a JADE agent
+* API
+  + Client -> Agent supported FIPA performatives
+	+ REQUEST - begin query
+	+ REQUEST - get next results
+	+ CANCEL - close query
+	  + no response
+  + Agent -> Client supported performatives
+	+ INFORM - query begun
+	+ INFORM - query results
+	+ FAILURE - query closed due to timeout
+** Ontology
+   + Query - sent from a client to begin a query
+	 + =indexes[1..*]= - set of index names to be queried
+	 + =query= - query string
+	 + =fields[1..*]= - set of fields to be returned
+   + QueryId - sent from the agent to notify query start
+   + ResultRequest - sent from a client to get query results
+	 + =queryId=
+	 + =numResults=
+   + QueryResult - sent from the agent to provide query results
+	 + =queryId=
+	 + =ResultEntry results[0..*]=
+   + ResultEntry
+	 + =data[field -> value] (map)= - requested fields
+	 + =relevance=
+	 + =snippet= (nil unless requested??, or should this be in 'data')
+* JNI API
+* Implementation
+* Issues
+** TODO Need to determine if doc ids should be integers
+   + [[http://www.lemurproject.org/doxygen/lemur/html/namespacelemur_1_1api.html#a5][DOCID_T -> TERMID_T]]
+   + [[http://www.lemurproject.org/doxygen/lemur/html/namespacelemur_1_1api.html#a3][TERMID_T -> int]]
+* Ideas for future versions
+** TODO Allow query timeout this to be configurable in future versions
