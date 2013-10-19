@@ -1,0 +1,6 @@
+Indri Agent v1
+
+* Requirements
+** Index build will be 100% external
+** API will support 
+** Outstanding queries will be considered dead after 30 seconds idle
