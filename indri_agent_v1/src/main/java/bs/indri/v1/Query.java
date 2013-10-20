@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Query {
 	public Query() {
-		System.out.println("BEGIN: " + query_begin(null, null));
+		System.out.println("BEGIN: " + query_begin(new String[] {"/home/jbalint/sw/indri-5.5/my_first_index"}, "abcdef"));
 	}
 
 	static {

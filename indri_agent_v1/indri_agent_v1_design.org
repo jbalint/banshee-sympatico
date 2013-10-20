@@ -37,7 +37,7 @@ Indri Agent v1
 * Implementation
 ** JNI API
    + =int query_begin(String indexPaths[], String query)=
-     + return = query id or -1 on error
+     + return = query id or 0 on error
    + =Map<String, Object> query_next_results(int queryId, int resultCount, String fields[])=
    + =void query_close(int queryId)=
 ** TODO Rename Java Query class to something more specific
@@ -62,4 +62,6 @@ Indri Agent v1
    + [[http://www.lemurproject.org/doxygen/lemur/html/structindri_1_1api_1_1QueryResult.html][This]] refers to internal and external doc IDs, but I don't see it integrated anywhere
 * Ideas for future versions
 ** TODO Allow query timeout this to be configurable in future versions
-** Setup a system-global or UUID-based document ID allocation
+** TODO Setup a system-global or UUID-based document ID allocation
+** TODO Don't limit queries to 1,000 results
+** TODO Don't use infinitely incrementing query id
