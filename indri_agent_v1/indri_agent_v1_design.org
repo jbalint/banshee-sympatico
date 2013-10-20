@@ -34,11 +34,32 @@ Indri Agent v1
 	 + =data[field -> value] (map)= - requested fields
 	 + =relevance=
 	 + =snippet= (nil unless requested??, or should this be in 'data')
-* JNI API
 * Implementation
+** JNI API
+   + =int query_begin(String indexPaths[], String query)=
+     + return = query id or -1 on error
+   + =Map<String, Object> query_next_results(int queryId, int resultCount, String fields[])=
+   + =void query_close(int queryId)=
+** TODO Rename Java Query class to something more specific
+** Java API
+   + Query class
+   + Constructor takes args to begin
+** Agent
+* Document ID Allocations
+  Offline/batch indexing should be able to handle this fine.
+  | Begin     | End     | Thing     |
+  |-----------+---------+-----------|
+  | 1         | 499,999 | Email     |
+  | 500,000   | 999,999 | Org notes |
+  | 1,000,000 |         | ???       |
 * Issues
-** TODO Need to determine if doc ids should be integers
+** DONE Need to determine if doc ids should be integers
+   CLOSED: [2013-10-19 Sat 16:29]
+   As far as I can tell, it will be easier to work with Indri if using integers for document ids.
+   This complicates several things but it's better than having to go through and redo the Indri code later.
    + [[http://www.lemurproject.org/doxygen/lemur/html/namespacelemur_1_1api.html#a5][DOCID_T -> TERMID_T]]
    + [[http://www.lemurproject.org/doxygen/lemur/html/namespacelemur_1_1api.html#a3][TERMID_T -> int]]
+   + [[http://www.lemurproject.org/doxygen/lemur/html/structindri_1_1api_1_1QueryResult.html][This]] refers to internal and external doc IDs, but I don't see it integrated anywhere
 * Ideas for future versions
 ** TODO Allow query timeout this to be configurable in future versions
+** Setup a system-global or UUID-based document ID allocation
