@@ -1,5 +1,6 @@
 package bs.indri.v1;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ public class Query {
 		this.queryString = query;
 	}
 
-	public Map<String, Object> nextResults(int resultCount, Set<String> fields) {
+	public List<Map<String, Object>> nextResults(int resultCount, Set<String> fields) {
 		return query_next_results(this.queryId, resultCount,
 								  fields.toArray(new String[] {}));
 	}
@@ -25,7 +26,7 @@ public class Query {
 		System.loadLibrary("bs_indri_v1_Query");
 	}
 	private native int query_begin(String indexPaths[], String query);
-	private native Map<String, Object> query_next_results(int queryId, int resultCount,
-														  String fields[]);
+	private native List<Map<String, Object>>
+		query_next_results(int queryId, int resultCount, String fields[]);
 	private native void query_close(int queryId);
 }

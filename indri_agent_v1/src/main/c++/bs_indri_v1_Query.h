@@ -18,7 +18,7 @@ JNIEXPORT jint JNICALL Java_bs_indri_v1_Query_query_1begin
 /*
  * Class:     bs_indri_v1_Query
  * Method:    query_next_results
- * Signature: (II[Ljava/lang/String;)Ljava/util/Map;
+ * Signature: (II[Ljava/lang/String;)Ljava/util/List;
  */
 JNIEXPORT jobject JNICALL Java_bs_indri_v1_Query_query_1next_1results
   (JNIEnv *, jobject, jint, jint, jobjectArray);
