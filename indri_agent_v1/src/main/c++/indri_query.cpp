@@ -20,6 +20,7 @@ typedef struct query {
   QueryAnnotation *results;
   struct query *next;
   int id;
+  int position;
 } query;
 
 static query *queries;
@@ -59,7 +60,22 @@ static query *query_get(int id)
 
 static void query_remove(int id)
 {
-  assert(!"This function is not implement");
+  query *e;
+  query *prev = NULL;
+  for (e = queries; e != NULL; e = e->next)
+  {
+	if (e->id != id)
+	{
+	  prev = e;
+	  continue;
+	}
+	if (prev)
+	  prev->next = e->next;
+	if (e == queries)
+	  queries = e->next;
+	delete e->qe;
+	free(e);
+  }
 }
 
 JNIEXPORT jint JNICALL
@@ -71,7 +87,7 @@ Java_bs_indri_v1_Query_query_1begin(JNIEnv *jni, jobject obj, jobjectArray index
   jstring indexPath;
   const char *index_path;
 
-  (void)obj;
+  (void) obj;
   assert(indexPaths);
   assert(query_string);
 
@@ -98,7 +114,33 @@ Java_bs_indri_v1_Query_query_1begin(JNIEnv *jni, jobject obj, jobjectArray index
 }
 
 JNIEXPORT jobject JNICALL
-Java_bs_indri_v1_Query_query_1next_1results()
+Java_bs_indri_v1_Query_query_1next_1results(JNIEnv *jni, jobject obj, jint queryId, jint requestedResultCount, jobjectArray fields)
 {
+  query *q = query_get(queryId);
+  std::vector<ScoredExtentResult> resultVec = q->results->getResults();
+  int resultCount = resultVec.size();
+  SnippetBuilder builder(true);
+
+  (void) obj;
+
+  std::vector<ParsedDocument*> parsedDocs = q->qe->documents(resultVec);
+  // TODO handle positioning
+  for (int i = 0; i < resultCount && i < requestedResultCount; ++i)
+  {
+	int docId = resultVec[i].document;
+	ParsedDocument *d = parsedDocs[i];
+	printf("Doc: text: '%s'\n", d->text);
+	printf("Doc: content: '%s'\n", d->content);
+	printf("%s\n", builder.build(docId, d, q->results).c_str());
+	// TODO fields retrieval is *not* fast?
+  }
+
   return NULL;
+}
+
+JNIEXPORT void JNICALL
+Java_bs_indri_v1_Query_query_1close(JNIEnv *jni, jobject obj, jint queryId)
+{
+  (void) obj;
+  query_remove(queryId);
 }

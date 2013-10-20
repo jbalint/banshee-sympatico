@@ -1,7 +1,14 @@
 package bs.indri.v1;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class TestQuery {
 	public static void main(String args[]) {
-		new Query();
+		String queryString = "filter";
+		Set indexPaths = new HashSet(Arrays.asList(new String[] {"/home/jbalint/sw/indri-5.5/my_first_index"}));
+		Query q = new Query(indexPaths, queryString);
+		q.nextResults(50, new HashSet());
 	}
 }
