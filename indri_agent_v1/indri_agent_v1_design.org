@@ -52,6 +52,10 @@ Indri Agent v1
   | 1         | 499,999 | Email     |
   | 500,000   | 999,999 | Org notes |
   | 1,000,000 |         | ???       |
+* Testing
+** TODO Fields should be returned uniformly across multiple indexes
+** TODO Create command-line util to run queries through the agent
+** TODO Create command-line util to run queries through the Java wrapper
 * Issues
 ** DONE Need to determine if doc ids should be integers
    CLOSED: [2013-10-19 Sat 16:29]
@@ -63,5 +67,12 @@ Indri Agent v1
 * Ideas for future versions
 ** TODO Allow query timeout this to be configurable in future versions
 ** TODO Setup a system-global or UUID-based document ID allocation
+   + using Kyoto cabinet. create a global db system for this
 ** TODO Don't limit queries to 1,000 results
 ** TODO Don't use infinitely incrementing query id
+** TODO Augment with external storage for fields
+   + only term stems are stored in the Indri index
+   + can use Kyoto Cabinet like the email
+   + increases demands on indexing
+** TODO Online indexing
+   + can encapsulate additional storage fields

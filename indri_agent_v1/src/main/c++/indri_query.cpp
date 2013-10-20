@@ -106,15 +106,18 @@ jclass list_class = NULL;
 jmethodID arrayList_ctor = NULL;
 jmethodID listAdd_mid = NULL;
 
+jclass double_class = NULL;
+jmethodID double_ctor = NULL;
+
 static void init_jni_helpers(JNIEnv *jni)
 {
   if (hashMap_class)
 	return;
 
-  hashMap_class = jni->FindClass("java/util/HashMap");
+  hashMap_class = (jclass) jni->NewGlobalRef(jni->FindClass("java/util/HashMap"));
   EXCEPTION_FAIL(jni);
   assert(hashMap_class);
-  map_class = jni->FindClass("java/util/Map");
+  map_class = (jclass) jni->NewGlobalRef(jni->FindClass("java/util/Map"));
   EXCEPTION_FAIL(jni);
   assert(map_class);
   hashMap_ctor = jni->GetMethodID(hashMap_class, "<init>", "()V");
@@ -124,10 +127,10 @@ static void init_jni_helpers(JNIEnv *jni)
   EXCEPTION_FAIL(jni);
   assert(mapPut_mid);
 
-  arrayList_class = jni->FindClass("java/util/ArrayList");
+  arrayList_class = (jclass) jni->NewGlobalRef(jni->FindClass("java/util/ArrayList"));
   EXCEPTION_FAIL(jni);
   assert(arrayList_class);
-  list_class = jni->FindClass("java/util/List");
+  list_class = (jclass) jni->NewGlobalRef(jni->FindClass("java/util/List"));
   EXCEPTION_FAIL(jni);
   assert(list_class);
   arrayList_ctor = jni->GetMethodID(arrayList_class, "<init>", "()V");
@@ -136,6 +139,13 @@ static void init_jni_helpers(JNIEnv *jni)
   listAdd_mid = jni->GetMethodID(list_class, "add", "(Ljava/lang/Object;)Z");
   EXCEPTION_FAIL(jni);
   assert(listAdd_mid);
+
+  double_class = (jclass) jni->NewGlobalRef(jni->FindClass("java/lang/Double"));
+  EXCEPTION_FAIL(jni);
+  assert(double_class);
+  double_ctor = jni->GetMethodID(double_class, "<init>", "(D)V");
+  EXCEPTION_FAIL(jni);
+  assert(double_ctor);
 }
 
 static jobject new_HashMap(JNIEnv *jni)
@@ -153,6 +163,18 @@ static void add_string_to_map(JNIEnv *jni, jobject map, const char *key, const c
   k = jni->NewStringUTF(key);
   EXCEPTION_FAIL(jni);
   v = jni->NewStringUTF(value);
+  EXCEPTION_FAIL(jni);
+  jni->CallObjectMethod(map, mapPut_mid, k, v);
+  EXCEPTION_FAIL(jni);
+}
+
+static void add_double_to_map(JNIEnv *jni, jobject map, const char *key, double value)
+{
+  jstring k;
+  jobject v;
+  k = jni->NewStringUTF(key);
+  EXCEPTION_FAIL(jni);
+  v = jni->NewObject(double_class, double_ctor, value);
   EXCEPTION_FAIL(jni);
   jni->CallObjectMethod(map, mapPut_mid, k, v);
   EXCEPTION_FAIL(jni);
@@ -217,65 +239,94 @@ Java_bs_indri_v1_Query_query_1next_1results(JNIEnv *jni, jobject obj, jint query
 {
   query *q = query_get(queryId);
   std::vector<ScoredExtentResult> resultVec = q->results->getResults();
-  int resultCount = resultVec.size();
-  SnippetBuilder builder(true);
   jobject result_list = new_ArrayList(jni);
+  jsize fieldCount = jni->GetArrayLength(fields);
 
   (void) obj;
 
+  if (requestedResultCount > (resultVec.size() - q->position))
+	requestedResultCount = (resultVec.size() - q->position);
+
+  std::vector<ScoredExtentResult> rv2(&resultVec[q->position],
+									  &resultVec[q->position + requestedResultCount]);
+  resultVec = rv2;
+
+  q->position += requestedResultCount;
+
   std::vector<ParsedDocument*> parsedDocs = q->qe->documents(resultVec);
-  // TODO handle positioning
-  for (int i = 0; i < resultCount && i < requestedResultCount; ++i)
+
+  std::vector<int> documentIDs;
+  documentIDs.reserve(requestedResultCount);
+
+  for( size_t i=0; i<requestedResultCount; i++ ) {
+    documentIDs.push_back( resultVec[i].document );
+  }
+
+
+  std::vector<DocumentVector*> documentVecs = q->qe->documentVectors(documentIDs);
+
+  for (int i = 0; i < requestedResultCount; ++i)
   {
 	jobject row_map = new_HashMap(jni);
-	int docId = resultVec[i].document;
-	ParsedDocument *d = parsedDocs[i];
-	for (int j = 0; j < d->metadata.size(); ++j)
-	{
-	  printf("MD[%d] %s = %s\n", j, d->metadata[j].key, d->metadata[j].value);
-	}
+	DocumentVector *dv = documentVecs[i];
+	ParsedDocument *pdoc = parsedDocs[i];
 
-	std::vector<lemur::api::DOCID_T> documentIDs;
-	documentIDs.push_back(docId);
-	std::vector<indri::api::DocumentVector*> vectors = q->qe->documentVectors(documentIDs);
-	DocumentVector *v = vectors[0];
-	printf("STEMS\n");
-	std::vector<std::string> stems = v->stems();
-	for (int j = 0; j < stems.size(); ++j)
-	{
-	  printf("Stem[%d] = %s\n", j, stems[j].c_str());
-	}
-	printf("POSITIONS\n");
-	std::vector<int> pos = v->positions();
-	for (int j = 0; j < pos.size(); ++j)
-	{
-	  printf("pos[%d] = %d\n", j, pos[j]);
-	}
-	std::vector<DocumentVector::Field> fields2 = v->fields();
-	printf("FIELDS 2\n");
-	for (int j = 0; j < fields2.size(); ++j)
-	{
-	  printf("name = %s , begin = %d , end = %d\n", fields2[j].name.c_str(), fields2[j].begin, fields2[j].end);
-	}
-
-	printf("TERMS: %d\n", d->terms.size());
-	for (int j = 0; j < d->terms.size(); ++j)
-	{
-	  printf("%s\n", d->terms[i]);
-	}
-	// TODO fields retrieval is *not* fast?
-	add_string_to_map(jni, row_map, "snippet",
-					  builder.build(docId, d, q->results).c_str());
-	add_string_to_map(jni, row_map, "content", d->content);
 	add_object_to_list(jni, result_list, row_map);
+
+	// TODO compute this outside the `i' loop and have it ready
+	for (int j = 0; j < fieldCount; ++j)
+	{
+	  jstring jfield = (jstring) jni->GetObjectArrayElement(fields, j);
+	  const char *field_name = jni->GetStringUTFChars(jfield, NULL);
+
+	  // first, handle "special" fields
+	  if (!strcmp(field_name, "relevance"))
+	  {
+		add_double_to_map(jni, row_map, "relevance", resultVec[i].score);
+	  }
+	  else if (!strcmp(field_name, "snippet"))
+	  {
+		SnippetBuilder builder(true);
+		add_string_to_map(jni, row_map, "snippet",
+						  builder.build(resultVec[i].document, pdoc, q->results).c_str());
+	  }
+	  else if (!strcmp(field_name, "content"))
+	  {
+		add_string_to_map(jni, row_map, "content", pdoc->content);
+	  }
+	  else
+	  {
+		// can do this differently if efficiency gain is great enough
+		// NOTE this returns stems of terms only
+		std::vector<DocumentVector::Field> doc_fields = dv->fields();
+		std::vector<int> doc_positions = dv->positions();
+		std::vector<std::string> doc_stems = dv->stems();
+		for (int k = 0; k < doc_fields.size(); ++k)
+		{
+		  DocumentVector::Field f = doc_fields[k];
+		  if (!strcmp(f.name.c_str(), field_name))
+		  {
+			char *val = (char *) malloc(100); // TODO completely arbitrary
+			sprintf(val, doc_stems[doc_positions[f.begin]].c_str());
+			for (int l = f.begin + 1; l < f.end; ++l)
+			{
+			  if (!strcmp(field_name, "date"))
+				strcat(val, "-");
+			  else
+				strcat(val, " ");
+			  strcat(val, doc_stems[doc_positions[l]].c_str());
+			}
+			add_string_to_map(jni, row_map, field_name, val);
+			free(val);
+			break;
+		  }
+		}
+	  }
+
+	  jni->ReleaseStringUTFChars(jfield, field_name);
+	}
   }
 
-  printf("Fields\n");
-  std::vector<std::string> Fields = q->qe->fieldList();
-  for (int i = 0; i < Fields.size(); ++i)
-  {
-	printf("%s\n", Fields[i].c_str());
-  }
   return result_list;
 }
 
