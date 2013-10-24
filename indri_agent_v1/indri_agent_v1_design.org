@@ -45,6 +45,9 @@ Indri Agent v1
    + Query class
    + Constructor takes args to begin
 ** Agent
+*** TODO Create query ontology
+*** TODO Create result ontology
+*** TODO Create base ontology for result types
 * Document ID Allocations
   Offline/batch indexing should be able to handle this fine.
   | Begin     | End     | Thing     |
@@ -53,9 +56,11 @@ Indri Agent v1
   | 500,000   | 999,999 | Org notes |
   | 1,000,000 |         | ???       |
 * Testing
+** TODO Create basic multi-index environment for running tests
+** TODO Create basic JUnit tests
+** TODO Create command-line util to run queries through the Java wrapper
 ** TODO Fields should be returned uniformly across multiple indexes
 ** TODO Create command-line util to run queries through the agent
-** TODO Create command-line util to run queries through the Java wrapper
 * Issues
 ** DONE Need to determine if doc ids should be integers
    CLOSED: [2013-10-19 Sat 16:29]
@@ -76,3 +81,16 @@ Indri Agent v1
    + increases demands on indexing
 ** TODO Online indexing
    + can encapsulate additional storage fields
+** TODO Check memory usage on large result sets and explore ways to reduce if necessary
+** TODO Create better ontology for results
+** TODO Add background thread to close abandoned jobs
+** TODO Investigate use of Indri query server
+   + must support online index additions
+** TODO Investigate annotations
+** TODO Investigate "priors"
+** TODO Investigate ways to implement certain specific pieces of programs
+   + notes on vocabulary
+   + tight integration with Org mode files
+** TODO Brainstorm Flora-2 integration
+** TODO Benchmark query time for viability of real-time feedback
+** TODO Improve presentation of results

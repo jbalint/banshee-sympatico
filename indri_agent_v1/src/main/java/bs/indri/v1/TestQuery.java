@@ -14,5 +14,6 @@ public class TestQuery {
 		System.out.println(q.nextResults(1, fields));
 		System.out.println("----------------------------------");
 		System.out.println(q.nextResults(1, fields));
+		q.close();
 	}
 }
