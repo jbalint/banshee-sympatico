@@ -1,5 +1,8 @@
 package bs.wmii.v1.ontology;
 
+import jade.content.onto.BeanOntology;
+import jade.content.onto.BeanOntologyException;
+
 public class WmiiOntology extends BeanOntology {
 	public static final String ONTOLOGY_NAME = "Wmii-v1-Ontology";
 
@@ -9,9 +12,13 @@ public class WmiiOntology extends BeanOntology {
 		return instance;
 	}
 
-	private WmiiOntology() throws Exception {
+	private WmiiOntology() {
 		super(ONTOLOGY_NAME);
 
-		add("bs.wmii.v1.ontology");
+		try {
+			add("bs.wmii.v1.ontology");
+		} catch(BeanOntologyException ex) {
+			throw new RuntimeException("error building ontology", ex);
+		}
 	}
 }

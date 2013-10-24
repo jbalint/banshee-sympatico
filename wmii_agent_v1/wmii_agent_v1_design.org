@@ -28,5 +28,6 @@ wmii Agent v1
 * Testing/Debugging
 ** TODO Write an agent to print the debug stream of events
 * Issues
-** Anything with wmii "areas"?
+** TODO SubscriptionManager should be made generic for use in other JADE agents
 * Ideas for future versions
+** Anything with wmii "areas"?

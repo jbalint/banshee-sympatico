@@ -1,16 +1,24 @@
 <project name="wmii_v1" basedir="." default="test">
+  <path id="cp">
+	<fileset dir="../lib">
+	  <include name="**/*.jar"/>
+	</fileset>
+	<pathelement path="build"/>
+  </path>
+
   <target name="compile">
 	<mkdir dir="build"/>
 	<javac srcdir="src/main/java"
 		   destdir="build"
-		   debug="true">
+		   debug="true"
+		   classpathref="cp">
 	  <include name="**/*.java"/>
 	</javac>
   </target>
 
   <target name="test" depends="compile">
 	<java fork="true"
-		  classname="bs.wmii.v1.TestQuery">
+		  classname="bs.wmii.v1.SOMETHING">
 	  <classpath>
 		<pathelement path="build"/>
 	  </classpath>

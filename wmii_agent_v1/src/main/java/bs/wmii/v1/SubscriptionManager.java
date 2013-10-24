@@ -5,12 +5,16 @@ import java.util.Set;
 
 import jade.content.onto.basic.Action;
 import jade.core.Agent;
+import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.states.MsgReceiver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import bs.wmii.v1.ontology.SubscribeRequest;
+import bs.wmii.v1.ontology.WmiiOntology;
 
 public class SubscriptionManager extends MsgReceiver {
 	private static final Logger log = LoggerFactory.getLogger(SubscriptionManager.class);
@@ -37,6 +41,7 @@ public class SubscriptionManager extends MsgReceiver {
 			req = (SubscribeRequest) ((Action) getAgent().getContentManager().extractContent(msg)).getAction();
 		} catch(Exception ex) {
 			log.error("Cannot extract content from message: " + msg, ex);
+			return;
 		}
 
 		// process request
