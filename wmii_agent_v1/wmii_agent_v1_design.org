@@ -1,0 +1,32 @@
+wmii Agent v1
+
+* Requirements
+  + Provide a pub/sub event model for wmii events
+  + Provide an API to obtain state, and affect state
+* API
+  + events
+	+ client created/destroyed/focused
+	+ tag created/focused (?)
+  + state read
+	+ get tags
+	+ get clients
+  + state write
+	+ focus tag
+	+ focus client
+	+ create tag
+* Implementation
+** Ontology design
+*** DONE Events
+	 CLOSED: [2013-10-24 Thu 13:03]
+*** TODO State read req/resp
+*** TODO State write req/confirm
+** Events
+*** TODO read from wmiir /event stream
+*** TODO broadcast to subscribers
+** TODO State read
+** TODO State write
+* Testing/Debugging
+** TODO Write an agent to print the debug stream of events
+* Issues
+** Anything with wmii "areas"?
+* Ideas for future versions
