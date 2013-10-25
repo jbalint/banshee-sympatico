@@ -9,6 +9,10 @@ public class SubscribeRequest implements jade.content.AgentAction {
 	public SubscribeRequest() {
 	}
 
+	public SubscribeRequest(int x) {
+		this.requestType = x;
+	}
+
 	public void setRequestType(int x) {
 		this.requestType = x;
 	}

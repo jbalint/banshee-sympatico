@@ -1,17 +1,17 @@
 package bs.wmii.v1.ontology;
 
-public class ClientEvent implements jade.content.Concept {
+public class TagEvent implements jade.content.Concept {
 	public static final int EVENT_TYPE_FOCUS = 1;
 	public static final int EVENT_TYPE_CREATED = 2;
 	public static final int EVENT_TYPE_DESTROYED = 3;
 	public static final int EVENT_TYPE_URGENT = 4;
 
 	private int eventType;
-	private String clientId;
+	private String tagId;
 
-	public ClientEvent(int eventType, String clientId) {
+	public TagEvent(int eventType, String tagId) {
 		this.eventType = eventType;
-		this.clientId = clientId;
+		this.tagId = tagId;
 	}
 
 	public void setEventType(int eventType) {
@@ -22,11 +22,11 @@ public class ClientEvent implements jade.content.Concept {
 		return this.eventType;
 	}
 
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
+	public void setTagId(String tagId) {
+		this.tagId = tagId;
 	}
 
-	public String getClientId() {
-		return this.clientId;
+	public String getTagId() {
+		return this.tagId;
 	}
 }

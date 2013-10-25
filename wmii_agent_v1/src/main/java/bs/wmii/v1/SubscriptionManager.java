@@ -66,4 +66,10 @@ public class SubscriptionManager extends MsgReceiver {
 	public boolean done() {
 		return false;
 	}
+
+	public void addReceivers(ACLMessage msg) {
+		for (AID aid : subscribers) {
+			msg.addReceiver(aid);
+		}
+	}
 }

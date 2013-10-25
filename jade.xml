@@ -1,0 +1,25 @@
+<project name="jade" basedir=".">
+  <path id="cp">
+	<fileset dir="lib">
+	  <include name="**/*.jar"/>
+	</fileset>
+	<pathelement path="wmii_agent_v1/build"/>
+  </path>
+
+  <target name="compile">
+	<ant dir="wmii_agent_v1"/>
+  </target>
+
+  <target name="jade-boot" depends="compile">
+	<property name="agent10" value="wmii:bs.wmii.v1.WmiiAgent"/>
+	<property name="agent11" value="wmii-trace:bs.wmii.v1.TraceAgent"/>
+
+	<java fork="true"
+		  classpathref="cp"
+		  classname="jade.Boot">
+	  <jvmarg value="-Djava.util.logging.SimpleFormatter.format=%1$tc %2$s %3$s%n%4$s: %5$s%6$s%n"/>
+	  <arg value="-gui"/>
+	  <arg value="${agent10};${agent11}"/>
+	</java>
+  </target>
+</project>
