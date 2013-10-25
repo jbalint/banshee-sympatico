@@ -21,7 +21,9 @@ wmii Agent v1
 *** TODO State read req/resp
 *** TODO State write req/confirm
 ** Events
-*** TODO read from wmiir /event stream
+*** TODO Urgent events
+*** DONE read from wmiir /event stream
+	 CLOSED: [2013-10-25 Fri 16:03]
 *** TODO broadcast to subscribers
 ** TODO State read
 ** TODO State write
@@ -30,4 +32,7 @@ wmii Agent v1
 * Issues
 ** TODO SubscriptionManager should be made generic for use in other JADE agents
 * Ideas for future versions
-** Anything with wmii "areas"?
+** Add areas to tag ontology
+** Look at subscription options in JADE
+   + =SubscriptionInitiator=, etc
+** Do ontologies in a language-independent way (Protege?)

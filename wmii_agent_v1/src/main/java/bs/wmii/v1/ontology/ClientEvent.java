@@ -9,6 +9,9 @@ public class ClientEvent implements jade.content.Concept {
 	private int eventType;
 	private String clientId;
 
+	public ClientEvent() {
+	}
+
 	public ClientEvent(int eventType, String clientId) {
 		this.eventType = eventType;
 		this.clientId = clientId;
@@ -28,5 +31,24 @@ public class ClientEvent implements jade.content.Concept {
 
 	public String getClientId() {
 		return this.clientId;
+	}
+
+	public String toString() {
+		String eventName;
+		switch (this.eventType) {
+		case EVENT_TYPE_FOCUS:
+			eventName = "ClientFocus";
+			break;
+		case EVENT_TYPE_CREATED:
+			eventName = "CreateClient";
+			break;
+		case EVENT_TYPE_DESTROYED:
+			eventName = "DestroyClient";
+			break;
+		default:
+			eventName = "<unknown>";
+			break;
+		}
+		return eventName + " " + this.clientId;
 	}
 }
