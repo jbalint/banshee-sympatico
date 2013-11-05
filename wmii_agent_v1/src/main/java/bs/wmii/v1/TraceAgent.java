@@ -8,32 +8,10 @@ import jade.lang.acl.MessageTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import bs.jade.MessageReceiver;
+import bs.jade.MessageReceiverFacade;
 import bs.wmii.v1.ontology.SubscribeRequest;
 import bs.wmii.v1.ontology.WmiiOntology;
-
-// TODO move this out of wmii agent into jade
-interface MessageReceiver {
-	public void handleMessage(ACLMessage msg);
-	public boolean done();
-}
-
-// TODO move this out of wmii agent into jade
-class MessageReceiverFacade extends jade.proto.states.MsgReceiver {
-	private MessageReceiver receiver;
-
-	public MessageReceiverFacade(Agent agent, MessageReceiver receiver, MessageTemplate mt) {
-		super(agent, mt, INFINITE, null, null);
-		this.receiver = receiver;
-	}
-
-	protected void handleMessage(ACLMessage msg) {
-		receiver.handleMessage(msg);
-	}
-
-	public boolean done() {
-		return receiver.done();
-	}
-}
 
 public class TraceAgent extends Agent implements MessageReceiver {
 	private Logger log;
