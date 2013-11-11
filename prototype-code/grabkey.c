@@ -1,3 +1,9 @@
+/*
+
+gcc -Wall -ggdb3 -o grabkey grabkey.c -lX11
+
+*/
+
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <stdio.h>
@@ -65,7 +71,10 @@ case XK_Hyper_R   :  /* Right hyper */
 	if (ev.xkey.state & Mod4Mask)
 	  bufptr += sprintf(bufptr, "S-"); // S = super
 	bufptr += sprintf(bufptr, kss);
-	fprintf(stderr, "%s\n", buf);
+	fprintf(stdout, "%s\n", buf);
+	fflush(stdout);
+	if (!strcmp(buf, "C-c"))
+	  break;
 	//printf("%s\n", buf);
 	/* { */
 	/*   Window cur; */
