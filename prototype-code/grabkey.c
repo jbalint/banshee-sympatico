@@ -33,8 +33,10 @@ int main(int argc, char **argv)
   char buf[20];
   const char *kss;
   char *bufptr;
+  int ret;
   d = XOpenDisplay(NULL);
-  XGrabKeyboard(d, DefaultRootWindow(d), False, GrabModeAsync, GrabModeAsync, CurrentTime);
+  ret = XGrabKeyboard(d, DefaultRootWindow(d), False, GrabModeAsync, GrabModeAsync, CurrentTime);
+  fprintf(stderr, "XGrabKeyboard returns %d\n", ret);
   while (1)
   {
 	assert(!XWindowEvent(d, DefaultRootWindow(d), KeyPressMask, &ev));
