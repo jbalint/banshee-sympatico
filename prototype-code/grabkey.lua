@@ -10,6 +10,10 @@ function grabkey:start()
    if pid == 0 then -- child
 	  posix.close(r)
 	  posix.dup2(w, posix.STDOUT_FILENO)
+
+	  -- http://unix.stackexchange.com/questions/23164/manipulating-x-key-and-pointer-grabs-on-the-command-line
+	  os.execute("xdotool key XF86LogGrabInfo")
+
 	  posix.exec("./grabkey")
    else
 	  posix.close(w)

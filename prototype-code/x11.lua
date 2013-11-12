@@ -41,7 +41,7 @@ function x11:props(windowId)
    return result
 end
 
-if os.getenv("EMACS") == "t" then
+if false and os.getenv("EMACS") == "t" then
    require("pl.pretty").dump(x11:getAllWindowIds())
    require("pl.pretty").dump(x11:props(x11:getAllWindowIds()[1]))
 end

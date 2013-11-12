@@ -8,6 +8,8 @@ local wmii = require("wmii")
 
 local x11 = require("x11")
 
+local grabkey = require("grabkey")
+
 require("event_handler_registry")
 
 require("command_registry")
@@ -92,17 +94,26 @@ lineEditCommands["braceright"] = lineEditReplace("}")
 lineEditCommands["space"] = lineEditReplace(" ")
 
 local keyBindings = {}
+
+keyBindings["w"] = function()
+   print("You typed `w'!!!")
+end
+
+keyBindings["C-c x x x"] = function()
+   os.execute("chromium http://luaposix.github.io/luaposix/docs/index.html")
+end
+
 keyBindings["Mod4-i"] = function()
-   -- http://unix.stackexchange.com/questions/23164/manipulating-x-key-and-pointer-grabs-on-the-command-line
-   os.execute("xdotool key XF86LogGrabInfo")
-   local grabKey = io.popen("./grabkey")
    dzen:start()
    local command = ""
-   for k in grabKey:lines() do
+   grabkey:start()
+   for k in grabkey:lines() do
 	  if k == "Return" then
 		 -- TODO make this able to run arbitrary code
-		 commands[command]()
-		 grabKey:close()
+		 grabkey:kill()
+		 if commands[command] then
+			commands[command]()
+		 end
 		 break
 	  elseif lineEditCommands[k] then
 		 command = lineEditCommands[k](command)
@@ -135,12 +146,26 @@ local keyBuf = ""
 -- event loop
 local eventStream = io.popen("./events.sh")
 for ev in eventStream:lines() do
-   if ev:match("wmii: Key Mod4-o") then
+   if ev:match("wmii: Key Mod4.o") then
 	  keyBuf = ""
-	  local grabKey = io.popen("./grabkey")
-	  for k in grabKey:lines()
-	  -- TODO have to have a way to stop grabKey
+	  grabkey:start()
+	  for k in grabkey:lines() do
+		 if keyBuf == "" then
+			keyBuf = k
+		 else
+			keyBuf = keyBuf .. " " .. k
+		 end
+		 if #keyBuf > 20 then
+			print("Long key-sequence. cancelling " .. keyBuf)
+			break
+		 end
+		 if keyBindings[keyBuf] then
+			keyBindings[keyBuf]()
+			break
+		 end
 	  end
+	  keyBuf = ""
+	  grabkey:kill()
    elseif ev:match("wmii: Key ") then
 	  local key = ev:gsub("wmii: Key ", "")
 	  if keyBuf == "" then
