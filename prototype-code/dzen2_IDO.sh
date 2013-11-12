@@ -10,7 +10,7 @@ exec 3> /tmp/dzen2_proto_pipe
 q=""
 echo "^uncollapse()" >&3
 #set -x
-./a.out 2>&1 | while read i ; do
+./grabkey 2>&1 | while read i ; do
 	if [ $i = "C-s" ] ; then
 		selected=$(expr $selected + 1)
 	elif [ $i = "C-r" ] ; then

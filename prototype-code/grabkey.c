@@ -75,7 +75,11 @@ case XK_Hyper_R   :  /* Right hyper */
 	bufptr += sprintf(bufptr, kss);
 	fprintf(stdout, "%s\n", buf);
 	fflush(stdout);
+	if (!strcmp(buf, "Return"))
+	  break;
 	if (!strcmp(buf, "C-c"))
+	  break;
+	if (!strcmp(buf, "C-g"))
 	  break;
 	//printf("%s\n", buf);
 	/* { */
