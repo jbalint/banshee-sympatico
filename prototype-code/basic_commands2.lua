@@ -8,19 +8,11 @@ local wmii = require("wmii")
 
 local x11 = require("x11")
 
--------------------------------------------------
--- event handling
---
--- events are read from the event stream and
--- routed based on the prefix of the event line.
--- multi-line events are unsupported
--------------------------------------------------
-local eventHandlers = {}
-function eventRegisterHandler(handler)
-   eventHandlers[handler.prefix] = handler
-end
+require("event_handler_registry")
 
-eventRegisterHandler(require("wmii_events"))
+require("command_registry")
+
+require("wmii_events")
 
 -------------------------------------------------
 -------------------------------------------------
@@ -99,10 +91,6 @@ lineEditCommands["braceleft"] = lineEditReplace("{")
 lineEditCommands["braceright"] = lineEditReplace("}")
 lineEditCommands["space"] = lineEditReplace(" ")
 
-local eventStream = io.popen("./events.sh")
-
-local keyBuf = ""
-
 local keyBindings = {}
 keyBindings["Mod4-i"] = function()
    -- http://unix.stackexchange.com/questions/23164/manipulating-x-key-and-pointer-grabs-on-the-command-line
@@ -112,6 +100,7 @@ keyBindings["Mod4-i"] = function()
    local command = ""
    for k in grabKey:lines() do
 	  if k == "Return" then
+		 -- TODO make this able to run arbitrary code
 		 commands[command]()
 		 grabKey:close()
 		 break
@@ -141,8 +130,18 @@ keyBindings["Mod4-i"] = function()
    dzen:stop()
 end
 
+local keyBuf = ""
+
+-- event loop
+local eventStream = io.popen("./events.sh")
 for ev in eventStream:lines() do
-   if ev:match("wmii: Key ") then
+   if ev:match("wmii: Key Mod4-o") then
+	  keyBuf = ""
+	  local grabKey = io.popen("./grabkey")
+	  for k in grabKey:lines()
+	  -- TODO have to have a way to stop grabKey
+	  end
+   elseif ev:match("wmii: Key ") then
 	  local key = ev:gsub("wmii: Key ", "")
 	  if keyBuf == "" then
 		 keyBuf = key
@@ -161,12 +160,7 @@ for ev in eventStream:lines() do
 	  -- TODO first match to ':' has to be non-greedy
 	  local a = ev:gmatch("([-%w]*):%s+(.*)$")
 	  local eventType, eventData = a()
-	  if eventHandlers[eventType] then
-		 eventHandlers[eventType]:event(eventData)
-	  else
-		 print(string.format("Unhandled event. type=(%s), data = (%s)",
-							 eventType, eventData))
-	  end
+	  eventHandle(eventType, eventData)
    end
 end
 
