@@ -1,36 +1,26 @@
 local tablex = require("pl.tablex")
 
--------------------------------------------------
--- dzen2
--------------------------------------------------
-local dzen2CommandLine = "dzen2 -bg white -y 400 -x 400 -w 800 -xs 1 -e '' -l 22 -fn '-*-inconsolata-*-*-*-*-*-*-*-*-*-*-*-*' -m"
+local dzen = require("dzen")
 
-local dzen2 = {}
-function dzen2:start()
-   self.proc = io.popen(dzen2CommandLine, "w")
-   self:text("^uncollapse()")
-end
-function dzen2:title(text)
-   --self.proc:write("^tw()^fg(#cb4b16)" .. text .. "\n")
-   self.proc:write("^tw()" .. text .. "\n")
-   self.proc:flush()
-end
-function dzen2:text(text)
-   self.proc:write(text)
-   self.proc:write("\n")
-   self.proc:flush()
-end
-function dzen2:stop()
-   self.proc:close()
-end
+local xdotool = require("xdotool")
+
+local wmii = require("wmii")
+
+local x11 = require("x11")
 
 -------------------------------------------------
--- wmii handler
+-- event handling
+--
+-- events are read from the event stream and
+-- routed based on the prefix of the event line.
+-- multi-line events are unsupported
 -------------------------------------------------
-local wmiiHandler = {}
-wmiiHandler.prefix = "wmii"
-function wmiiHandler:event(ev)
+local eventHandlers = {}
+function eventRegisterHandler(handler)
+   eventHandlers[handler.prefix] = handler
 end
+
+eventRegisterHandler(require("wmii_events"))
 
 -------------------------------------------------
 -------------------------------------------------
@@ -60,15 +50,13 @@ function refreshCommands()
    while true do
 	  local n, v = debug.getlocal(2, i)
 	  if not n then break end
-	  if v.interactive then
+	  if type(v) == "table" and v.interactive then
 		 commands[n] = v
 	  end
 	  i = i + 1
    end
 end
 refreshCommands()
-
-local eventStream = io.popen("./events.sh")
 
 function lineEditReplace(replaceString)
    return function(x)
@@ -111,44 +99,75 @@ lineEditCommands["braceleft"] = lineEditReplace("{")
 lineEditCommands["braceright"] = lineEditReplace("}")
 lineEditCommands["space"] = lineEditReplace(" ")
 
-for ev in eventStream:lines() do
-   if ev == "wmii: Key Mod4-i" then
-	  -- http://unix.stackexchange.com/questions/23164/manipulating-x-key-and-pointer-grabs-on-the-command-line
-	  os.execute("xdotool key XF86LogGrabInfo")
-	  local grabKey = io.popen("./grabkey")
-	  dzen2:start()
-	  local command = ""
-	  for k in grabKey:lines() do
-		 if k == "Return" then
-			commands[command]()
-			grabKey:close()
-			break
-		 elseif lineEditCommands[k] then
-			command = lineEditCommands[k](command)
-		 elseif #k == 1 then
-			command = command .. k
-		 end
-		 local titleText1 = command:gsub("(^)", "%1%1")
-		 dzen2:text("^cs()")
-		 for cmd in tablex.sort(commands) do
-			if command ~= "" and cmd:match(command) then
-			   local dispText = cmd:gsub("(^)", "^^")
-			   dispText = dispText:gsub("(" .. titleText1 .. ")", "^fg(#859900)%1^fg()")
-			   dzen2:text(dispText)
-			end
-		 end
+local eventStream = io.popen("./events.sh")
 
-		 local titleText2
-		 if titleText1:match("(^^)$") then
-			titleText2 = titleText1:gsub("(^^)$", "^fg(#cb4b16)%1")
-		 else
-			titleText2 = titleText1:gsub("(.)$", "^fg(#cb4b16)%1")
-		 end
-		 dzen2:title(titleText2)
+local keyBuf = ""
+
+local keyBindings = {}
+keyBindings["Mod4-i"] = function()
+   -- http://unix.stackexchange.com/questions/23164/manipulating-x-key-and-pointer-grabs-on-the-command-line
+   os.execute("xdotool key XF86LogGrabInfo")
+   local grabKey = io.popen("./grabkey")
+   dzen:start()
+   local command = ""
+   for k in grabKey:lines() do
+	  if k == "Return" then
+		 commands[command]()
+		 grabKey:close()
+		 break
+	  elseif lineEditCommands[k] then
+		 command = lineEditCommands[k](command)
+	  elseif #k == 1 then
+		 command = command .. k
 	  end
-	  dzen2:stop()
+	  local titleText1 = command:gsub("(^)", "%1%1")
+	  dzen:text("^cs()")
+	  for cmd in tablex.sort(commands) do
+		 if command ~= "" and cmd:match(command) then
+			local dispText = cmd:gsub("(^)", "^^")
+			dispText = dispText:gsub("(" .. titleText1 .. ")", "^fg(#859900)%1^fg()")
+			dzen:text(dispText)
+		 end
+	  end
+
+	  local titleText2
+	  if titleText1:match("(^^)$") then
+		 titleText2 = titleText1:gsub("(^^)$", "^fg(#cb4b16)%1")
+	  else
+		 titleText2 = titleText1:gsub("(.)$", "^fg(#cb4b16)%1")
+	  end
+	  dzen:title(titleText2)
+   end
+   dzen:stop()
+end
+
+for ev in eventStream:lines() do
+   if ev:match("wmii: Key ") then
+	  local key = ev:gsub("wmii: Key ", "")
+	  if keyBuf == "" then
+		 keyBuf = key
+	  else
+		 keyBuf = keyBuf .. " " .. key
+	  end
+	  if #keyBuf > 20 then
+		 print("Long key-sequence. cancelling " .. keyBuf)
+		 keyBuf = ""
+	  end
+	  if keyBindings[keyBuf] then
+		 keyBindings[keyBuf]()
+		 keyBuf = ""
+	  end
    else
-	  local a = ev:gmatch("([-%w]*):%s+([-%w%s]*)$")
-	  print(a())
+	  -- TODO first match to ':' has to be non-greedy
+	  local a = ev:gmatch("([-%w]*):%s+(.*)$")
+	  local eventType, eventData = a()
+	  if eventHandlers[eventType] then
+		 eventHandlers[eventType]:event(eventData)
+	  else
+		 print(string.format("Unhandled event. type=(%s), data = (%s)",
+							 eventType, eventData))
+	  end
    end
 end
+
+eventStream:close()
