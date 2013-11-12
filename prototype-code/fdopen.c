@@ -38,6 +38,6 @@ int lua_fdopen(lua_State *L)
 LUALIB_API
 int luaopen_fdopen(lua_State *L)
 {
-  lua_register(L, "lua_fdopen", lua_fdopen);
+  lua_register(L, "fdopen", lua_fdopen);
   return 0;
 }
