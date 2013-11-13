@@ -2,9 +2,12 @@ local posix = require("posix")
 require("io")
 require("fdopen")
 
-local grabkey = {}
+if not GrabKey then GrabKey = {} end
+GrabKey.mt = { __index = GrabKey, classname = "GrabKey" }
 
-function grabkey:start()
+function GrabKey.new()
+   local obj = {}
+   setmetatable(obj, GrabKey.mt)
    local r, w = posix.pipe()
    local pid = posix.fork()
    if pid == 0 then -- child
@@ -17,27 +20,29 @@ function grabkey:start()
 	  posix.exec("./grabkey")
    else
 	  posix.close(w)
-	  self.keyStream = fdopen(r, "r")
-	  self.childPid = pid
+	  obj.keyStream = fdopen(r, "r")
+	  obj.childPid = pid
    end
+   return obj
 end
 
-function grabkey:lines()
+function GrabKey:lines()
    return self.keyStream:lines()
 end
 
-function grabkey:kill()
+function GrabKey:kill()
    posix.kill(self.childPid)
 end
 
 local function test()
-   grabkey:start()
-   for x in grabkey:lines() do
+   local gk = GrabKey.new()
+   require('pl.pretty').dump(gk)
+   for x in gk:lines() do
 	  if x == "g" then
-		 grabkey:kill()
+		 gk:kill()
 	  end
    end
    print("Done")
 end
 
-return grabkey
+return GrabKey
