@@ -1,10 +1,18 @@
 -- X11 module
 require("pl.stringx").import()
 
-local x11 = {}
+if not X11 then X11 = {} end
 
-function x11:getAllWindowIds()
-   local stream = io.popen("xprop -root") --" | grep '_NET_CLIENT_LIST(WINDOW)'"
+function X11:getFocusWindow()
+   return self.focusWindow
+end
+
+function X11:setFocusWindow(windowId)
+   self.focusWindow = windowId
+end
+
+function X11:getAllWindowIds()
+   local stream = io.popen("xprop -root")
    local clientLine
    for line in stream:lines() do
 	  if line:match("_NET_CLIENT_LIST") then
@@ -17,11 +25,11 @@ function x11:getAllWindowIds()
    return clientLine:gsub(".*# ", ""):split(", ")
 end
 
-function x11:activate(windowId)
+function X11:activate(windowId)
    os.execute("xdotool windowactivate " .. windowId)
 end
 
-function x11:props(windowId)
+function X11:props(windowId)
    -- TODO fix escaping: label = "bs:0:emacs - \\\"rook\\\"",
    local stream = io.popen("xprop -notype -id " .. windowId .. " 8s '$0' WM_NAME")
    local line = stream:lines()()
@@ -42,8 +50,8 @@ function x11:props(windowId)
 end
 
 if false and os.getenv("EMACS") == "t" then
-   require("pl.pretty").dump(x11:getAllWindowIds())
-   require("pl.pretty").dump(x11:props(x11:getAllWindowIds()[1]))
+   require("pl.pretty").dump(X11:getAllWindowIds())
+   require("pl.pretty").dump(X11:props(X11:getAllWindowIds()[1]))
 end
 
-return x11
+return X11
