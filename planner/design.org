@@ -1,0 +1,39 @@
+
+* Functional Requirements
+** Basic Task Management
+   + Tasks can be created with type =tmo:Task=
+	 + =nao:created= will be set to the creation time
+	 + =nao:lastModified= will be changed when updated
+	 + Fields:
+	   + =tmo:actualCompletion=
+		 + Percentage/float
+	   + =tmo:actualEndTime=
+	   + =tmo:actualStartTime=
+	   + =tmo:dueDate=
+	   + =tmo:importants=
+	   + =tmo:lastReviewDate=
+		 + Should be integrated with GTD-like system
+	   + =tmo:subTask=
+	   + =tmo:superTask=
+	   + =tmo:priority=
+	   + =tmo:targetCompletion=
+	   + =tmo:targetEndTime=
+	   + =tmo:targetStartTime=
+	   + =tmo:taskDescription=
+	   + =tmo:taskName=
+	   + =tmo:taskPrivacyState=
+		 + Should be filled automatically by rules
+		   + e.g. Oracle projects are professional
+	   + =tmo:taskState=
+		 + c.f. Section 5.1.7 of Task Management Model
+	   + =tmo:urgency=
+   + Tasks can have journal entries added with type =ncal:Journal=
+	 + TBD
+** Basic Scheduled Event Entry
+** Task Review
+** Daily Schedule
+** Reminders
+** External Application Integration
+*** Google Calendar
+*** B.S. Alerts
+*** Phone Alerts
