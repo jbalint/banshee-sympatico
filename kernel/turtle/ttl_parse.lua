@@ -58,13 +58,17 @@ local ucharacter = (character-P"\x3e")+P"\\>"
 local scharacter = (echaracter-P"\x22")+P"\\\""
 
 -- [43]lcharacter::=echaracter | '\"' | #x9 | #xA | #xD
-local lcharacter = echaracter+P"\x22"+P"\x09"+P"\x0a"+P"\x0d"
+local lcharacter = echaracter--+P"\\\x22"+P"\x09"+P"\x0a"+P"\x0d"
 
 -- [36]string::=#x22 scharacter* #x22
 local string_ = P"\x22"*C(scharacter^0)*P"\x22"
 
 -- [37]longString::=#x22 #x22 #x22 lcharacter* #x22 #x22 #x22
-local longString = P"\x22\x22\x22"*C(lcharacter^0)*P"\x22\x22\x22"
+--local longString = P"\x22\x22\x22"*C(lcharacter^0)*P"\x22\x22\x22"
+
+-- from later turtle spec, better for parsing
+-- [25]	STRING_LITERAL_LONG_QUOTE	::=	'"""' (('"' | '""')? ([^"\] | ECHAR | UCHAR))* '"""'
+local longString = P'"""'*C(((P'"'+P'""')^-1*(scharacter-P"\\\""))^0)*P'"""'
 
 -- [31]nameChar::=nameStartChar | '-' | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040]
 local nameChar = nameStartChar+P"-"+R"09"+P"\xb7" -- TODO multibyte
@@ -103,7 +107,7 @@ end)
 local qname = prefixQname+blankQname
 
 -- [35]quotedString::=string | longString
-local quotedString = string_+longString
+local quotedString = longString+string_
 
 -- [24]ws::=#x9 | #xA | #xD | #x20 | comment
 local ws = P"\x09"+P"\x0a"+P"\x0d"+P"\x20"+comment
@@ -217,8 +221,19 @@ function serializePredObj(po)
    local pred, obj
    pred = serializeTerm(po.verb)
    obj = ""
+
+   for i3, o in ipairs(po.objects) do
+	  if i3 > 1 then
+		 obj = obj .. ", "
+	  end
+	  obj = obj .. serializeTerm(o)
+   end
+
    if po.objects.preds then
-	  obj = "["
+	  if obj ~= "" then
+		 obj = obj .. ", "
+	  end
+	  obj = obj .. "["
 	  for i2, p in ipairs(po.objects.preds) do
 		 if i2 > 1 then
 			obj = obj .. "; "
@@ -226,14 +241,8 @@ function serializePredObj(po)
 		 obj = obj .. serializePredObj(p)
 	  end
 	  obj = obj .. "]"
-   else
-	  for i3, o in ipairs(po.objects) do
-		 if i3 > 1 then
-			obj = obj .. ", "
-		 end
-		 obj = obj .. serializeTerm(o)
-	  end
    end
+
    return pred .. " " .. obj
 end
 
@@ -283,11 +292,48 @@ ericFoaf:ericP :givenName "Eric" ;
                       <http://getopenid.com/amyvdh> .
 ]]
 
+-- TODO collection support
+local test3 = [[
+@prefix : <http://example.org/stuff/1.0/> .
+:a :b ( "apple" "banana" ) .
+]]
+
+local test4 = [[
+@prefix : <http://example.org/stuff/1.0/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+:a :b
+  [ rdf:first "apple";
+    rdf:rest [ rdf:first "banana";
+               rdf:rest rdf:nil ]
+  ] .
+]]
+
+-- TODO escape subsitution
+local test5 = [[
+@prefix : <http://example.org/stuff/1.0/> .
+
+:a :b "1The first line\nThe second line\n  more" .
+
+:a :b """2The first line
+The second line
+  more""" .
+]]
+
 require('pl.pretty').dump({lpeg.match(turtleDoc, test1)})
 print("-------------------")
 require('pl.pretty').dump({lpeg.match(turtleDoc, test2)})
 print("-------------------")
+require('pl.pretty').dump({lpeg.match(turtleDoc, test3)})
+print("-------------------")
+require('pl.pretty').dump({lpeg.match(turtleDoc, test4)})
+print("-------------------")
+require('pl.pretty').dump({lpeg.match(turtleDoc, test5)})
+print("-------------------")
+
 
 -- test by running the serialized version back through the parser
 print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test1)}))}))
 print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test2)}))}))
+print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test3)}))}))
+print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test4)}))}))
+print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test5)}))}))
