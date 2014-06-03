@@ -1,3 +1,5 @@
+local turtleparse = {}
+
 local lpeg = require('lpeg')
 local re = require('re')
 
@@ -319,21 +321,29 @@ The second line
   more""" .
 ]]
 
-require('pl.pretty').dump({lpeg.match(turtleDoc, test1)})
-print("-------------------")
-require('pl.pretty').dump({lpeg.match(turtleDoc, test2)})
-print("-------------------")
-require('pl.pretty').dump({lpeg.match(turtleDoc, test3)})
-print("-------------------")
-require('pl.pretty').dump({lpeg.match(turtleDoc, test4)})
-print("-------------------")
-require('pl.pretty').dump({lpeg.match(turtleDoc, test5)})
-print("-------------------")
+if false then
+   require('pl.pretty').dump({lpeg.match(turtleDoc, test1)})
+   print("-------------------")
+   require('pl.pretty').dump({lpeg.match(turtleDoc, test2)})
+   print("-------------------")
+   require('pl.pretty').dump({lpeg.match(turtleDoc, test3)})
+   print("-------------------")
+   require('pl.pretty').dump({lpeg.match(turtleDoc, test4)})
+   print("-------------------")
+   require('pl.pretty').dump({lpeg.match(turtleDoc, test5)})
+   print("-------------------")
 
 
--- test by running the serialized version back through the parser
-print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test1)}))}))
-print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test2)}))}))
-print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test3)}))}))
-print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test4)}))}))
-print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test5)}))}))
+   -- test by running the serialized version back through the parser
+   print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test1)}))}))
+   print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test2)}))}))
+   print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test3)}))}))
+   print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test4)}))}))
+   print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test5)}))}))
+end
+
+function turtleparse.parse(turtleString)
+   return {lpeg.match(turtleDoc, turtleString)}
+end
+
+return turtleparse
