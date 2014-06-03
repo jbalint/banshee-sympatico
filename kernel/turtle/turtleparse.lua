@@ -4,7 +4,7 @@ local lpeg = require('lpeg')
 local re = require('re')
 
 local P, R, S, V = lpeg.P, lpeg.R, lpeg.S, lpeg.V
-local C, Cc, Cf, Cg, Cs, Ct = lpeg.C, lpeg.Cc, lpeg.Cf, lpeg.Cg, lpeg.Cs, lpeg.Ct
+local C, Cc, Cf, Cg, Cs, Ct, Cmt = lpeg.C, lpeg.Cc, lpeg.Cf, lpeg.Cg, lpeg.Cs, lpeg.Ct, lpeg.Cmt
 
 -- Turtle - Terse RDF Triple Language EBNF
 -- from: http://www.w3.org/TeamSubmission/turtle/
@@ -57,20 +57,29 @@ local echaracter = character+P"\t"+P"\n"+P"\r"
 local ucharacter = (character-P"\x3e")+P"\\>"
 
 -- [42]scharacter::= ( echaracter - #x22 ) | '\"'
-local scharacter = (echaracter-P"\x22")+P"\\\""
+local scharacter = P"\\\""+(echaracter-P"\x22")
 
--- [43]lcharacter::=echaracter | '\"' | #x9 | #xA | #xD
-local lcharacter = echaracter--+P"\\\x22"+P"\x09"+P"\x0a"+P"\x0d"
+-- Process escapes for strings
+function processEscapes(subj, pos, str)
+   str = str:gsub('\\"', '"'):gsub('\\t', "\x09"):gsub('\\n', "\x0a"):gsub('\\r', "\x0d")
+   return pos, str
+end
 
 -- [36]string::=#x22 scharacter* #x22
-local string_ = P"\x22"*C(scharacter^0)*P"\x22"
+local string_ = Cmt(P"\x22"*C(scharacter^0)*P"\x22", processEscapes)
 
+-- [43]lcharacter::=echaracter | '\"' | #x9 | #xA | #xD
 -- [37]longString::=#x22 #x22 #x22 lcharacter* #x22 #x22 #x22
---local longString = P"\x22\x22\x22"*C(lcharacter^0)*P"\x22\x22\x22"
 
 -- from later turtle spec, better for parsing
--- [25]	STRING_LITERAL_LONG_QUOTE	::=	'"""' (('"' | '""')? ([^"\] | ECHAR | UCHAR))* '"""'
-local longString = P'"""'*C(((P'"'+P'""')^-1*(scharacter-P"\\\""))^0)*P'"""'
+-- c.f. http://lists.w3.org/Archives/Public/public-rdf-comments/2014Feb/0018.html
+--[26]	UCHAR	::=	'\u' HEX HEX HEX HEX | '\U' HEX HEX HEX HEX HEX HEX HEX HEX
+local UCHAR = (P"\\u"*hex*hex*hex*hex)+(P"\\U"*hex*hex*hex*hex*hex*hex*hex*hex)
+--[159s]	ECHAR	::=	'\' [tbnrf"'\]
+local ECHAR = P"\\"*S"tbrnf\"'\\"
+--[25]	STRING_LITERAL_LONG_QUOTE	::=	'"""' (('"' | '""')? ([^"\] | ECHAR | UCHAR))* '"""'
+local longStringContents = C(((P'""'+P'"')^-1*(re.compile('[^"\\]')+ECHAR+UCHAR))^0)
+local longString = Cmt(P'"""'*longStringContents*P'"""', processEscapes)
 
 -- [31]nameChar::=nameStartChar | '-' | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040]
 local nameChar = nameStartChar+P"-"+R"09"+P"\xb7" -- TODO multibyte
@@ -124,10 +133,14 @@ local predicate = resource
 local verb = Cg(predicate+C(P"a"), "verb")
 
 -- [15]datatypeString::=quotedString '^^' resource
-local datatypeString = quotedString*P"^^"*resource
+local datatypeString = Cf(quotedString*P"^^"*resource, function (str, datatype)
+							 return {type="TypedString",
+									 value=str,
+									 datatype=datatype}
+end)
 
 -- [14]literal::=quotedString ( '@' language )? | datatypeString | integer | double | decimal | boolean
-local literal = (quotedString*(P"@"*language)^-1)+datatypeString+C(integer+double+decimal+boolean)
+local literal = datatypeString+(quotedString*(P"@"*language)^-1)+C(integer+double+decimal+boolean)
 
 -----------------------------
 local makeGrammar = function (elem)
@@ -144,9 +157,9 @@ local makeGrammar = function (elem)
 			predicateObject = Ct(verb*ws^1*(V"objectList")),
 
 			-- [7]predicateObjectList::=verb JB:ws+ objectList JB:ws*
-			--                          ( ';' JB:ws* verb JB:ws+ objectList )* JB:ws* ( ';')?
+			--                          ( ';' JB:ws* verb JB:ws+ objectList JB:ws* )* ( ';')?
 			predicateObjectList = Cg(Ct(V"predicateObject"*ws^0*
-										   (P";"*ws^0*V"predicateObject")^0*ws^0*P";"^-1), "preds"),
+										   (P";"*ws^0*V"predicateObject"*ws^0)^0*P";"^-1), "preds"),
 
 			-- [22]itemList::=object+
 			itemList = V"object"^1,
