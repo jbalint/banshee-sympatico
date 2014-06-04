@@ -1,0 +1,29 @@
+Lua Environment for Banshee-Sympatico
+
+c.f. bs_lua_env.sh
+
+Lua 5.2 installed in path. Libraries installed here:
+
+= lpeg: =
+Required for Turtle parser
+
+make
+cp lpeg.so $BS_HOME/lua/lib/lua/5.2/
+cp re.lua $BS_HOME/lua/share/lua/5.2/
+
+= luasocket: =
+Required for SPARQL client
+
+export PLAT=linux DEBUG=DEBUG LUAV=5.2 prefix=$BS_HOME/lua
+make -f makefile
+make install
+
+= telescope: =
+
+= luafilesystem: =
+Required for Penlight
+
+= penlight: =
+Copied from git repo to lua
+
+= internal code: =
