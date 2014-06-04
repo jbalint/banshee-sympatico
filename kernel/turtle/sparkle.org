@@ -1,0 +1,118 @@
+#+TITLE: Sparkle Object System
+# export as color-theme-andreas
+
+* Introduction
+  The Sparkle Object System is a non-transparent persistent object
+  system. The underlying concepts are borrowed from and compatible
+  with the Semantic Web standards and conventions.
+** Namespaces
+   Namespaces are central to working with objects. All objects and
+   properties are contained within namespaces and must be referenced
+   in the context of a namespace.
+
+   Namespaces provide the starting point for accessing named objects
+   and properties. For instance, the "bscode:Echo" object can be
+   accessed from a reference to the "bscode" namespace:
+#+BEGIN_SRC lua
+local bscode = sparkleObj.ns.bscode
+local echo = bscode.Echo -- same as "bscode:Echo" in SPARQL/TTL
+#+END_SRC
+
+   Namespaces are also used to access properties:
+#+BEGIN_SRC lua
+print("bscode.Echo's class name is: " .. tostring(echo[bscode.className]))
+#+END_SRC
+
+   However, properties can also be accessed by indexing using strings:
+#+BEGIN_SRC lua
+print("bscode.Echo's class name is: " .. tostring(echo["bscode:className"]))
+#+END_SRC
+** Objects and References
+   Named objects accessed directly in namespaces are complete and
+   populated with their properties. However, property values are only
+   object references. That is, you cannot directly access
+   sub-properties of objects. References can be reified individually
+   to complete objects.
+* Semantics
+** Creating Objects
+   Objects can be created directly by calling =ns.createObject= with
+   it's name and the set of classes it will be contained in:
+#+BEGIN_SRC lua
+local bsbase = sparkleObj.ns.bsbase
+local classes = {bsbase.SoftwareSystem}
+bsbase:createObject("Git", classes)
+#+END_SRC
+** Datatype Properties
+   Datatype property values can be identified by having a =type=
+   property value of =datatypeString=. Values can be accessed as
+   strings via the =stringValue= property. Values can be accessed as
+   native values via the =value= property. Supported native values are
+   as follows:
+   + =xsd:string= as Lua strings
+   + =xsd:boolean= as Lua boolean
+	 + "can have the following legal literals {true, false, 1, 0}"
+   + =xsd:decimal=, =xsd:float=, =xsd:double=, =xsd:gYear= as Lua numbers
+   + The remainder of datatypes will return =nil= for the =value= property:
+	 + =xsd:duration=
+	 + =xsd:dateTime=
+	 + =xsd:time=
+	 + =xsd:date=
+	 + =xsd:gYearMonth=
+	 + =xsd:gMonthDay=
+	 + =xsd:gDay=
+	 + =xsd:gMonth=
+	 + =xsd:hexBinary=
+	 + =xsd:base64Binary=
+	 + =xsd:anyURI=
+	 + =xsd:QName=
+	 + =xsd:NOTATION=
+   Assignments to datatype properties will be parsed by the underlying
+   database and will signal an error if parsing fails.
+
+   c.f. [[http://www.w3.org/tr/xmlschema-2/#datetime][XSD Reference]]
+
+   Assignments to datatype properties with specific types can be
+   specified as a pair:
+#+BEGIN_SRC lua
+   ns.obj[ns.someDateProp] = {"2014-01-01", xsd.date}
+#+END_SRC
+** Object Properties
+   Object properties can be assigned from complete objects, references
+   or strings:
+#+BEGIN_SRC lua
+bsbase:createObject("GitCmd", {bsbase.ExecutableProgram})
+bsbase.GitCmd[bsbase.commandName] = "git"
+-- assignment from complete object
+bsbase.Git[bsbase.hasExecutableProgram] = bsbase.GitCmd
+-- We could also use a string to represent the property:
+bsbase.Git["bsbase:hasExecutableProgram"] = bsbase.GitCmd
+#+END_SRC
+** Property Value List Access/Assignment Semantics
+   Assignments directly to properties will not set the property value,
+   but /add/ to the property value. (note, all this needs better clarification and description)
+   e.g. The following code will assign =(1, 2)= to the =ns:prop= property of =ns:obj=:
+#+BEGIN_SRC lua
+ns.obj[ns.prop] = 1
+ns.obj[ns.prop] = 2
+#+END_SRC
+
+   Access ...
+* APIs
+  The =sparkleObj= module should be used for top-level access to the
+  Sparkle Object System.
+#+BEGIN_SRC lua
+local sparkleObj = require("sparkleObj")
+#+END_SRC
+  It needs to be initialized with the SPARQL endpoint URL:
+#+BEGIN_SRC lua
+sparklObj.init{sparqlEndpointUrl="http://localhost:5820/banshee-sympatico/query"}
+#+END_SRC
+** Namespace
+   + Access
+#+BEGIN_SRC lua
+local bsbase = sparkleObj.ns.bsbase
+#+END_SRC
+   + Namespaces exist in the database =bscode:OntologyPrefix= objects.
+* Implementation
+** Object Cache
+   TODO, implement an object cache
