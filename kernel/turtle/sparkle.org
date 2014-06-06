@@ -35,13 +35,13 @@ print("bscode.Echo's class name is: " .. tostring(echo["bscode:className"]))
    to complete objects.
 * Semantics
 ** Creating Objects
-   Objects can be created directly by calling =ns.createObject= with
-   the name of the new object and the set of classes it will be
-   explicitly contained in:
+   Objects can be created directly by calling
+   =sparkleObj.createObject= with the namespace, name of the new
+   object and the set of classes it will be explicitly contained in:
 #+BEGIN_SRC lua
 local bsbase = sparkleObj.ns.bsbase
 local classes = {bsbase.SoftwareSystem}
-bsbase:createObject("Git", classes)
+sparkleObj.createObject(bsbase, "Git", classes)
 #+END_SRC
 ** Multi-Value Property Assignment
    Due to the nature of properties in RDF(S), we must treat them as
@@ -129,7 +129,7 @@ ns.obj[ns.prop]:replace(1) -- assigns {1} as to the value set
    Object properties can be assigned from complete objects, references
    or strings:
 #+BEGIN_SRC lua
-bsbase:createObject("GitCmd", {bsbase.ExecutableProgram})
+sparkleObj.createObject(bsbase, "GitCmd", {bsbase.ExecutableProgram})
 bsbase.GitCmd[bsbase.commandName] = "git"
 -- assignment from complete object
 bsbase.Git[bsbase.hasExecutableProgram] = bsbase.GitCmd
@@ -158,12 +158,14 @@ local sparkleObj = require("sparkleObj")
 #+END_SRC
   It needs to be initialized with the SPARQL endpoint URL:
 #+BEGIN_SRC lua
-sparklObj.init{sparqlEndpointUrl="http://localhost:5820/banshee-sympatico/query"}
+sparkleObj.init{sparqlEndpointUrl="http://localhost:5820/banshee-sympatico/query"}
 #+END_SRC
 ** Namespace
    + Access
 #+BEGIN_SRC lua
 local bsbase = sparkleObj.ns.bsbase
+sparkleObj.namespacePrefix(bsbase)
+sparkleObj.namespaceUri(bsbase)
 #+END_SRC
    + Namespaces exist in the database as =bscode:OntologyPrefix= objects.
 * Implementation
@@ -187,3 +189,4 @@ local bsbase = sparkleObj.ns.bsbase
 	+ Assigned to property sets of other objects using =:values()=
 * TODO
   + Equality/Comparison
+  + BNODE handling
