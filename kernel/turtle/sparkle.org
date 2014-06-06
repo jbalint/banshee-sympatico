@@ -36,12 +36,56 @@ print("bscode.Echo's class name is: " .. tostring(echo["bscode:className"]))
 * Semantics
 ** Creating Objects
    Objects can be created directly by calling =ns.createObject= with
-   it's name and the set of classes it will be contained in:
+   the name of the new object and the set of classes it will be
+   explicitly contained in:
 #+BEGIN_SRC lua
 local bsbase = sparkleObj.ns.bsbase
 local classes = {bsbase.SoftwareSystem}
 bsbase:createObject("Git", classes)
 #+END_SRC
+** Multi-Value Property Assignment
+   Due to the nature of properties in RDF(S), we must treat them as
+   /relations/, and not /functions/ as they are typically regarded in
+   OO-programming environments.
+
+   Assignments to instance properties can do one of two things. They
+   can either add to the set of values held by the property, or
+   replace the set of values held by the property.
+
+   To add to the set, use the normal assignment statement. The
+   following code will add the values 1 and 2 to the value set for the
+   =ns.prop= property:
+#+BEGIN_SRC lua
+ns.obj[ns.prop] = 1
+ns.obj[ns.prop] = 2
+#+END_SRC
+
+   To replace the set of values, call the =replace= method with a
+   single object or a set/table of objects:
+#+BEGIN_SRC lua
+ns.obj[ns.prop]:replace({1, 2}) -- assigns {1, 2} to the value set
+-- or
+ns.obj[ns.prop]:replace(1) -- assigns {1} as to the value set
+#+END_SRC
+
+   Additionally, the value set can be cleared with the =clear= method.
+** Multi-Value Property Access
+   Property access must accommodate both single-valued and
+   multi-valued cases easily. In order to ensure that the use of the
+   value set is as intended, values must be accessed by either the
+   =value= or =values= methods. The raw Lua object returned by
+   indexing the object instance by the property should not be used in
+   application code.
+
+   The =value= method is provided to return a single value from the
+   property. This should only be used when it is known that the
+   property is functional or contains only a single value. Calls to
+   =value= on sets with more than one value will signal an error.
+
+   The =values= method, in contrast, will return a set/table of
+   values.
+
+   The =size= method is provided to access the size of the value set.
 ** Datatype Properties
    Datatype property values can be identified by having a =type=
    property value of =datatypeString=. Values can be accessed as
@@ -74,9 +118,14 @@ bsbase:createObject("Git", classes)
    Assignments to datatype properties with specific types can be
    specified as a pair:
 #+BEGIN_SRC lua
-   ns.obj[ns.someDateProp] = {"2014-01-01", xsd.date}
+   ns.obj[ns.someDateProp] = {xsd.date, "2014-01-01"}
 #+END_SRC
 ** Object Properties
+   Object properties are properties whose values refer to other
+   objects. The values returned from object properties are, by
+   default, references which can be used opaquely or reified into
+   concrete objects for access to sub-properties.
+
    Object properties can be assigned from complete objects, references
    or strings:
 #+BEGIN_SRC lua
@@ -84,19 +133,23 @@ bsbase:createObject("GitCmd", {bsbase.ExecutableProgram})
 bsbase.GitCmd[bsbase.commandName] = "git"
 -- assignment from complete object
 bsbase.Git[bsbase.hasExecutableProgram] = bsbase.GitCmd
+bsbase.Git[bsbase.hasExecutableProgram] = "bsbase:GitCmd"
+-- TODO (separate doc section for this?:)
 -- We could also use a string to represent the property:
 bsbase.Git["bsbase:hasExecutableProgram"] = bsbase.GitCmd
 #+END_SRC
-** Property Value List Access/Assignment Semantics
-   Assignments directly to properties will not set the property value,
-   but /add/ to the property value. (note, all this needs better clarification and description)
-   e.g. The following code will assign =(1, 2)= to the =ns:prop= property of =ns:obj=:
+** Object Reification
+   Object references can be reified by calling the object reference as
+   a zero-argument method. This will cause all properties to be
+   populated. If the object reference has already been reified, the
+   property values will be refreshed from the database.
 #+BEGIN_SRC lua
-ns.obj[ns.prop] = 1
-ns.obj[ns.prop] = 2
+local ref = ns.obj[ns.prop]
+ref[rdfs.label] -- will signal an error
+ref() -- reify the reference into a concrete object
+-- property access is now allowed
+print("Prop label is " .. tostring(ref[rdfs.label]))
 #+END_SRC
-
-   Access ...
 * APIs
   The =sparkleObj= module should be used for top-level access to the
   Sparkle Object System.
@@ -112,7 +165,25 @@ sparklObj.init{sparqlEndpointUrl="http://localhost:5820/banshee-sympatico/query"
 #+BEGIN_SRC lua
 local bsbase = sparkleObj.ns.bsbase
 #+END_SRC
-   + Namespaces exist in the database =bscode:OntologyPrefix= objects.
+   + Namespaces exist in the database as =bscode:OntologyPrefix= objects.
 * Implementation
-** Object Cache
-   TODO, implement an object cache
+** Object Caching
+   Must be aware of (implicit) changes in database due to reasoning,
+   not concurrent access.
+* Conformance Tests
+  + Objects can be created and deleted
+  + Objects can be cloned
+  + Datatype property values can be assigned:
+	+ From strings for all types
+	+ From native values for all types that support it
+  + Object property values can be assigned:
+	+ From references
+	+ From concrete objects
+	+ From qname strings
+  + Property sets can be:
+	+ Appended
+	+ Overwritten
+	+ Cleared
+	+ Assigned to property sets of other objects using =:values()=
+* TODO
+  + Equality/Comparison
