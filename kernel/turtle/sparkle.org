@@ -87,11 +87,13 @@ ns.obj[ns.prop]:replace(1) -- assigns {1} as to the value set
 
    The =size= method is provided to access the size of the value set.
 ** Datatype Literals
-   Datatype literal values can be identified by having a =type=
-   property value of =datatypeString=. Values can be accessed as
-   strings via the =stringValue= property. Values can be accessed as
-   native values via the =value= property. Supported native values are
-   as follows:
+   Datatype literal values are opaque values like strings or
+   integers. They are represented in the database as "datatype
+   strings" with XSD types. They can be identified by a return value
+   of "literal" from =sparkleObj.typeof=. Literal values can be
+   accessed as strings via the =stringValue= property. Values can be
+   accessed as native values via the =value= property. Supported
+   native values are as follows:
    + =xsd:string= as Lua strings
    + =xsd:boolean= as Lua boolean
 	 + "can have the following legal literals {true, false, 1, 0}"

@@ -11,6 +11,10 @@ local namespace = {
    classname = "sparkleObj.namespace"
 }
 
+local literal = {
+   classname = "sparkleObj.literal"
+}
+
 local objInstance = {
    classname = "sparkleObj.instance"
 }
@@ -35,6 +39,8 @@ local dump = require('pl.pretty').dump
 local __debug = print
 local __warn = print
 
+local __rdf_type = nil
+
 --- (INTERNAL) Convert a URI ref to a Qname using the namespace index
 -- @param uriRef The UriRef struct
 local function __uriRefToQName(uriRef)
@@ -57,14 +63,34 @@ local function __uriRefToQName(uriRef)
 end
 
 local function __parseValueSet(objects)
-   for idx, obj in ipairs(objects) do
-	  if obj.type == "UriRef" then
-	  elseif obj.type == "TypedString" then
+   local vset = {}
+   local obj
+   for idx, robj in ipairs(objects) do
+	  if type(robj) == "string" then
+		 -- TODO THIS SHOULD BE AN UNTYPED LITERAL
+		 obj = literal.create(robj, sparkleObj.ns.xsd.string)
+	  elseif robj.type == "UriRef" then
+		 -- TODO handle non-hash endings?
+		 if robj.uri:find("#") == #robj.uri then
+			-- no "name" means we have a prefix/namespace object
+			obj = sparkleObj.ns.__byUri[robj.uri]
+		 else
+			-- normal object reference
+			local q = __uriRefToQName(robj)
+			obj = objReference.create(q.ns, q.name)
+		 end
+	  elseif robj.type == "TypedString" then
+		 local type = __uriRefToQName(robj.datatype)
+		 obj = literal.create(robj.value, type.ns[type.name])
 	  else
-		 dump(obj)
+		 print("-->")
+		 print(type(robj))
+		 dump(robj)
 		 error("Unknown result object type")
 	  end
+	  table.insert(vset, obj)
    end
+   return vset
 end
 
 --- (INTERNAL) 
@@ -88,10 +114,8 @@ local function __loadObject(a, b)
    local q = [[construct { %s ?p ?o } 
                where { %s ?p ?o }]]
    q = string.format(q, objName, objName)
-   __debug("__loadObject: Query is " .. q)
+   __debug("__loadObject: " .. q)
    local s = turtleparse.parse(sparqlclient.query(sparkleObj.sparqlEndpointUrl, q))
-   -- TODO parse `s'
-   dump(s)
 
    -- TODO for now, only handle one returned object
    assert(1 == #s)
@@ -108,10 +132,23 @@ local function __loadObject(a, b)
    local sub = __uriRefToQName(s.subject)
    local obj = objInstance.create(sub.ns, sub.name)
    for idx, pred in ipairs(s.preds) do
-	  local verb = __uriRefToQName(pred.verb)
+	  local verb
+	  if pred.verb == "a" then
+		 verb = {type="Qname",
+				 prefix="rdf",
+				 name="type",
+				 ns=sparkleObj.ns.rdf}
+	  else
+		 verb = __uriRefToQName(pred.verb)
+	  end
 	  local verbName = string.format("%s:%s", verb.prefix, verb.name)
-	  local vset = __parseValueSet(pred.objects)
-	  rawset(objInstance, verbName, Y)
+	  local vset = valueSet.create(__parseValueSet(pred.objects))
+	  if false then -- DEBUG
+		 print(string.format("%s.%s[%s] = %s",
+							 sparkleObj.namespacePrefix(sub.ns), sub.name,
+							 verbName, tostring(vset)))
+	  end
+	  rawset(obj, verbName, vset)
    end
    return obj
 end
@@ -154,9 +191,11 @@ local function __assertClass(obj, classes)
    assert(obj)
    local cl = getmetatable(obj).classname
    if type(classes) == "string" then
-	  assert(cl == classes)
+	  assert(cl == classes,
+			 string.format("Expected class '%s', but found class '%s'", classes, cl))
    else
-	  assert(classes[cl])
+	  assert(classes[cl],
+			 string.format("Expected one of '%s', but found class '%s'", classes, cl))
    end
 end
 
@@ -166,6 +205,7 @@ end
 function sparkleObj.init(props)
    sparkleObj.sparqlEndpointUrl = props.sparqlEndpointUrl
    __initializeNamespaces()
+   --__rdfType = sparkleObj.ns.rdf.type
    -- TODO namespace checking/validation
 end
 
@@ -193,15 +233,52 @@ function sparkleObj.deleteObject(obj)
    -- TODO
 end
 
-------------------------------
--- value set implementation --
-------------------------------
-function valueSet.create()
+function sparkleObj.typeof(obj)
+   local mt = getmetatable(obj)
+   assert(mt, "Must have a metatable")
+   local cl = mt.classname
+   return (cl:gsub("sparkleObj%.", ""))
+end
+
+-------------------------------------
+-- datatype literal implementation --
+-------------------------------------
+function literal.create(stringValue, type)
+   local self = {}
+   assert(stringValue, "String value must be provided")
+   -- TODO further testing that this is an xsd: TYPE
+   assert(type)
+   assert(tostring(type):find("xsd:"), "Type must be an XSD type")
+   self.stringValue = stringValue
+   self.value = stringValue
+   setmetatable(self, literal)
+   return self
+end
+
+function literal:__tostring()
+   return rawget(self, "stringValue")
+end
+
+function literal:__newindex(k, v)
    -- TODO
 end
 
-function valueSet:value()
+------------------------------
+-- value set implementation --
+------------------------------
+function valueSet.create(values)
    -- TODO
+   local self = {}
+   self.values = values
+   setmetatable(self, valueSet)
+   return self
+end
+
+function valueSet:value()
+   if #self.values ~= 1 then
+	  error("Value set has more than one value")
+   end
+   return self.values[1]
 end
 
 function valueSet:values()
@@ -209,7 +286,12 @@ function valueSet:values()
 end
 
 function valueSet:__tostring()
+   if #self.values == 1 then
+	  return tostring(self.values[1])
+   else
    -- TODO
+	  return "<>>>>"
+   end
 end
 
 ------------------------------
@@ -226,7 +308,8 @@ function objInstance:__tostring()
 end
 
 function objInstance:__index(k)
-   -- TODO
+   -- TODO necessary?
+   return rawget(self, tostring(k))
 end
 
 function objInstance:__newindex(k, v)

@@ -13,6 +13,7 @@ describe("sparkleObj", function ()
 							 local bstest = sparkleObj.ns.bstest
 							 assert_equal("bstest", sparkleObj.namespacePrefix(bstest))
 							 assert_equal("http://banshee-sympatico/test#", sparkleObj.namespaceUri(bstest))
+							 assert_equal("namespace", sparkleObj.typeof(bstest))
 					   end)
 			end)
 
@@ -24,6 +25,7 @@ describe("sparkleObj", function ()
 							 assert_equal("Some Test Class", tostring(testClass[rdfs.label]))
 							 assert_equal("owl:Thing", tostring(testClass[rdfs.subClassOf]))
 					   end)
+			if true then return end
 					   it("should create a new object and delete it", function ()
 							 local x = sparkleObj.createObject(bstest, "SparkleTestObject1",
 															   bstest.SomeTestClass)
