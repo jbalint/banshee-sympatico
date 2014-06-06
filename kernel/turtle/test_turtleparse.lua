@@ -160,6 +160,4 @@ ex:jess2 a ex:NonExistingClass , ex:AnotherClass .
 							 Massert_equal = nil
 					   end)
 			end)
-
-
 end)

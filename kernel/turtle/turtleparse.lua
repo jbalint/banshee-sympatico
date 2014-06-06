@@ -88,7 +88,7 @@ local nameChar = nameStartChar+P"-"+R"09"+P"\xb7" -- TODO multibyte
 local name = nameStartChar*nameChar^0
 
 -- [26]nodeID::='_:' name
-local nodeID = P"_:"*name
+local nodeID = P"_:"*C(name)
 
 -- [33]prefixName::=( nameStartChar - '_' ) nameChar*
 local prefixName = (nameStartChar-P"_")*nameChar^0
@@ -149,7 +149,10 @@ local makeGrammar = function (elem)
 			object = resource+V"blank"+literal,
 
 			-- [21]blank::=nodeID | '[]' | '[' JB:ws* predicateObjectList JB:ws* ']' | collection
-			blank = C(nodeID)+P"[]"+(P"["*ws^0*V"predicateObjectList"*ws^0*P"]")+V"collection",
+			blankNode = Cmt(nodeID, function (subj, pos, nodeID)
+							   return pos, {type="Blank", nodeID=nodeID}
+			end),
+			blank = V"blankNode"+P"[]"+(P"["*ws^0*V"predicateObjectList"*ws^0*P"]")+V"collection",
 
 			-- [8]objectList::=object (JB:ws* ',' JB:ws* object)*
 			objectList = Cg(Ct(V"object"*(ws^0*P","*ws^0*V"object")^0), "objects"),
@@ -323,7 +326,6 @@ local test4 = [[
   ] .
 ]]
 
--- TODO escape subsitution
 local test5 = [[
 @prefix : <http://example.org/stuff/1.0/> .
 
