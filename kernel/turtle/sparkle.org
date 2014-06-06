@@ -86,8 +86,8 @@ ns.obj[ns.prop]:replace(1) -- assigns {1} as to the value set
    values.
 
    The =size= method is provided to access the size of the value set.
-** Datatype Properties
-   Datatype property values can be identified by having a =type=
+** Datatype Literals
+   Datatype literal values can be identified by having a =type=
    property value of =datatypeString=. Values can be accessed as
    strings via the =stringValue= property. Values can be accessed as
    native values via the =value= property. Supported native values are

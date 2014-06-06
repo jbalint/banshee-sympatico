@@ -26,7 +26,7 @@ describe("sparkleObj", function ()
 					   end)
 					   it("should create a new object and delete it", function ()
 							 local x = sparkleObj.createObject(bstest, "SparkleTestObject1",
-															   {bstest.SomeTestClass})
+															   bstest.SomeTestClass)
 							 assert_equal("bstest:SparkleTestObject1", tostring(x))
 							 assert_equal("SparkleTestObject1", sparkleObj.objectName(x))
 							 -- reload it

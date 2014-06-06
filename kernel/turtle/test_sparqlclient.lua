@@ -1,6 +1,7 @@
 
 local sparqlclient = require("sparqlclient")
 
+-- TODO parameterize the SPARQL endpoint
 -- tests require a configured (Stardog) SPARQL endpoint
 local testEndpointUrl = "http://localhost:5820/banshee-sympatico/query"
 
