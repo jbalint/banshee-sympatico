@@ -27,6 +27,12 @@ print("bscode.Echo's class name is: " .. tostring(echo[bscode.className]))
 #+BEGIN_SRC lua
 print("bscode.Echo's class name is: " .. tostring(echo["bscode:className"]))
 #+END_SRC
+
+   Requests for objects that do not exist signal an error:
+#+BEGIN_SRC lua
+local x = bscode.NonExistingObject
+-- ERROR
+#+END_SRC
 ** Objects and References
    Named objects accessed directly in namespaces are complete and
    populated with their properties. However, property values are only

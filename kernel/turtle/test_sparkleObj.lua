@@ -17,6 +17,17 @@ describe("sparkleObj", function ()
 					   end)
 			end)
 
+			context("missing object errors", function ()
+					   it("should signal an error when objects are not found", function()
+							 local attempt = function ()
+								local x = bstest.NONEXISTINGOBJECT
+							 end
+							 local res, err = pcall(attempt)
+							 assert_equal(false, res)
+							 assert_match("Cannot load bstest:NONEXISTINGOBJECT", err)
+					   end)
+			end)
+
 			context("basic object operations", function ()
 					   it("should access existing instances", function ()
 							 local testClass = bstest.SomeTestClass

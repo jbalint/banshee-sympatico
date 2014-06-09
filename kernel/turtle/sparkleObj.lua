@@ -120,6 +120,10 @@ local function __loadObject(a, b)
    -- TODO for now, only handle one returned object
    assert(1 == #s)
    s = s[1]
+   -- numeric return means parser didn't complete
+   if type(s) == "number" then
+	  error(string.format("Cannot load %s", objName))
+   end
 
    -- transform to instance
    -- Object is of the form:
