@@ -76,6 +76,29 @@ two \tquotes\ncool """.]])
 					   end)
 			end)
 
+			-- basic collection support, this is not decoded in
+			-- RDF-list style by the turtle parser
+			context("collections", function ()
+					   it("should parse basic collections", function ()
+							 local s = turtleparse.parse([[:a :b ( "apple" "banana" ) .]])
+							 assert_equal("Collection", s[1].preds[1].objects[1].type)
+							 assert_equal(2, #s[1].preds[1].objects[1].values)
+							 assert_equal("apple", s[1].preds[1].objects[1].values[1])
+							 assert_equal("banana", s[1].preds[1].objects[1].values[2])
+					   end)
+					   it("should parse collections with qnames and urirefs", function ()
+							 Massert_equal = assert_equal
+							 local s = turtleparse.parse([[:a :b ( :apple "banana" <http://example.org/stuff/1.0/Pear> ) .]])
+							 assert_equal("Collection", s[1].preds[1].objects[1].type)
+							 assert_equal(3, #s[1].preds[1].objects[1].values)
+							 testQname(s[1].preds[1].objects[1].values[1], "", "apple")
+							 assert_equal("banana", s[1].preds[1].objects[1].values[2])
+							 testUriRef(s[1].preds[1].objects[1].values[3], "http://example.org/stuff/1.0/Pear")
+							 -- end
+							 Massert_equal = nil
+					   end)
+			end)
+
 			context("document parsing", function ()
 					   it("should parse test from spec", function ()
 							 Massert_equal = assert_equal

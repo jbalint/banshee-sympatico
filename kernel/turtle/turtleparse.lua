@@ -10,6 +10,7 @@ local C, Cc, Cf, Cg, Cs, Ct, Cmt = lpeg.C, lpeg.Cc, lpeg.Cf, lpeg.Cg, lpeg.Cs, l
 -- from: http://www.w3.org/TeamSubmission/turtle/
 -- this may not have been the best reference
 -- c.f. http://www.w3.org/TR/2014/REC-turtle-20140225/
+-- RDF/1.1 Turtle says a "collection" can be in the subject position
 
 -- I added the whitespace marked as "JB:ws"
 
@@ -165,10 +166,13 @@ local makeGrammar = function (elem)
 										   (P";"*ws^0*V"predicateObject"*ws^0)^0*P";"^-1), "preds"),
 
 			-- [22]itemList::=object+
-			itemList = V"object"^1,
+			itemList = Ct((V"object"*ws^0)^1),
 
 			-- [23]collection::='(' JB:ws* itemList? JB:ws* ')'
-			collection = P"("*ws^0*V"itemList"^-1*ws^0*P")"
+			collItemList = Cmt(V"itemList"^-1, function (s, p, v)
+								  return p, {type="Collection", values=v}
+			end),
+			collection = P"("*ws^0*V"collItemList"*ws^0*P")"
    }
 end
 
@@ -176,6 +180,8 @@ end
 local object = makeGrammar("object")
 -- testing Only
 local objectList = makeGrammar("objectList")
+local itemList = makeGrammar("itemList")
+local collection = makeGrammar("collection")
 
 local blank = makeGrammar("blank")
 
@@ -229,6 +235,12 @@ function serializeTerm(term)
 	  return "<" .. term.uri .. ">"
    elseif term.type == "Qname" then
 	  return term.prefix .. ":" .. term.name
+   elseif term.type == "Collection" then
+	  local colstring = "("
+	  for idx, v in ipairs(term.values) do
+		 colstring = string.format("%s %s", colstring, serializeTerm(v))
+	  end
+	  return colstring .. " )"
    else
 	  require('pl.pretty').dump(term)
 	  error("Unable to serialize term")
@@ -310,10 +322,10 @@ ericFoaf:ericP :givenName "Eric" ;
                       <http://getopenid.com/amyvdh> .
 ]]
 
--- TODO collection support
 local test3 = [[
 @prefix : <http://example.org/stuff/1.0/> .
 :a :b ( "apple" "banana" ) .
+:a :b ( :apple "banana" <http://example.org/stuff/1.0/Pear> ) .
 ]]
 
 local test4 = [[
@@ -347,7 +359,6 @@ if false then
    print("-------------------")
    require('pl.pretty').dump({lpeg.match(turtleDoc, test5)})
    print("-------------------")
-
 
    -- test by running the serialized version back through the parser
    print(serialize({lpeg.match(turtleDoc, serialize({lpeg.match(turtleDoc, test1)}))}))
