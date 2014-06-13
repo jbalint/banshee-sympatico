@@ -9,10 +9,15 @@ local __dump = require("pl.pretty").dump
 -- substitute it upon encountering it
 local __DEFAULT_PREFIX_URI
 
+-- prefix index necessary to expand Qnames with a prefix only and no
+-- name
+local __PREFIXES = {}
+
 local function __printPrefix(p)
    if p.name == "" then
 	  __DEFAULT_PREFIX_URI = p.uri
    else
+	  __PREFIXES[p.name] = p.uri
 	  print(string.format(":- iriprefix{%s='%s'}.", p.name, p.uri))
    end
 end
@@ -23,8 +28,12 @@ local function __rsrc2str(r)
 	  return string.format("\"%s\"^^\\iri", r.uri)
    elseif r.type == "Qname" then
 	  local n = r.name
+	  -- prefix only and no name
+	  if n == "" then
+		 assert(__PREFIXES[r.prefix], "Prefix must be defined: " .. r.prefix)
+		 return string.format("\"%s\"^^\\iri", __PREFIXES[r.prefix])
 	  -- dcterms has "dcterms:ISO639-2"
-	  if n:find("-") then -- TODO make this more robustly handle forbidden chars in F-atoms
+	  elseif n:find("-") then -- TODO make this more robustly handle forbidden chars in F-atoms
 		 n = "'" .. n .. "'"
 	  end
 	  if r.prefix == "" then
@@ -74,7 +83,8 @@ end
 if true then
    -- run script
    --local f = io.open("/home/jbalint/Dropbox/important/org/rdf/other/rdf.ttl", "r")
-   local f = io.open("/home/jbalint/Dropbox/important/org/rdf/nepomuk/nie.ttl", "r")
+   --local f = io.open("/home/jbalint/Dropbox/important/org/rdf/nepomuk/v1.1.ttl", "r")
+   local f = io.open("/home/jbalint/sw/stardog-2.1.3/export-2014-06-06-3.ttl", "r")
    local content = f:read("*all")
    f:close()
    local s = turtleparse.parse(content)
