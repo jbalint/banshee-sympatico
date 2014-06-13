@@ -19,7 +19,7 @@ local C, Cc, Cf, Cg, Cs, Ct, Cmt = lpeg.C, lpeg.Cc, lpeg.Cf, lpeg.Cg, lpeg.Cs, l
 local hex = R"09"+R"AF"
 
 -- [29]language::=[a-z]+ ('-' [a-z0-9]+ )*
-local language = R"az"^1*(P"-"*R"az"+R"09")^0
+local language = R"az"^1*(P"-"*(R"az"+R"AZ"+R"09")^1)^0
 
 -- [30]nameStartChar::=[A-Z] | "_" | [a-z] | [#x00C0-#x00D6] | [#x00D8-#x00F6] | [#x00F8-#x02FF] | [#x0370-#x037D] | [#x037F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
 local nameStartChar = R"AZ"+P"_"+R"az"+R"\xc0\xd6"+R"\xd8\xf6" -- TODO multibyte
@@ -106,10 +106,10 @@ local uriref = Cf(P"<"*C(relativeURI)*Cc(nil)*P">", function (uri)
 end)
 
 -- [27]qname::=prefixName? ':' name?
-local prefixQname = Cf(C(prefixName)*P":"*C(name)^-1, function (prefix, name)
-					return {type="Qname",
-							prefix=prefix,
-							name=name}
+local prefixQname = Cmt(Ct(C(prefixName)*P":"*C(name)^-1), function (s, p, v)
+						   return p, {type="Qname",
+									  prefix=v[1],
+									  name=(v[2] or "")}
 end)
 local blankQname = Cf(P":"*Cc('')*C(name), function (prefix, name)
 					return {type="Qname",

@@ -76,6 +76,25 @@ two \tquotes\ncool """.]])
 					   end)
 			end)
 
+			-- language tags are recognized by the parser, but not
+			-- included in the parse tree output
+			context("language tags", function ()
+					   it("should parse simple language tags", function ()
+							 local s = turtleparse.parse([[:a :b "abc"@ru.]])
+							 assert_equal("abc", s[1].preds[1].objects[1])
+					   end)
+					   it("should parse all language tags", function ()
+							 -- fixed this issue on dc-1.1.ttl, which
+							 -- uses en-US
+
+							 -- the turtle grammar I used didn't
+							 -- define the second part as supporting
+							 -- uppercase letters
+							 local s = turtleparse.parse([[:a :b "abcXYZ"@en-US.]])
+							 assert_equal("abcXYZ", s[1].preds[1].objects[1])
+					   end)
+			end)
+
 			-- basic collection support, this is not decoded in
 			-- RDF-list style by the turtle parser
 			context("collections", function ()
@@ -94,6 +113,21 @@ two \tquotes\ncool """.]])
 							 testQname(s[1].preds[1].objects[1].values[1], "", "apple")
 							 assert_equal("banana", s[1].preds[1].objects[1].values[2])
 							 testUriRef(s[1].preds[1].objects[1].values[3], "http://example.org/stuff/1.0/Pear")
+							 -- end
+							 Massert_equal = nil
+					   end)
+			end)
+
+			context("miscellaneous", function ()
+					   it("should parse prefix-only qnames", function ()
+							 Massert_equal = assert_equal
+							 local s = turtleparse.parse([[a: :b b:.]])
+							 assert_equal(1, #s)
+							 assert_equal(1, #s[1].preds)
+							 assert_equal(1, #s[1].preds[1].objects)
+							 testQname(s[1].subject, "a", "")
+							 testQname(s[1].preds[1].verb, "", "b")
+							 testQname(s[1].preds[1].objects[1], "b", "")
 							 -- end
 							 Massert_equal = nil
 					   end)
