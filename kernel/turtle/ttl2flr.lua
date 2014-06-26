@@ -41,6 +41,13 @@ local function __rsrc2str(r)
 		 return string.format("\"%s%s\"^^\\iri", __DEFAULT_PREFIX_URI, n)
 	  end
 	  return string.format("%s#%s", r.prefix, n)
+   elseif r.type == "Blank" then
+	  -- TODO change this
+	  -- just use them as oids for now
+	  -- note, this is currently acceptable because we are translating
+	  -- one stardog export with unique bnode ids
+	  --return string.format("\\#[bnodeId->%s]", r.nodeID)
+	  return r.nodeID
    else
 	  __dump(r)
 	  error("Unknown resource")
@@ -63,7 +70,7 @@ local function __obj2str(o)
 		 __dump(o)
 		 error("Unknown datatype type")
 	  end
-	  return string.format("\"%s\"^^%s", o.value, t)
+	  return string.format("\"%s\"^^%s", o.value:gsub('"', '\\"'), t)
    elseif o.type == "Collection" then
 	  local strval = "{"
 	  for idx, v in ipairs(o.values) do
@@ -84,11 +91,12 @@ if true then
    -- run script
    --local f = io.open("/home/jbalint/Dropbox/important/org/rdf/other/rdf.ttl", "r")
    --local f = io.open("/home/jbalint/Dropbox/important/org/rdf/nepomuk/v1.1.ttl", "r")
-   local f = io.open("/home/jbalint/sw/stardog-2.1.3/export-2014-06-06-3.ttl", "r")
+   local f = io.open("/home/jbalint/sw/stardog-2.1.3/export-2014-06-24.ttl", "r")
+   --local f = io.open("/home/jbalint/sw/stardog-2.1.3/bnode_test.ttl", "r")
    local content = f:read("*all")
    f:close()
    local s = turtleparse.parse(content)
-   __dump(s)
+   --__dump(s)
 
    for idx, el in ipairs(s) do
 	  if el.type == "Prefix" then
