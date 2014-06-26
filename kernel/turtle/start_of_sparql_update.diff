@@ -1,0 +1,105 @@
+diff --git a/kernel/turtle/sparqlclient.lua b/kernel/turtle/sparqlclient.lua
+index fe922d7..fd0846a 100644
+--- a/kernel/turtle/sparqlclient.lua
++++ b/kernel/turtle/sparqlclient.lua
+@@ -6,17 +6,20 @@ local url = require("socket.url")
+ local mime = require("mime")
+ local ltn12 = require("ltn12")
+ 
+-sparqlclient.headers = {
+-   -- may need to change for different requirements
+-   Accept = "application/x-turtle",
+-   -- internal for now
+-   Authorization = "Basic " .. (mime.b64("admin:admin"))
+-}
++local function __generateHeaders(accept)
++   return {
++	  -- may need to change for different requirements
++	  Accept = accept,
++	  -- internal for now
++	  Authorization = "Basic " .. (mime.b64("admin:admin"))
++   }
++end
+ 
+ function sparqlclient.query(endpointUrl, queryString)
++   local headers = __generateHeaders("application/x-turtle")
+    local output = {}
+    local ret, msg, hdrs, status =
+-	  http.request{headers = sparqlclient.headers,
++	  http.request{headers = headers,
+ 				   method = "GET",
+ 				   url = endpointUrl .. "?query=" .. url.escape(queryString),
+ 				   sink = ltn12.sink.table(output)
+@@ -31,4 +34,23 @@ function sparqlclient.query(endpointUrl, queryString)
+    return table.concat(output)
+ end
+ 
++function sparqlclient.update(endpointUrl, queryString)
++   local headers = __generateHeaders("application/x-www-form-urlencoded")--application/sparql-update")
++   local output = {}
++   local ret, msg, hdrs, status =
++	  http.request{headers = headers,
++				   method = "POST",
++				   url = endpointUrl .. "?query=" .. url.escape(queryString),
++				   sink = ltn12.sink.table(output)
++	  }
++
++   if not ret then
++	  error(msg)
++   elseif msg ~= 200 then
++	  error(string.format("Failed to query. rc=%d, status=%s", msg, status))
++   end
++
++   return table.concat(output)
++end
++
+ return sparqlclient
+diff --git a/kernel/turtle/test_sparqlclient.lua b/kernel/turtle/test_sparqlclient.lua
+index 825a6d1..4ca1762 100644
+--- a/kernel/turtle/test_sparqlclient.lua
++++ b/kernel/turtle/test_sparqlclient.lua
+@@ -1,19 +1,27 @@
+ 
+ local sparqlclient = require("sparqlclient")
+ 
+--- TODO parameterize the SPARQL endpoint
+--- tests require a configured (Stardog) SPARQL endpoint
+-local testEndpointUrl = "http://localhost:5820/banshee-sympatico/query"
++-- TODO parameterize the SPARQL endpoints
++-- tests require configured (Stardog) SPARQL endpoints
++local testQueryUrl = "http://localhost:5820/banshee-sympatico/query"
++local testUpdateUrl = "http://localhost:5820/banshee-sympatico/update"
+ 
+ describe("sparqlclient.query()", function ()
+ 			context("basic", function ()
+ 					   it("should execute trivial queries", function ()
+-							 local ret = sparqlclient.query(testEndpointUrl, "construct { <a> <b> <c> } {}")
++							 local ret = sparqlclient.query(testQueryUrl, "construct { <a> <b> <c> } {}")
+ 							 -- TODO shouldn't be "tag:" here, but I guess it is
+ 							 assert_equal("\n<tag:/a> <tag:/b> <tag:/c> .\n", ret)
+ 					   end)
+ 			end)
+ 
++			context("update", function ()
++					   it("should execute trivial updates", function ()
++							 --sparqlclient.update(testUpdateUrl, "insert { <a> <b> <c> } where {}")
++							 sparqlclient.update(testUpdateUrl, "insert { bstest:TESTNewClass a owl:Class ; rdfs:subClassOf bstest:SomeTestClass } where {}")
++					   end)
++			end)
++
+ 			context("error", function ()
+ 					   it("fail on bad connection", function ()
+ 							 local ret, msg = pcall(sparqlclient.query, "http://127.0.0.2/", "")
+@@ -25,10 +33,10 @@ describe("sparqlclient.query()", function ()
+ 							 assert_match("closed", msg)
+ 					   end)
+ 					   it("fail on empty or malformed queries", function ()
+-							 local ret, msg = pcall(sparqlclient.query, testEndpointUrl, "aljskdasd")
++							 local ret, msg = pcall(sparqlclient.query, testQueryUrl, "aljskdasd")
+ 							 assert_equal(false, ret)
+ 							 assert_match("Failed to query. rc=400, status=HTTP/1.1 400 Encountered", msg)
+-							 ret, msg = pcall(sparqlclient.query, testEndpointUrl, "")
++							 ret, msg = pcall(sparqlclient.query, testQueryUrl, "")
+ 							 assert_equal(false, ret)
+ 							 assert_match("Failed to query. rc=406, status=HTTP/1.1 406 Not Acceptable", msg)
+ 					   end)
