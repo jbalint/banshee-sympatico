@@ -62,6 +62,7 @@ local function __obj2str(o)
 	  return '"' .. o:gsub('"', '\\"') .. '"'
    elseif o.type == "TypedString" then
 	  local t
+	  local v = o.value:gsub('"', '\\"')
 	  if o.datatype.type == "UriRef" then
 		 t = o.datatype.uri:gsub("http://www.w3.org/2001/XMLSchema", "xsd")
 	  elseif o.datatype.type == "Qname" then
@@ -70,7 +71,11 @@ local function __obj2str(o)
 		 __dump(o)
 		 error("Unknown datatype type")
 	  end
-	  return string.format("\"%s\"^^%s", o.value:gsub('"', '\\"'), t)
+	  -- Flora doesn't like Z at the end of dates
+	  if o.datatype.uri == "http://www.w3.org/2001/XMLSchema#date" then
+		 v = v:gsub("Z$", "")
+	  end
+	  return string.format("\"%s\"^^%s", v, t)
    elseif o.type == "Collection" then
 	  local strval = "{"
 	  for idx, v in ipairs(o.values) do
@@ -91,7 +96,7 @@ if true then
    -- run script
    --local f = io.open("/home/jbalint/Dropbox/important/org/rdf/other/rdf.ttl", "r")
    --local f = io.open("/home/jbalint/Dropbox/important/org/rdf/nepomuk/v1.1.ttl", "r")
-   local f = io.open("/home/jbalint/sw/stardog-2.1.3/export-2014-06-24.ttl", "r")
+   local f = io.open("/home/jbalint/sw/stardog-2.1.3/export-2014-06-27.ttl", "r")
    --local f = io.open("/home/jbalint/sw/stardog-2.1.3/bnode_test.ttl", "r")
    local content = f:read("*all")
    f:close()
