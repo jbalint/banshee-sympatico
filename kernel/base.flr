@@ -1,0 +1,16 @@
+// example base kb
+
+:- compiler_options{production_mode}.
+
+:- iriprefix{jess = "http://jess.com/#"}.
+
+jess#Me[jess#name -> "Jess Balint"^^\string].
+
+jess#Me[jess#age -> 105].
+
+
+jess#Me[jess#self -> jess#Me].
+
+jess#Me:jess#Person.
+
+jess#Person::jess#Being.

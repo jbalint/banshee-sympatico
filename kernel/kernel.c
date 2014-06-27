@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include "bs_lua.h"
 #include "bs_xsb.h"
 
 void do_flora(const char *q)
@@ -33,13 +34,17 @@ int main(int argc, char **argv)
   rc = bs_xsb_command("bootstrap_flora.");
   assert(!rc);
   // TODO parameterize path
-  rc = bs_xsb_command("'\\load'('/home/jbalint/sw/banshee-sympatico/kernel/base.flr').");
+  //rc = bs_xsb_command("'\\load'('/home/jbalint/sw/banshee-sympatico/kernel/base.flr').");
+  //assert(!rc);
+  rc = bs_xsb_command("'\\load'('/home/jbalint/sw/banshee-sympatico/kernel/turtle/export4_test').");
   assert(!rc);
 
-  do_flora("flora_query(\"?X = \\\"abc\\\"^^\\string, ?Y = 1.\",[\"?X\"=X,\"?Y\"=Y],Res,_,_).");
-  do_flora("flora_query(\"?X:?Y@\\@.\",[\"?X\"=X,\"?Y\"=Y],_,_,_).");
-  do_flora("flora_query(\"prefix{?X,?Y}.\",[\"?X\"=X,\"?Y\"=Y],_,_,_).");
-  do_flora("flora_query(\"jess#Me[?X->?Y].\",[\"?X\"=X,\"?Y\"=Y],_,_,_).");
+  /* do_flora("flora_query(\"?X = \\\"abc\\\"^^\\string, ?Y = 1.\",[\"?X\"=X,\"?Y\"=Y],Res,_,_)."); */
+  /* do_flora("flora_query(\"?X:?Y@\\@.\",[\"?X\"=X,\"?Y\"=Y],_,_,_)."); */
+  /* do_flora("flora_query(\"prefix{?X,?Y}.\",[\"?X\"=X,\"?Y\"=Y],_,_,_)."); */
+  /* do_flora("flora_query(\"jess#Me[?X->?Y].\",[\"?X\"=X,\"?Y\"=Y],_,_,_)."); */
+
+  bs_lua_init();
 
   return 0;
 }
