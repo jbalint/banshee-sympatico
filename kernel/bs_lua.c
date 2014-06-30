@@ -36,6 +36,9 @@ static int bs_lua_xsb_query(lua_State *L)
 	bs_xsb_next(&res, sep);
   } while (res);
 
+  /* TODO error handling */
+  bs_xsb_query_end();
+
   return 1;
 }
 

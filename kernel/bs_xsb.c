@@ -59,7 +59,7 @@ int bs_xsb_next(char **str, const char *sep)
   else if (rc == XSB_ERROR)
   {
 	/* TODO */
-	fprintf(stderr, "Next error");
+	fprintf(stderr, "xsb_next_string error: %s\n", xsb_get_error_message());
 	*str = NULL;
 	return 1;
   }
