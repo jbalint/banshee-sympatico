@@ -7,10 +7,29 @@ local flora = require('bs_flora')
 -- core initialization
 print("CORE")
 
-local __dump = require('pl.pretty').dump
+local _dump = require('pl.pretty').dump
 
---local x = xsb_query("flora_query(\"jess#Me[?X->?Y].\",[\"?X\"=X,\"?Y\"=Y],_,_,_).", ";;")
-__dump(x)
+local boxinglove = require('bs_boxinglove')
 
-__dump(flora.get_prefixes())
+boxinglove.init()
 
+local bsbase = boxinglove.ns.bsbase
+local bsoracle = boxinglove.ns.bsoracle
+local pimo = boxinglove.ns.pimo
+_dump(bsoracle)
+print(bsbase.jess)
+
+_dump(bsbase.jess)
+_dump(bsoracle.MysqlBug73053LinuxSocketBug)
+_dump(bsoracle.mysqlBugsDbNumber)
+
+print("---------------------------")
+--_dump(getmetatable(bsoracle.mysqlBugsDbNumber))
+print("touri is : " .. tostring(bsoracle.mysqlBugsDbNumber:_touri()))
+print("The bug is: " .. tostring(bsoracle.MysqlBug73053LinuxSocketBug))
+print("The prop is: " .. tostring(bsoracle.mysqlBugsDbNumber))
+print("The bug num is: " .. tostring(bsoracle.MysqlBug73053LinuxSocketBug[bsoracle.mysqlBugsDbNumber]))
+print("Tag 1 is: ") _dump(bsoracle.MysqlBug73053LinuxSocketBug[pimo.hasTag][1])
+print("Tag 1 is: ")
+_dump(bsoracle.MysqlBug73053LinuxSocketBug[pimo.hasTag][1]())
+--print("Tag 1 is: ") _dump(pimo.hasTag)

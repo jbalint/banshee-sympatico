@@ -36,7 +36,7 @@ int main(int argc, char **argv)
   // TODO parameterize path
   //rc = bs_xsb_command("'\\load'('/home/jbalint/sw/banshee-sympatico/kernel/base.flr').");
   //assert(!rc);
-  rc = bs_xsb_command("'\\load'('/home/jbalint/sw/banshee-sympatico/kernel/turtle/export4_test').");
+  rc = bs_xsb_command("'\\load'('/home/jbalint/sw/banshee-sympatico/kernel/turtle/export5_test').");
   assert(!rc);
 
   /* do_flora("flora_query(\"?X = \\\"abc\\\"^^\\string, ?Y = 1.\",[\"?X\"=X,\"?Y\"=Y],Res,_,_)."); */
