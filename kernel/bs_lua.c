@@ -28,13 +28,14 @@ static int bs_lua_xsb_query(lua_State *L)
 
   lua_newtable(L);
 
-  do {
+  while (res)
+  {
 	lua_pushstring(L, res);
 	lua_rawseti(L, -2, answer_num++);
 
 	/* TODO push any error to Lua - how to force an error here for testing? */
 	bs_xsb_next(&res, sep);
-  } while (res);
+  }
 
   /* TODO error handling */
   bs_xsb_query_end();

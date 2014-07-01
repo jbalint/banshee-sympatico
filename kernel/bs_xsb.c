@@ -33,9 +33,19 @@ int bs_xsb_command(const char *command)
 
 int bs_xsb_query_begin(const char *query_string, char **str, const char *sep)
 {
+  int rc;
   assert(str);
   assert(sep);
-  if (xsb_query_string_string((char *) query_string, &res_str, (char *) sep) == XSB_ERROR)
+
+  rc = xsb_query_string_string((char *) query_string, &res_str, (char *) sep);
+
+  if (rc == XSB_FAILURE)
+  {
+	/* failure is a query with no results */
+	*str = NULL;
+	return 0;
+  }
+  else if (rc == XSB_ERROR)
   {
 	/* TODO */
 	fprintf(stderr, "Query error");
