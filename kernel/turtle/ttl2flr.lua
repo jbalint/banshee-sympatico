@@ -13,6 +13,8 @@ local __DEFAULT_PREFIX_URI
 -- name
 local __PREFIXES = {}
 
+local print = print
+
 local function __printPrefix(p)
    if p.name == "" then
 	  __DEFAULT_PREFIX_URI = p.uri
@@ -59,7 +61,8 @@ end
 local function __obj2str(o)
    -- TODO need proper string processing
    if type(o) == "string" then
-	  return '"' .. o:gsub('"', '\\"') .. '"'
+	  -- we should *ONLY* emit "string" objects, not charlist
+	  return '"' .. o:gsub('"', '\\"') .. '"^^\\string'
    elseif o.type == "TypedString" then
 	  local t
 	  local v = o.value:gsub('"', '\\"')
@@ -92,16 +95,27 @@ local function __obj2str(o)
    end
 end
 
-if true then
+if not pcall(getfenv, 4) then
    -- run script
-   --local f = io.open("/home/jbalint/Dropbox/important/org/rdf/other/rdf.ttl", "r")
-   --local f = io.open("/home/jbalint/Dropbox/important/org/rdf/nepomuk/v1.1.ttl", "r")
-   local f = io.open("/home/jbalint/sw/stardog-2.1.3/export-2014-06-27.ttl", "r")
-   --local f = io.open("/home/jbalint/sw/stardog-2.1.3/bnode_test.ttl", "r")
+   local infile = arg[1]
+   local outfile = arg[2]
+   if not arg[1] or not arg[2] then
+	  print("Turtle to Flora translator")
+	  print("Argument 1: input file")
+	  print("Argument 2: output file")
+	  return
+   end
+   local f = io.open(infile, "r")
    local content = f:read("*all")
    f:close()
+
+   local out = io.open(outfile, "w")
+   print = function (x)
+	  out:write(x)
+	  out:write("\n")
+   end
+
    local s = turtleparse.parse(content)
-   --__dump(s)
 
    for idx, el in ipairs(s) do
 	  if el.type == "Prefix" then
