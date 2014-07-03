@@ -25,7 +25,7 @@ int bs_xsb_command(const char *command)
   if (xsb_command_string((char *) command) == XSB_ERROR)
   {
 	/* TODO retrieve better error message from XSB */
-	fprintf(stderr, "Failed command: %s", command);
+	fprintf(stderr, "Failed command: %s: %s\n", command, xsb_get_error_message());
 	return 1;
   }
   return 0;
