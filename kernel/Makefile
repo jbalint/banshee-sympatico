@@ -12,7 +12,7 @@ CFLAGS += -I/home/jbalint/sw/lua-5.2.2/include
 LDFLAGS += -Wl,-export-dynamic
 LDFLAGS += -lm -lpthread -ldl
 # TODO parameterise xsb.o location
-kernel: kernel.o bs_xsb.o bs_lua.o \
+kernel: kernel.o bs_xsb.o bs_lua.o lua_repl.o\
 	 /home/jbalint/sw/xsb-src/XSB/config/x86_64-unknown-linux-gnu/saved.o/xsb.o \
 	/home/jbalint/sw/lua-5.2.2/lib/liblua.a
 	$(CC) $(LDFLAGS) -o bsk $^
