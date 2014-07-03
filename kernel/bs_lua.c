@@ -10,7 +10,8 @@
 /*
  * A single Lua state is used.
  */
-static lua_State *global_L;
+/* allow to be reference externally in lua_repl.c */
+/*static*/ lua_State *global_L;
 
 static int bs_lua_xsb_query(lua_State *L)
 {
@@ -22,6 +23,7 @@ static int bs_lua_xsb_query(lua_State *L)
   if (bs_xsb_query_begin(query_string, &res, sep))
   {
 	fprintf(stderr, "Error during query");
+	/* TODO lua error */
 	lua_pushnil(L);
 	return 1;
   }
@@ -41,6 +43,20 @@ static int bs_lua_xsb_query(lua_State *L)
   bs_xsb_query_end();
 
   return 1;
+}
+
+static int bs_lua_xsb_command(lua_State *L)
+{
+  const char *command = luaL_checkstring(L, 1);
+
+  if (bs_xsb_command(command))
+  {
+	/* TODO lua error */
+	fprintf(stderr, "Error during command");
+	return 0;
+  }
+
+  return 0;
 }
 
 /* int lua_interface_error(lua_State *L, const char *format, ...) */
@@ -69,6 +85,7 @@ int bs_lua_init()
   lua_setfield(global_L, -2, "xsb_query");
   */
   lua_register(global_L, "xsb_query", bs_lua_xsb_query);
+  lua_register(global_L, "xsb_command", bs_lua_xsb_command);
   rc = luaL_dostring(global_L, "require('bs_init')");
   if (rc)
   {
