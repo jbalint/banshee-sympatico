@@ -228,7 +228,7 @@ local statement = ((directive+triple)*ws^0*P".")+ws^1
 -- [1]turtleDoc::=statement*
 local turtleDoc = statement^0
 
-function serializeTerm(term)
+local function _serializeTerm(term)
    if term == "a" then
 	  return "a"
    elseif type(term) ~= "table" then
@@ -243,12 +243,12 @@ function serializeTerm(term)
    elseif term.type == "Collection" then
 	  local colstring = "("
 	  for idx, v in ipairs(term.values) do
-		 colstring = string.format("%s %s", colstring, serializeTerm(v))
+		 colstring = string.format("%s %s", colstring, _serializeTerm(v))
 	  end
 	  return colstring .. " )"
    elseif term.type == "TypedString" then
 	  local value = '"' .. term.value:gsub('"', '\\"') .. '"'
-	  local type = serializeTerm(term.datatype)
+	  local type = _serializeTerm(term.datatype)
 	  return string.format("%s^^%s", value, type)
    else
 	  _dump(term)
@@ -256,16 +256,16 @@ function serializeTerm(term)
    end
 end
 
-function serializePredObj(po)
+local function _serializePredObj(po)
    local pred, obj
-   pred = serializeTerm(po.verb)
+   pred = _serializeTerm(po.verb)
    obj = ""
 
    for i3, o in ipairs(po.objects) do
 	  if i3 > 1 then
 		 obj = obj .. ", "
 	  end
-	  obj = obj .. serializeTerm(o)
+	  obj = obj .. _serializeTerm(o)
    end
 
    if po.objects.preds then
@@ -277,7 +277,7 @@ function serializePredObj(po)
 		 if i2 > 1 then
 			obj = obj .. "; "
 		 end
-		 obj = obj .. serializePredObj(p)
+		 obj = obj .. _serializePredObj(p)
 	  end
 	  obj = obj .. "]"
    end
@@ -285,7 +285,7 @@ function serializePredObj(po)
    return pred .. " " .. obj
 end
 
-function serialize(rdfDoc)
+function turtleparse.serialize(rdfDoc)
    local ser = ""
    for idx, elem in ipairs(rdfDoc) do
 	  if elem.type == "Prefix" then
@@ -296,9 +296,9 @@ function serialize(rdfDoc)
 	  else
 		 local subj, po
 		 -- statement
-		 subj = serializeTerm(elem.subject)
+		 subj = _serializeTerm(elem.subject)
 		 for i2, p in ipairs(elem.preds) do
-			po = serializePredObj(p)
+			po = _serializePredObj(p)
 
 			ser = ser ..string.format("%s %s.\n", subj, po)
 		 end

@@ -1,5 +1,5 @@
 local turtleparse = require("turtleparse")
-local dump = require('pl.pretty').dump
+local _dump = require('pl.pretty').dump
 
 -- assigned locally in test, pass here before calling external
 -- functions
@@ -20,6 +20,13 @@ end
 local function testUriRef(s, uri)
    Massert_equal("UriRef", s.type)
    Massert_equal(uri, s.uri)
+end
+
+local function testParseAndSerialize(ttl_string)
+   local s = turtleparse.parse(ttl_string)
+   Massert_equal("table", type(s[1]), "parse should produce a list of tables")
+   local serialized = turtleparse.serialize(s)
+   Massert_equal(ttl_string, serialized)
 end
 
 describe("turtleparse", function ()
@@ -133,6 +140,33 @@ two \tquotes\ncool """.]])
 					   end)
 			end)
 
+			-- TODO: serialization tests are very incomplete
+			context("serialization", function ()
+					   it("should serialize unlabeled bnodes", function ()
+							 -- we just use the same string and test
+							 -- the parse+serialization is identical
+							 -- to the original
+							 -- (needs the newline as the serializer
+							 -- adds it)
+							 local ttl_string = 'bsbase:Clear bsbase:homepage [rdf:type bibo:Webpage; bibo:uri "http://frdcsa.org/frdcsa/internal/clear/"^^xsd:string].\n'
+							 Massert_equal = assert_equal
+							 testParseAndSerialize(ttl_string)
+							 Massert_equal = nil
+					   end)
+					   it("should handle embedded quotes", function ()
+							 local ttl_string = 'bstest:xyz skos:editorialNote "based on \\\"Heinz Steals the Drug\\\""^^xsd:string.\n'
+							 Massert_equal = assert_equal
+							 testParseAndSerialize(ttl_string)
+							 Massert_equal = nil
+					   end)
+					   it("should handle lists", function ()
+							 local ttl_string = 'bstest:something bstest:hasThese ( bstest:a bstest:b bstest:c ).\n'
+							 Massert_equal = assert_equal
+							 testParseAndSerialize(ttl_string)
+							 Massert_equal = nil
+					   end)
+			end)
+
 			context("document parsing", function ()
 					   it("should parse test from spec", function ()
 							 Massert_equal = assert_equal
@@ -152,7 +186,7 @@ ex:jess2 a ex:NonExistingClass , ex:AnotherClass .
 ]]
 							 local s = turtleparse.parse(test1)
 							 -- uncomment this to print the full table structure
-							 --dump(s)
+							 --_dump(s)
 							 assert_equal(6, #s)
 
 							 -- first, prefixes
