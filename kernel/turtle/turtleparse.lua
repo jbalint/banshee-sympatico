@@ -6,6 +6,7 @@ local re = require('re')
 local P, R, S, V = lpeg.P, lpeg.R, lpeg.S, lpeg.V
 local C, Cc, Cf, Cg, Cs, Ct, Cmt = lpeg.C, lpeg.Cc, lpeg.Cf, lpeg.Cg, lpeg.Cs, lpeg.Ct, lpeg.Cmt
 
+local _dump = require('pl.pretty').dump
 -- Turtle - Terse RDF Triple Language EBNF
 -- from: http://www.w3.org/TeamSubmission/turtle/
 -- this may not have been the best reference
@@ -170,6 +171,9 @@ local makeGrammar = function (elem)
 
 			-- [23]collection::='(' JB:ws* itemList? JB:ws* ')'
 			collItemList = Cmt(V"itemList"^-1, function (s, p, v)
+								  if v == "" then
+									 return p, {type="Qname", prefix="rdf", name="nil"}
+								  end
 								  return p, {type="Collection", values=v}
 			end),
 			collection = P"("*ws^0*V"collItemList"*ws^0*P")"
@@ -228,7 +232,8 @@ function serializeTerm(term)
    if term == "a" then
 	  return "a"
    elseif type(term) ~= "table" then
-	  return string.format("\"%s\"", term)
+	  -- TODO needs *proper* string escaping
+	  return string.format("\"%s\"", term:gsub('"', '\\"'))
    end
 
    if term.type == "UriRef" then
@@ -241,8 +246,12 @@ function serializeTerm(term)
 		 colstring = string.format("%s %s", colstring, serializeTerm(v))
 	  end
 	  return colstring .. " )"
+   elseif term.type == "TypedString" then
+	  local value = '"' .. term.value:gsub('"', '\\"') .. '"'
+	  local type = serializeTerm(term.datatype)
+	  return string.format("%s^^%s", value, type)
    else
-	  require('pl.pretty').dump(term)
+	  _dump(term)
 	  error("Unable to serialize term")
    end
 end
@@ -283,6 +292,7 @@ function serialize(rdfDoc)
 		 ser = ser ..string.format("@prefix %s: <%s>.\n", elem.name, elem.uri)
 	  elseif elem.type == "Base" then
 		 -- TODO
+		 error("Base not supported")
 	  else
 		 local subj, po
 		 -- statement
@@ -349,15 +359,15 @@ The second line
 ]]
 
 if false then
-   require('pl.pretty').dump({lpeg.match(turtleDoc, test1)})
+   _dump({lpeg.match(turtleDoc, test1)})
    print("-------------------")
-   require('pl.pretty').dump({lpeg.match(turtleDoc, test2)})
+   _dump({lpeg.match(turtleDoc, test2)})
    print("-------------------")
-   require('pl.pretty').dump({lpeg.match(turtleDoc, test3)})
+   _dump({lpeg.match(turtleDoc, test3)})
    print("-------------------")
-   require('pl.pretty').dump({lpeg.match(turtleDoc, test4)})
+   _dump({lpeg.match(turtleDoc, test4)})
    print("-------------------")
-   require('pl.pretty').dump({lpeg.match(turtleDoc, test5)})
+   _dump({lpeg.match(turtleDoc, test5)})
    print("-------------------")
 
    -- test by running the serialized version back through the parser
@@ -370,6 +380,18 @@ end
 
 function turtleparse.parse(turtleString)
    return {lpeg.match(turtleDoc, turtleString)}
+end
+
+-- test code to read a turtle file and serialize it back out
+if false then
+   --local f = io.open("/home/jbalint/sw/banshee-sympatico/tmp/bs_stardog-export-20140711_16222_tbc.ttl", "r")
+   local f = io.open("test_ser.ttl", "r")
+   local content = f:read("*all")
+   f:close()
+
+   local s = turtleparse.parse(content)
+   --_dump(s)
+   print(serialize(s))
 end
 
 return turtleparse
