@@ -75,7 +75,7 @@ local function __obj2str(o)
 		 error("Unknown datatype type")
 	  end
 	  -- Flora doesn't like Z at the end of dates
-	  if o.datatype.uri == "http://www.w3.org/2001/XMLSchema#date" then
+	  if t:match("#date$") then
 		 v = v:gsub("Z$", "")
 	  end
 	  return string.format("\"%s\"^^%s", v, t)
@@ -127,7 +127,10 @@ if not pcall(getfenv, 4) then
 			local verb = pred.verb
 			for idx3, obj in ipairs(pred.objects) do
 			   if verb == "a" then
-				  print(string.format("%s:%s.", sub, __rsrc2str(obj)))
+				  -- represent class membership via an RDF triple,
+				  -- handle the Flora class membership via rules
+				  print(string.format("%s[\"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\"^^\\iri -> %s].",
+									  sub, __rsrc2str(obj)))
 			   else
 				  print(string.format("%s[%s -> %s].", sub, __rsrc2str(verb), __obj2str(obj)))
 			   end
