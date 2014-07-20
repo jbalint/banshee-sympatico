@@ -233,7 +233,12 @@ local function _serializeTerm(term)
 	  return "a"
    elseif type(term) ~= "table" then
 	  -- TODO needs *proper* string escaping
-	  return string.format("\"%s\"", term:gsub('"', '\\"'))
+	  local str = term:gsub('"', '\\"')
+	  if str:find("\n") then
+		 return string.format('"""%s"""', str)
+	  else
+		 return string.format('"%s"', str)
+	  end
    end
 
    if term.type == "UriRef" then

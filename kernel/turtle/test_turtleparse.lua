@@ -165,6 +165,15 @@ two \tquotes\ncool """.]])
 							 testParseAndSerialize(ttl_string)
 							 Massert_equal = nil
 					   end)
+					   it("should use triple-quotes for multi-line strings", function ()
+							 -- it comes out with three quotes because
+							 -- of the embedded newlines, not because
+							 -- it's parsed with three quotes
+							 local ttl_string = 'bstest:something bstest:hasX """jess\nis\nhere""".\n'
+							 Massert_equal = assert_equal
+							 testParseAndSerialize(ttl_string)
+							 Massert_equal = nil
+					   end)
 			end)
 
 			context("document parsing", function ()
