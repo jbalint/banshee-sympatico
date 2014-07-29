@@ -35,18 +35,22 @@ function crate._getFloraRepresentation(str, typename)
 	  end
 	  error(string.format("Cannot encode value: `%s' to %s: %s", str, typename, msg))
    end
-   return r[1]:gsub(".%[%]", "")
+   return string.format("'\\datatype'(%s, '\\%s')",
+						r[1]:gsub(".%[%]", ""), typeName)
 end
 
--- we generate a query like: (a[b->d])
--- flrstoragebase:flora_db_insert_base('_$_$_flora''fdbtrie''main', '_$_$_flora''mod''main''mvd'(a,b,d,_h0)).
-function crate.assert(s, p, o)
-   p = crate.toFloraIri(p)
-
-   local storageName = "'_$_$_flora''fdbtrie''main'"
+function crate._objectToString(o)
    local objectString
-   if type(o) == "table" and #o > 1 then
-	  objectString = "[]"
+   if o.nodeType and o:nodeType() == "Collection" then
+	  objectString = "["
+	  for _idx, obj in ipairs(o) do
+		 if objectString == "[" then
+			objectString = objectString .. crate._objectToString(obj)
+		 else
+			objectString = objectString .. "," .. crate._objectToString(obj)
+		 end
+	  end
+	  objectString = objectString .. "]"
    elseif type(o) == "string" and o:find("bnode_") ~= 1 then
 	  objectString = "'" .. crate.toFloraIri(o) .. "'"
    elseif type(o) == "string" and o:find("bnode_") == 1 then
@@ -59,10 +63,11 @@ function crate.assert(s, p, o)
 	  elseif o.datatype.iri:find("#integer") then
 		 objectString = o.value
 	  elseif o.datatype.iri:find("#double") then
-		 if o.value:find(".") then
+		 if not o.value:find("%.") then
 			objectString = o.value .. ".0" -- double-typed integer 1 -> 1.0
+		 else
+			objectString = o.value
 		 end
-		 objectString = o.value
 	  elseif o.datatype.iri:find("#dateTime") then
 		 -- TODO we have to canonicalize the representation BEFORE
 		 -- this point so we can handle the comparison when the value
@@ -87,9 +92,6 @@ function crate.assert(s, p, o)
 	  end
    elseif o.nodeType and o:nodeType() == "IriRef" then
 	  objectString = "'" .. crate.toFloraIri(o) .. "'"
-   elseif o.nodeType and o:nodeType() == "Collection" then
-	  -- TODO - skipped for now
-	  objectString = "[]"
    else
 	  _dump(o)
 	  _dump(getmetatable(o))
@@ -99,14 +101,23 @@ function crate.assert(s, p, o)
 	  _dump(o)
 	  error("Failed to encode")
    end
-   --print(objectString)
+   return objectString
+end
+
+-- we generate a query like: (a[b->d])
+-- flrstoragebase:flora_db_insert_base('_$_$_flora''fdbtrie''main', '_$_$_flora''mod''main''mvd'(a,b,d,_h0)).
+function crate.assert(s, p, o)
+   p = crate.toFloraIri(p)
+
+   local storageName = "'_$_$_flora''fdbtrie''main'"
+   local objectString = crate._objectToString(o)
+
+   -- the actual term we will insert
    local term = string.format("'_$_$_flora''mod''main''mvd'('%s','%s',%s,_h0)",
 							  s, p, objectString)
-   --print(term)
+   -- the insert statement
    local addQuery = string.format("flrstoragebase:flora_db_insert_base(%s, %s).",
-								  "'_$_$_flora''fdbtrie''main'",
-								  term)
-   --print(addQuery)
+								  storageName, term)
    xsb_query(addQuery, "")
 end
 
@@ -116,11 +127,6 @@ function crate.load(filename)
    for name, bnode in pairs(s.bnodes) do
 	  for predIri, pred in pairs(bnode) do
 		 for _idx, obj in ipairs(pred.objects or {}) do
-			if predIri:find("unionOf") then
-			   _dump(obj)
-			   _dump(bnode)
-			   error("bnode_ERROR")
-			end
 			crate.assert(name, predIri, obj)
 			bnodeCount = bnodeCount + 1
 		 end
