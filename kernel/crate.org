@@ -1,0 +1,71 @@
+#+TITLE: CRATE Storage System
+# export as color-theme-andreas
+
+The CRATE storage system is a persistent storage system for
+Flora-2. It reads and writes a file in Turtle format.
+
+* Introduction
+  The CRATE system provides a persistent, updatable storage back-end
+  for Flora-2. It stores all data in a Turtle formatted file providing
+  interoperability with Semantic Web tools and systems. This storage
+  system does not support the complete set of data representations
+  available in Flora-2.
+* Data Structure Mappings
+  Turtle statements are translated as follows:
+  + Basic triples are translated to non-inheritable /mvd/ facts.
+	+ Example. The following RDF structure is translated into a set of
+      F-atoms. Flora-equivalent and Prolog structure shown.
+#+BEGIN_SRC ttl
+rdf:type
+  rdf:type rdf:Property ;
+  rdfs:comment "The subject is an instance of a class." ;
+  rdfs:domain rdfs:Resource ;
+  rdfs:isDefinedBy rdf: ;
+  rdfs:label "type" ;
+  rdfs:range rdfs:Class ;
+.
+#+END_SRC
+#+BEGIN_SRC prolog
+rdf#type[rdf#type -> rdf#Property,
+         rdfs#comment -> "The subject ...."^^\string,
+         rdfs#domain -> rdfs#Resource,
+         rdfs#isDefinedBy -> "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^\iri,
+         rdfs#label -> "type"^^\string,
+         rdfs#range -> rdfs#Class]
+#+END_SRC
+#+BEGIN_SRC prolog
+% rdf#type[rdf#type -> rdf#Property]
+mvd('i\bhttp://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+    'i\bhttp://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+    'i\bhttp://www.w3.org/1999/02/22-rdf-syntax-ns#Property',
+    _h0).
+#+END_SRC
+* Background Research
+* Implementation Details
+** Introduction
+   CRATE has three points of working with data.
+*** Loading Data
+	The loading of data is done when the CRATE system is
+	initialized. The Turtle file is parsed to an in-memory
+	representation, traversed, and individual facts are asserted to
+	the Prolog system.
+
+	The Prolog predicate ~crate_load/1~ accepts a filename argument to
+	a RDF/Turtle file. The predicate calls a native C function which
+	bridges to the Lua module implementing the loading
+	functionality. The Lua code uses the Lua Turtle parser to create
+	the in-memory representation of the knowledge base. Traversal is
+	also implemented by the Turtle parser. CRATE implements a visitor
+	to create the Prolog facts which are asserted by calling back
+	through native C code to the XSB runtime.
+*** Manipulating Data
+	Runtime data mutations effected by the Flora ~insert{}~,
+	~insertall{}~, ~delete{}~, ~deleteall{}~, etc functions are
+	persisted in the in-memory RDF representation in CRATE.
+*** Serializing Data
+** Code Structure
+* Notes and Limitations
+  + All facts are loaded in the /main/ Flora module.
+  + The Turtle parser returns untyped strings as /xsd:string/
+    instances which are converted to /\string/ instances in Flora.
+  + Transaction Logic operation handling is undefined.
