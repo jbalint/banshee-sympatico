@@ -10,7 +10,7 @@
 /*
  * A single Lua state is used.
  */
-/* allow to be reference externally in lua_repl.c */
+/* allow to be reference externally in lua_repl.c and XSB integrations */
 /*static*/ lua_State *global_L;
 
 static int bs_lua_xsb_query(lua_State *L)
@@ -73,27 +73,34 @@ static int bs_lua_xsb_command(lua_State *L)
 /*   return lua_error(L); */
 /* } */
 
+static int get_traceback (lua_State *L)
+{
+  const char *msg = luaL_checkstring(L, 1);
+  lua_pop(L, 1);
+  luaL_traceback(L, L, msg, 2);
+  return 1;
+}
+
 int bs_lua_init()
 {
   int rc;
   global_L = luaL_newstate();
   assert(global_L);
   luaL_openlibs(global_L);
-  /*
-  lua_newtable(global_L);
-  lua_pushcfunction(global_L, bs_lua_xsb_query);
-  lua_setfield(global_L, -2, "xsb_query");
-  */
+
   lua_register(global_L, "xsb_query", bs_lua_xsb_query);
   lua_register(global_L, "xsb_command", bs_lua_xsb_command);
-  rc = luaL_dostring(global_L, "require('bs_init')");
+
+  lua_pushcfunction(global_L, get_traceback);
+  luaL_loadstring(global_L, "require('bs_init')");
+  rc = lua_pcall(global_L, 0, 0, -2);
   if (rc)
   {
-	/* TODO better general error reporting during initialization */
-	const char *msg = luaL_checkstring(global_L, 1);
+	const char *msg = lua_tostring(global_L, -1);
 	fprintf(stderr, "LUA ERROR: %d\n", rc);
-	fprintf(stderr, "%s\n", msg);
+	fprintf(stderr, "LUA MESSAGE: %s\n", msg);
   }
   assert(!rc);
+  lua_pop(global_L, 1); // the traceback
   return 0;
 }
