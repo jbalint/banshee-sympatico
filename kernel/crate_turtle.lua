@@ -28,6 +28,7 @@ local comment = P"#"*(R"\x00\xff"-S"\r\n")^0
 ------------------
 local RdfDoc = {classname="RdfDoc"}
 local IriRef = {classname="IriRef"}
+local BnodeRef = {classname="BnodeRef"}
 local PredicateObject = {classname="PredicateObject"}
 local TypedString = {classname="TypedString"}
 local Collection = {classname="Collection"}
@@ -40,7 +41,7 @@ local function _nodeType(obj)
    return getmetatable(obj).classname
 end
 
-local classes = {RdfDoc, IriRef, PredicateObject, TypedString, Collection}
+local classes = {RdfDoc, IriRef, BnodeRef, PredicateObject, TypedString, Collection}
 for idx, class in ipairs(classes) do
    class.__index = class
    class.nodeType = _nodeType
@@ -65,6 +66,7 @@ function RdfDoc:visit(visitor)
 end
 
 function IriRef._new(iri)
+   assert(iri:find("http://") == 1 or iri:find("mailto:") == 1)
    if parseContext.iriCache[iri] then
 	  return parseContext.iriCache[iri]
    end
@@ -90,6 +92,12 @@ function IriRef:__eq(other)
 	  self.iri == other.iri
 end
 
+function BnodeRef._new(name)
+   local obj = _newObject(BnodeRef, {name=name})
+   parseContext.bnodes[name] = obj
+   return obj
+end
+
 function _addPredicateObjectListToResource(resource, predicateObjectList)
    for _idx, predObj in ipairs(predicateObjectList) do
 	  assert("IriRef", predObj.predicate:nodeType())
@@ -100,21 +108,11 @@ function _addPredicateObjectListToResource(resource, predicateObjectList)
 	  end
 	  local pred = resource[predObj.predicate.iri]
 	  for _idx, obj in ipairs(predObj.objectList) do
-		 local nt
-		 if type(obj) == "string" and obj:find("bnode_") then
-			nt = "Bnode"
-		 else
-			nt = obj:nodeType()
-		 end
+		 local nt = obj:nodeType()
 		 assert(nt == "IriRef" or
 				   nt == "TypedString" or
 				   nt == "Collection" or
-				   nt == "Bnode")
-		 if nt == "Collection" then
-			-- TODO is there any special treatment of collections required here?
-			--_dump(obj)
-			--error(1)
-		 end
+				   nt == "BnodeRef")
 		 -- make sure it's not already here
 		 local found = false
 		 for _idx, checkObj in ipairs(pred.objects) do
@@ -134,12 +132,13 @@ function _addPredicateObjectListToResource(resource, predicateObjectList)
 end
 
 function _addBnode(predicateObjectList)
-   local bnodeName = "bnode_" .. tostring(parseContext.bnodeCount)
+   -- generate new bnode name
+   local bnodeName = string.format("urn:X-bnode:bnode_%d", parseContext.bnodeCount)
    parseContext.bnodeCount = parseContext.bnodeCount + 1
-   local bnode = {name = bnodeName}
-   parseContext.bnodes[bnodeName] = bnode
+
+   local bnode = BnodeRef._new(bnodeName)
    _addPredicateObjectListToResource(bnode, predicateObjectList)
-   return bnodeName
+   return bnode
 end
 
 function _addSpoTriple(subject, predicateObjectList)
