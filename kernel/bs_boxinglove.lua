@@ -134,7 +134,9 @@ function _blparse(value)
 		 local year = capture()
 		 local month = capture()
 		 local day = capture()
-		 return Date{year = year, month = month, day = day}
+		 local d = Date{year = year, month = month, day = day}
+		 d.xsdType = "date"
+		 return d
 	  elseif flenc_type == "dateTime" then
 		 local capture = value:gmatch("%d+")
 		 capture()
@@ -144,12 +146,14 @@ function _blparse(value)
 		 local hour = capture()
 		 local minute = capture()
 		 local seconds = capture()
-		 return Date{year = year,
-					 month = month,
-					 day = day,
-					 hour = hour,
-					 min = min,
-					 sec = sec}
+		 local d = Date{year = year,
+						month = month,
+						day = day,
+						hour = hour,
+						min = min,
+						sec = sec}
+		 d.xsdType = "dateTime"
+		 return d
 	  else
 		 require("pl.pretty").dump(value)
 		 error("Unknown Flora encoding for type: " .. tostring(flenc_type))
@@ -168,6 +172,7 @@ function _blinstance_populate(self, data)
 	  prop = prop:sub(3)
 	  if type(val) == "table" then
 		 local vals = {}
+		 setmetatable(vals, {classname = "boxinglove.valueset"})
 		 rawset(self, prop, vals)
 		 for idx, v in ipairs(val) do
 			table.insert(vals, _blparse(v))
@@ -244,11 +249,17 @@ function blnamespace:_index(k)
    return _blnamespace_loadobject(self, k)
 end
 
+---------
+-- API --
+---------
 function boxinglove.init()
    -- Setup namespaces
    -- TODO convert flora to use bscode-configured prefixes
    local prefixes = flora.getprefixes()
    for prefix, uri in pairs(prefixes) do
+	  if not uri then
+		 uri = ""
+	  end
 	  local ns = _blnamespace_new(prefix, uri)
 	  boxinglove.ns[prefix] = ns
 	  boxinglove.ns._byuri[uri] = ns
