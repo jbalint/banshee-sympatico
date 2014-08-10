@@ -48,7 +48,7 @@ int bs_xsb_query_begin(const char *query_string, char **str, const char *sep)
   else if (rc == XSB_ERROR)
   {
 	/* TODO */
-	fprintf(stderr, "Query error");
+	fprintf(stderr, "Query error for %s: %s\n", query_string, xsb_get_error_message());
 	return 1;
   }
   *str = res_str.string;
