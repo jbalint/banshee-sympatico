@@ -1,0 +1,294 @@
+:- iriprefix{dct='http://purl.org/dc/terms/'}.
+:- iriprefix{owl='http://www.w3.org/2002/07/owl#'}.
+:- iriprefix{rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'}.
+:- iriprefix{rdfs='http://www.w3.org/2000/01/rdf-schema#'}.
+:- iriprefix{skos='http://www.w3.org/2004/02/skos/core#'}.
+:- iriprefix{xsd='http://www.w3.org/2001/XMLSchema#'}.
+
+"http://www.w3.org/2004/02/skos/core"^^\iri[rdf#type -> owl#Ontology].
+"http://www.w3.org/2004/02/skos/core"^^\iri[dct#contributor -> "Dave Beckett"^^xsd#string].
+"http://www.w3.org/2004/02/skos/core"^^\iri[dct#contributor -> "Nikki Rogers"^^xsd#string].
+"http://www.w3.org/2004/02/skos/core"^^\iri[dct#contributor -> "Participants in W3C's Semantic Web Deployment Working Group."^^xsd#string].
+"http://www.w3.org/2004/02/skos/core"^^\iri[dct#creator -> "Alistair Miles"^^xsd#string].
+"http://www.w3.org/2004/02/skos/core"^^\iri[dct#creator -> "Sean Bechhofer"^^xsd#string].
+"http://www.w3.org/2004/02/skos/core"^^\iri[dct#description -> "An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', other types of controlled vocabulary, and also concept schemes embedded in glossaries and terminologies."^^xsd#string].
+"http://www.w3.org/2004/02/skos/core"^^\iri[dct#title -> "SKOS Vocabulary"^^xsd#string].
+"http://www.w3.org/2004/02/skos/core"^^\iri[rdfs#label -> "SKOS Core RDF vocabulary"^^xsd#string].
+"http://www.w3.org/2004/02/skos/core"^^\iri[rdfs#seeAlso -> "http://www.w3.org/TR/skos-reference/"^^\iri].
+"http://www.w3.org/2004/02/skos/core"^^\iri[owl#versionInfo -> "Modified by TopQuadrant to assert three rdfs:subClassOf owl:Thing triples."^^xsd#string].
+
+skos#Collection[rdf#type -> owl#Class].
+skos#Collection[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#Collection[rdfs#label -> "Collection"^^xsd#string].
+skos#Collection[rdfs#subClassOf -> owl#Thing].
+skos#Collection[owl#disjointWith -> skos#Concept].
+skos#Collection[owl#disjointWith -> skos#ConceptScheme].
+skos#Collection[skos#definition -> "A meaningful collection of concepts."^^xsd#string].
+skos#Collection[skos#scopeNote -> "Labelled collections can be used where you would like a set of concepts to be displayed under a 'node label' in the hierarchy."^^xsd#string].
+
+skos#Concept[rdf#type -> owl#Class].
+skos#Concept[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#Concept[rdfs#label -> "Concept"^^xsd#string].
+skos#Concept[rdfs#subClassOf -> owl#Thing].
+skos#Concept[skos#definition -> "An idea or notion; a unit of thought."^^xsd#string].
+
+skos#ConceptScheme[rdf#type -> owl#Class].
+skos#ConceptScheme[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#ConceptScheme[rdfs#label -> "Concept Scheme"^^xsd#string].
+skos#ConceptScheme[rdfs#subClassOf -> owl#Thing].
+skos#ConceptScheme[owl#disjointWith -> skos#Concept].
+skos#ConceptScheme[skos#definition -> "A set of concepts, optionally including statements about semantic relationships between those concepts."^^xsd#string].
+skos#ConceptScheme[skos#example -> "Thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', and other types of controlled vocabulary are all examples of concept schemes. Concept schemes are also embedded in glossaries and terminologies."^^xsd#string].
+skos#ConceptScheme[skos#scopeNote -> "A concept scheme may be defined to include concepts from different sources."^^xsd#string].
+
+skos#OrderedCollection[rdf#type -> owl#Class].
+skos#OrderedCollection[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#OrderedCollection[rdfs#label -> "Ordered Collection"^^xsd#string].
+skos#OrderedCollection[rdfs#subClassOf -> skos#Collection].
+skos#OrderedCollection[skos#definition -> "An ordered collection of concepts, where both the grouping and the ordering are meaningful."^^xsd#string].
+skos#OrderedCollection[skos#scopeNote -> "Ordered collections can be used where you would like a set of concepts to be displayed in a specific order, and optionally under a 'node label'."^^xsd#string].
+
+skos#altLabel[rdf#type -> rdf#Property].
+skos#altLabel[rdf#type -> owl#AnnotationProperty].
+skos#altLabel[rdfs#comment -> "The range of skos:altLabel is the class of RDF plain literals."^^xsd#string].
+skos#altLabel[rdfs#comment -> "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties."^^xsd#string].
+skos#altLabel[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#altLabel[rdfs#label -> "alternative label"^^xsd#string].
+skos#altLabel[rdfs#subPropertyOf -> rdfs#label].
+skos#altLabel[skos#definition -> "An alternative lexical label for a resource."^^xsd#string].
+skos#altLabel[skos#example -> "Acronyms, abbreviations, spelling variants, and irregular plural/singular forms may be included among the alternative labels for a concept. Mis-spelled terms are normally included as hidden labels (see skos:hiddenLabel)."^^xsd#string].
+
+skos#broadMatch[rdf#type -> rdf#Property].
+skos#broadMatch[rdf#type -> owl#ObjectProperty].
+skos#broadMatch[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#broadMatch[rdfs#label -> "has broader match"^^xsd#string].
+skos#broadMatch[rdfs#subPropertyOf -> skos#broader].
+skos#broadMatch[rdfs#subPropertyOf -> skos#mappingRelation].
+skos#broadMatch[owl#inverseOf -> skos#narrowMatch].
+skos#broadMatch[skos#definition -> "skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes."^^xsd#string].
+
+skos#broader[rdf#type -> rdf#Property].
+skos#broader[rdf#type -> owl#ObjectProperty].
+skos#broader[rdfs#comment -> "Broader concepts are typically rendered as parents in a concept hierarchy (tree)."^^xsd#string].
+skos#broader[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#broader[rdfs#label -> "has broader"^^xsd#string].
+skos#broader[rdfs#subPropertyOf -> skos#broaderTransitive].
+skos#broader[owl#inverseOf -> skos#narrower].
+skos#broader[skos#definition -> "Relates a concept to a concept that is more general in meaning."^^xsd#string].
+skos#broader[skos#scopeNote -> "By convention, skos:broader is only used to assert an immediate (i.e. direct) hierarchical link between two conceptual resources."^^xsd#string].
+
+skos#broaderTransitive[rdf#type -> rdf#Property].
+skos#broaderTransitive[rdf#type -> owl#ObjectProperty].
+skos#broaderTransitive[rdf#type -> owl#TransitiveProperty].
+skos#broaderTransitive[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#broaderTransitive[rdfs#label -> "has broader transitive"^^xsd#string].
+skos#broaderTransitive[rdfs#subPropertyOf -> skos#semanticRelation].
+skos#broaderTransitive[owl#inverseOf -> skos#narrowerTransitive].
+skos#broaderTransitive[skos#definition -> "skos:broaderTransitive is a transitive superproperty of skos:broader."^^xsd#string].
+skos#broaderTransitive[skos#scopeNote -> "By convention, skos:broaderTransitive is not used to make assertions. Rather, the properties can be used to draw inferences about the transitive closure of the hierarchical relation, which is useful e.g. when implementing a simple query expansion algorithm in a search application."^^xsd#string].
+
+skos#changeNote[rdf#type -> rdf#Property].
+skos#changeNote[rdf#type -> owl#AnnotationProperty].
+skos#changeNote[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#changeNote[rdfs#label -> "change note"^^xsd#string].
+skos#changeNote[rdfs#subPropertyOf -> skos#note].
+skos#changeNote[skos#definition -> "A note about a modification to a concept."^^xsd#string].
+
+skos#closeMatch[rdf#type -> rdf#Property].
+skos#closeMatch[rdf#type -> owl#ObjectProperty].
+skos#closeMatch[rdf#type -> owl#SymmetricProperty].
+skos#closeMatch[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#closeMatch[rdfs#label -> "has close match"^^xsd#string].
+skos#closeMatch[rdfs#subPropertyOf -> skos#mappingRelation].
+skos#closeMatch[skos#definition -> "skos:closeMatch is used to link two concepts that are sufficiently similar that they can be used interchangeably in some information retrieval applications. In order to avoid the possibility of \"compound errors\" when combining mappings across more than two concept schemes, skos:closeMatch is not declared to be a transitive property."^^xsd#string].
+
+skos#definition[rdf#type -> rdf#Property].
+skos#definition[rdf#type -> owl#AnnotationProperty].
+skos#definition[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#definition[rdfs#label -> "definition"^^xsd#string].
+skos#definition[rdfs#subPropertyOf -> skos#note].
+skos#definition[skos#definition -> "A statement or formal explanation of the meaning of a concept."^^xsd#string].
+
+skos#editorialNote[rdf#type -> rdf#Property].
+skos#editorialNote[rdf#type -> owl#AnnotationProperty].
+skos#editorialNote[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#editorialNote[rdfs#label -> "editorial note"^^xsd#string].
+skos#editorialNote[rdfs#subPropertyOf -> skos#note].
+skos#editorialNote[skos#definition -> "A note for an editor, translator or maintainer of the vocabulary."^^xsd#string].
+
+skos#exactMatch[rdf#type -> rdf#Property].
+skos#exactMatch[rdf#type -> owl#ObjectProperty].
+skos#exactMatch[rdf#type -> owl#SymmetricProperty].
+skos#exactMatch[rdf#type -> owl#TransitiveProperty].
+skos#exactMatch[rdfs#comment -> "skos:exactMatch is disjoint with each of the properties skos:broadMatch and skos:relatedMatch."^^xsd#string].
+skos#exactMatch[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#exactMatch[rdfs#label -> "has exact match"^^xsd#string].
+skos#exactMatch[rdfs#subPropertyOf -> skos#closeMatch].
+skos#exactMatch[skos#definition -> "skos:exactMatch is used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications. skos:exactMatch is a transitive property, and is a sub-property of skos:closeMatch."^^xsd#string].
+
+skos#example[rdf#type -> rdf#Property].
+skos#example[rdf#type -> owl#AnnotationProperty].
+skos#example[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#example[rdfs#label -> "example"^^xsd#string].
+skos#example[rdfs#subPropertyOf -> skos#note].
+skos#example[skos#definition -> "An example of the use of a concept."^^xsd#string].
+
+skos#hasTopConcept[rdf#type -> rdf#Property].
+skos#hasTopConcept[rdf#type -> owl#ObjectProperty].
+skos#hasTopConcept[rdfs#domain -> skos#ConceptScheme].
+skos#hasTopConcept[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#hasTopConcept[rdfs#label -> "has top concept"^^xsd#string].
+skos#hasTopConcept[rdfs#range -> skos#Concept].
+skos#hasTopConcept[owl#inverseOf -> skos#topConceptOf].
+skos#hasTopConcept[skos#definition -> "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."^^xsd#string].
+
+skos#hiddenLabel[rdf#type -> rdf#Property].
+skos#hiddenLabel[rdf#type -> owl#AnnotationProperty].
+skos#hiddenLabel[rdfs#comment -> "The range of skos:hiddenLabel is the class of RDF plain literals."^^xsd#string].
+skos#hiddenLabel[rdfs#comment -> "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties."^^xsd#string].
+skos#hiddenLabel[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#hiddenLabel[rdfs#label -> "hidden label"^^xsd#string].
+skos#hiddenLabel[rdfs#subPropertyOf -> rdfs#label].
+skos#hiddenLabel[skos#definition -> "A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations."^^xsd#string].
+
+skos#historyNote[rdf#type -> rdf#Property].
+skos#historyNote[rdf#type -> owl#AnnotationProperty].
+skos#historyNote[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#historyNote[rdfs#label -> "history note"^^xsd#string].
+skos#historyNote[rdfs#subPropertyOf -> skos#note].
+skos#historyNote[skos#definition -> "A note about the past state/use/meaning of a concept."^^xsd#string].
+
+skos#inScheme[rdf#type -> rdf#Property].
+skos#inScheme[rdf#type -> owl#ObjectProperty].
+skos#inScheme[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#inScheme[rdfs#label -> "is in scheme"^^xsd#string].
+skos#inScheme[rdfs#range -> skos#ConceptScheme].
+skos#inScheme[skos#definition -> "Relates a resource (for example a concept) to a concept scheme in which it is included."^^xsd#string].
+skos#inScheme[skos#scopeNote -> "A concept may be a member of more than one concept scheme."^^xsd#string].
+
+skos#mappingRelation[rdf#type -> rdf#Property].
+skos#mappingRelation[rdf#type -> owl#ObjectProperty].
+skos#mappingRelation[rdfs#comment -> "These concept mapping relations mirror semantic relations, and the data model defined below is similar (with the exception of skos:exactMatch) to the data model defined for semantic relations. A distinct vocabulary is provided for concept mapping relations, to provide a convenient way to differentiate links within a concept scheme from links between concept schemes. However, this pattern of usage is not a formal requirement of the SKOS data model, and relies on informal definitions of best practice."^^xsd#string].
+skos#mappingRelation[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#mappingRelation[rdfs#label -> "is in mapping relation with"^^xsd#string].
+skos#mappingRelation[rdfs#subPropertyOf -> skos#semanticRelation].
+skos#mappingRelation[skos#definition -> "Relates two concepts coming, by convention, from different schemes, and that have comparable meanings"^^xsd#string].
+
+skos#member[rdf#type -> rdf#Property].
+skos#member[rdf#type -> owl#ObjectProperty].
+skos#member[rdfs#domain -> skos#Collection].
+skos#member[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#member[rdfs#label -> "has member"^^xsd#string].
+"urn:X-bnode:bnode_skos_core_0"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_skos_core_0"^^\iri[owl#unionOf -> {skos#Concept, skos#Collection}].
+skos#member[rdfs#range -> "urn:X-bnode:bnode_skos_core_0"^^\iri].
+skos#member[skos#definition -> "Relates a collection to one of its members."^^xsd#string].
+
+skos#memberList[rdf#type -> rdf#Property].
+skos#memberList[rdf#type -> owl#FunctionalProperty].
+skos#memberList[rdf#type -> owl#ObjectProperty].
+skos#memberList[rdfs#comment -> "For any resource, every item in the list given as the value of the
+      skos:memberList property is also a value of the skos:member property."^^xsd#string].
+skos#memberList[rdfs#domain -> skos#OrderedCollection].
+skos#memberList[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#memberList[rdfs#label -> "has member list"^^xsd#string].
+skos#memberList[rdfs#range -> rdf#List].
+skos#memberList[skos#definition -> "Relates an ordered collection to the RDF list containing its members."^^xsd#string].
+
+skos#narrowMatch[rdf#type -> rdf#Property].
+skos#narrowMatch[rdf#type -> owl#ObjectProperty].
+skos#narrowMatch[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#narrowMatch[rdfs#label -> "has narrower match"^^xsd#string].
+skos#narrowMatch[rdfs#subPropertyOf -> skos#mappingRelation].
+skos#narrowMatch[rdfs#subPropertyOf -> skos#narrower].
+skos#narrowMatch[owl#inverseOf -> skos#broadMatch].
+skos#narrowMatch[skos#definition -> "skos:narrowMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes."^^xsd#string].
+
+skos#narrower[rdf#type -> rdf#Property].
+skos#narrower[rdf#type -> owl#ObjectProperty].
+skos#narrower[rdfs#comment -> "Narrower concepts are typically rendered as children in a concept hierarchy (tree)."^^xsd#string].
+skos#narrower[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#narrower[rdfs#label -> "has narrower"^^xsd#string].
+skos#narrower[rdfs#subPropertyOf -> skos#narrowerTransitive].
+skos#narrower[owl#inverseOf -> skos#broader].
+skos#narrower[skos#definition -> "Relates a concept to a concept that is more specific in meaning."^^xsd#string].
+skos#narrower[skos#scopeNote -> "By convention, skos:broader is only used to assert an immediate (i.e. direct) hierarchical link between two conceptual resources."^^xsd#string].
+
+skos#narrowerTransitive[rdf#type -> rdf#Property].
+skos#narrowerTransitive[rdf#type -> owl#ObjectProperty].
+skos#narrowerTransitive[rdf#type -> owl#TransitiveProperty].
+skos#narrowerTransitive[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#narrowerTransitive[rdfs#label -> "has narrower transitive"^^xsd#string].
+skos#narrowerTransitive[rdfs#subPropertyOf -> skos#semanticRelation].
+skos#narrowerTransitive[owl#inverseOf -> skos#broaderTransitive].
+skos#narrowerTransitive[skos#definition -> "skos:narrowerTransitive is a transitive superproperty of skos:narrower."^^xsd#string].
+skos#narrowerTransitive[skos#scopeNote -> "By convention, skos:narrowerTransitive is not used to make assertions. Rather, the properties can be used to draw inferences about the transitive closure of the hierarchical relation, which is useful e.g. when implementing a simple query expansion algorithm in a search application."^^xsd#string].
+
+skos#notation[rdf#type -> rdf#Property].
+skos#notation[rdf#type -> owl#DatatypeProperty].
+skos#notation[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#notation[rdfs#label -> "notation"^^xsd#string].
+skos#notation[skos#definition -> "A notation, also known as classification code, is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme."^^xsd#string].
+skos#notation[skos#scopeNote -> "By convention, skos:notation is used with a typed literal in the object position of the triple."^^xsd#string].
+
+skos#note[rdf#type -> rdf#Property].
+skos#note[rdf#type -> owl#AnnotationProperty].
+skos#note[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#note[rdfs#label -> "note"^^xsd#string].
+skos#note[skos#definition -> "A general note, for any purpose."^^xsd#string].
+skos#note[skos#scopeNote -> "This property may be used directly, or as a super-property for more specific note types."^^xsd#string].
+
+skos#prefLabel[rdf#type -> rdf#Property].
+skos#prefLabel[rdf#type -> owl#AnnotationProperty].
+skos#prefLabel[rdfs#comment -> "A resource has no more than one value of skos:prefLabel per language tag."^^xsd#string].
+skos#prefLabel[rdfs#comment -> "The range of skos:prefLabel is the class of RDF plain literals."^^xsd#string].
+skos#prefLabel[rdfs#comment -> "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise
+      disjoint properties."^^xsd#string].
+skos#prefLabel[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#prefLabel[rdfs#label -> "preferred label"^^xsd#string].
+skos#prefLabel[rdfs#subPropertyOf -> rdfs#label].
+skos#prefLabel[skos#definition -> "The preferred lexical label for a resource, in a given language."^^xsd#string].
+
+skos#related[rdf#type -> rdf#Property].
+skos#related[rdf#type -> owl#ObjectProperty].
+skos#related[rdf#type -> owl#SymmetricProperty].
+skos#related[rdfs#comment -> "skos:related is disjoint with skos:broaderTransitive"^^xsd#string].
+skos#related[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#related[rdfs#label -> "has related"^^xsd#string].
+skos#related[rdfs#subPropertyOf -> skos#semanticRelation].
+skos#related[skos#definition -> "Relates a concept to a concept with which there is an associative semantic relationship."^^xsd#string].
+
+skos#relatedMatch[rdf#type -> rdf#Property].
+skos#relatedMatch[rdf#type -> owl#ObjectProperty].
+skos#relatedMatch[rdf#type -> owl#SymmetricProperty].
+skos#relatedMatch[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#relatedMatch[rdfs#label -> "has related match"^^xsd#string].
+skos#relatedMatch[rdfs#subPropertyOf -> skos#mappingRelation].
+skos#relatedMatch[rdfs#subPropertyOf -> skos#related].
+skos#relatedMatch[skos#definition -> "skos:relatedMatch is used to state an associative mapping link between two conceptual resources in different concept schemes."^^xsd#string].
+
+skos#scopeNote[rdf#type -> rdf#Property].
+skos#scopeNote[rdf#type -> owl#AnnotationProperty].
+skos#scopeNote[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#scopeNote[rdfs#label -> "scope note"^^xsd#string].
+skos#scopeNote[rdfs#subPropertyOf -> skos#note].
+skos#scopeNote[skos#definition -> "A note that helps to clarify the meaning and/or the use of a concept."^^xsd#string].
+
+skos#semanticRelation[rdf#type -> rdf#Property].
+skos#semanticRelation[rdf#type -> owl#ObjectProperty].
+skos#semanticRelation[rdfs#domain -> skos#Concept].
+skos#semanticRelation[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#semanticRelation[rdfs#label -> "is in semantic relation with"^^xsd#string].
+skos#semanticRelation[rdfs#range -> skos#Concept].
+skos#semanticRelation[skos#definition -> "Links a concept to a concept related by meaning."^^xsd#string].
+skos#semanticRelation[skos#scopeNote -> "This property should not be used directly, but as a super-property for all properties denoting a relationship of meaning between concepts."^^xsd#string].
+
+skos#topConceptOf[rdf#type -> rdf#Property].
+skos#topConceptOf[rdf#type -> owl#ObjectProperty].
+skos#topConceptOf[rdfs#domain -> skos#Concept].
+skos#topConceptOf[rdfs#isDefinedBy -> "http://www.w3.org/2004/02/skos/core"^^\iri].
+skos#topConceptOf[rdfs#label -> "is top concept in scheme"^^xsd#string].
+skos#topConceptOf[rdfs#range -> skos#ConceptScheme].
+skos#topConceptOf[rdfs#subPropertyOf -> skos#inScheme].
+skos#topConceptOf[owl#inverseOf -> skos#hasTopConcept].
+skos#topConceptOf[skos#definition -> "Relates a concept to the concept scheme that it is a top level concept of."^^xsd#string].

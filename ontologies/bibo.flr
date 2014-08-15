@@ -1,0 +1,1345 @@
+:- iriprefix{bibo='http://purl.org/ontology/bibo/'}.
+:- iriprefix{degrees='http://purl.org/ontology/bibo/degrees/'}.
+:- iriprefix{event='http://purl.org/NET/c4dm/event.owl#'}.
+:- iriprefix{foaf='http://xmlns.com/foaf/0.1/'}.
+:- iriprefix{ns='http://www.w3.org/2003/06/sw-vocab-status/ns#'}.
+:- iriprefix{owl='http://www.w3.org/2002/07/owl#'}.
+:- iriprefix{prism='http://prismstandard.org/namespaces/1.2/basic/'}.
+:- iriprefix{rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'}.
+:- iriprefix{rdfs='http://www.w3.org/2000/01/rdf-schema#'}.
+:- iriprefix{schema='http://schemas.talis.com/2005/address/schema#'}.
+:- iriprefix{skos='http://www.w3.org/2004/02/skos/core#'}.
+:- iriprefix{status='http://purl.org/ontology/bibo/status/'}.
+:- iriprefix{terms='http://purl.org/dc/terms/'}.
+:- iriprefix{vann='http://purl.org/vocab/vann/'}.
+:- iriprefix{xsd='http://www.w3.org/2001/XMLSchema#'}.
+
+prism#doi[rdf#type -> owl#DatatypeProperty].
+prism#doi[owl#equivalentProperty -> bibo#doi].
+
+prism#eIssn[rdf#type -> owl#DatatypeProperty].
+prism#eIssn[owl#equivalentProperty -> bibo#eissn].
+
+prism#edition[rdf#type -> owl#DatatypeProperty].
+prism#edition[owl#equivalentProperty -> bibo#edition].
+
+prism#endingPage[rdf#type -> owl#DatatypeProperty].
+prism#endingPage[owl#equivalentProperty -> bibo#pageEnd].
+
+prism#isbn[rdf#type -> owl#DatatypeProperty].
+prism#isbn[owl#equivalentProperty -> bibo#isbn].
+
+prism#issn[rdf#type -> owl#DatatypeProperty].
+prism#issn[owl#equivalentProperty -> bibo#issn].
+
+prism#issue[rdf#type -> owl#DatatypeProperty].
+prism#issue[owl#equivalentProperty -> bibo#issue].
+
+prism#number[rdf#type -> owl#DatatypeProperty].
+prism#number[owl#equivalentProperty -> bibo#locator].
+
+prism#startingPage[rdf#type -> owl#DatatypeProperty].
+prism#startingPage[owl#equivalentProperty -> bibo#pageStart].
+
+prism#volume[rdf#type -> owl#DatatypeProperty].
+prism#volume[owl#equivalentProperty -> bibo#volume].
+
+event#Event[rdf#type -> owl#Class].
+event#Event[skos#scopeNote -> "Used to describe bibliographic related events such as conferences, hearing, etc."^^xsd#string].
+
+event#agent[rdf#type -> owl#ObjectProperty].
+event#agent[skos#changeNote -> "Used to link an agent (a person) to an event (a conference, an hearing, etc.)"^^xsd#string].
+
+event#place[rdf#type -> owl#ObjectProperty].
+event#place[skos#scopeNote -> "Used to relate an event such as a conference to the geographical place where it happens, for example Paris."^^xsd#string].
+
+event#produced_in[rdf#type -> owl#ObjectProperty].
+
+event#product[rdf#type -> owl#ObjectProperty].
+event#product[skos#scopeNote -> "Used to link an event such as a conference to an outcome (a product) of that event, for example, an article, a proceeding, etc."^^xsd#string].
+
+event#sub_event[rdf#type -> owl#ObjectProperty].
+event#sub_event[skos#scopeNote -> "Used to link big events with smaller events such as workshops that happen in the context of a conference."^^xsd#string].
+
+event#time[rdf#type -> owl#ObjectProperty].
+event#time[skos#scopeNote -> "Used to describe the timing of an event. For example, when a conference starts and stops."^^xsd#string].
+
+terms#Agent[rdf#type -> owl#Class].
+terms#Agent[owl#equivalentClass -> foaf#Agent].
+terms#Agent[skos#editorialNote -> "BIBO assert that a dcterms:Agent is an equivalent class to foaf:Agent.
+This means that all the individuals belonging to the foaf:Agent class
+also belongs to the dcterms:Agent class. This way, dcterms:contributor
+can be used on foaf:Person, foaf:Organization, foaf:Agent and foaf:Group.
+Even if this link is not done in neither the FOAF nor the DCTERMS ontologies this is a wide spread fact that is asserted by BIBO."^^xsd#string].
+
+terms#contributor[rdf#type -> owl#ObjectProperty].
+terms#contributor[skos#scopeNote -> "Used to link a bibliographic item to one of its contributor: can be an author, an editor, a publisher, etc."^^xsd#string].
+
+terms#created[rdf#type -> owl#DatatypeProperty].
+terms#created[rdfs#subPropertyOf -> terms#date].
+terms#created[skos#scopeNote -> "Used to describe the creation date of a bibliographic item"^^xsd#string].
+
+terms#creator[rdf#type -> owl#AnnotationProperty].
+
+terms#date[rdf#type -> owl#DatatypeProperty].
+terms#date[skos#scopeNote -> "Use to link a bibliographic item to the date of an event. Check dcterms:created and other for proper specializations for this property"^^xsd#string].
+
+terms#description[rdf#type -> owl#AnnotationProperty].
+terms#description[rdf#type -> owl#DatatypeProperty].
+terms#description[skos#scopeNote -> "Used to describe a bibliographic resource."^^xsd#string].
+
+terms#format[rdf#type -> owl#ObjectProperty].
+terms#format[skos#example -> "<dcterms:format>
+   <dcterms:MediaTypeOrExtent>
+     <rdf:value>text/html</rdf:value>
+     <rdfs:label>HTML</rdfs:label>
+   </dcterms:MediaTypeOrExtent>
+ </dcterms:format>"^^xsd#string].
+terms#format[skos#scopeNote -> "Used to describe the format of a bibliographic resource."^^xsd#string].
+
+terms#hasPart[rdf#type -> owl#ObjectProperty].
+
+terms#identifier[rdf#type -> owl#AnnotationProperty].
+
+terms#isPartOf[rdf#type -> owl#ObjectProperty].
+
+terms#isReferencedBy[rdf#type -> owl#ObjectProperty].
+terms#isReferencedBy[skos#scopeNote -> "Used to relate a reference citation to a bibliographic resource."^^xsd#string].
+
+terms#isVersionOf[rdf#type -> owl#ObjectProperty].
+
+terms#issued[rdf#type -> owl#DatatypeProperty].
+terms#issued[rdfs#subPropertyOf -> terms#date].
+terms#issued[skos#scopeNote -> "Used to describe the issue date of a bibliographic resource"^^xsd#string].
+
+terms#language[rdf#type -> owl#ObjectProperty].
+terms#language[skos#scopeNote -> "Used to link a bibliographic resource to the language used to express it."^^xsd#string].
+
+terms#publisher[rdf#type -> owl#ObjectProperty].
+terms#publisher[skos#scopeNote -> "Used to link a bibliographic item to its publisher."^^xsd#string].
+
+terms#relation[rdf#type -> owl#ObjectProperty].
+
+terms#rights[rdf#type -> owl#ObjectProperty].
+terms#rights[skos#scopeNote -> "Used to describe rights related to a bibliographic resource."^^xsd#string].
+
+terms#subject[rdf#type -> owl#ObjectProperty].
+terms#subject[skos#scopeNote -> "Used to describe the subject of a bibliographic resource."^^xsd#string].
+
+terms#title[rdf#type -> owl#AnnotationProperty].
+terms#title[rdf#type -> owl#ObjectProperty].
+terms#title[skos#scopeNote -> "Used to describe the title of a bibliographic resource"^^xsd#string].
+
+"http://purl.org/ontology/bibo/"^^\iri[rdf#type -> owl#Ontology].
+"http://purl.org/ontology/bibo/"^^\iri[terms#creator -> bibo#bdarcus].
+"http://purl.org/ontology/bibo/"^^\iri[terms#creator -> bibo#fgiasson].
+"http://purl.org/ontology/bibo/"^^\iri[terms#description -> "The Bibliographic Ontology describes
+bibliographic things on the semantic Web in RDF.  This ontology can be
+used as a citation ontology, as a document classification ontology, or
+simply as a way to describe any kind of document in RDF. It has been
+inspired by many existing document description metadata formats, and
+can be used as a common ground for converting other bibliographic data
+sources."^^xsd#string].
+"http://purl.org/ontology/bibo/"^^\iri[terms#title -> "The Bibliographic Ontology"^^xsd#string].
+"http://purl.org/ontology/bibo/"^^\iri[owl#versionInfo -> "http://purl.org/ontology/bibo/1.3/"^^xsd#string].
+
+bibo#AcademicArticle[rdf#type -> owl#Class].
+bibo#AcademicArticle[rdfs#comment -> "A scholarly academic article, typically published in a journal."^^xsd#string].
+bibo#AcademicArticle[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#AcademicArticle[rdfs#label -> "Academic Article"^^xsd#string].
+bibo#AcademicArticle[rdfs#subClassOf -> bibo#Article].
+bibo#AcademicArticle[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Article[rdf#type -> owl#Class].
+bibo#Article[rdfs#comment -> "A written composition in prose, usually nonfiction, on a specific topic, forming an independent part of a book or other publication, as a newspaper or magazine."^^xsd#string].
+bibo#Article[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Article[rdfs#label -> "Article"^^xsd#string].
+bibo#Article[rdfs#subClassOf -> bibo#Document].
+bibo#Article[ns#term_status -> "stable"^^xsd#string].
+
+bibo#AudioDocument[rdf#type -> owl#Class].
+bibo#AudioDocument[rdfs#comment -> "An audio document; aka record."^^xsd#string].
+bibo#AudioDocument[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#AudioDocument[rdfs#label -> "audio document"^^xsd#string].
+bibo#AudioDocument[rdfs#subClassOf -> bibo#Document].
+bibo#AudioDocument[ns#term_status -> "stable"^^xsd#string].
+
+bibo#AudioVisualDocument[rdf#type -> owl#Class].
+bibo#AudioVisualDocument[rdfs#comment -> "An audio-visual document; film, video, and so forth."^^xsd#string].
+bibo#AudioVisualDocument[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#AudioVisualDocument[rdfs#label -> "audio-visual document"^^xsd#string].
+bibo#AudioVisualDocument[rdfs#subClassOf -> bibo#Document].
+bibo#AudioVisualDocument[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Bill[rdf#type -> owl#Class].
+bibo#Bill[rdfs#comment -> "Draft legislation presented for discussion to a legal body."^^xsd#string].
+bibo#Bill[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Bill[rdfs#label -> "Bill"^^xsd#string].
+bibo#Bill[rdfs#subClassOf -> bibo#Legislation].
+bibo#Bill[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Book[rdf#type -> owl#Class].
+bibo#Book[rdfs#comment -> "A written or printed work of fiction or nonfiction, usually on sheets of paper fastened or bound together within covers."^^xsd#string].
+bibo#Book[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Book[rdfs#label -> "Book"^^xsd#string].
+bibo#Book[rdfs#subClassOf -> bibo#Document].
+bibo#Book[ns#term_status -> "stable"^^xsd#string].
+
+bibo#BookSection[rdf#type -> owl#Class].
+bibo#BookSection[rdfs#comment -> "A section of a book."^^xsd#string].
+bibo#BookSection[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#BookSection[rdfs#label -> "Book Section"^^xsd#string].
+bibo#BookSection[rdfs#subClassOf -> bibo#DocumentPart].
+bibo#BookSection[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Brief[rdf#type -> owl#Class].
+bibo#Brief[rdfs#comment -> "A written argument submitted to a court."^^xsd#string].
+bibo#Brief[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Brief[rdfs#label -> "Brief"^^xsd#string].
+bibo#Brief[rdfs#subClassOf -> bibo#LegalCaseDocument].
+bibo#Brief[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Chapter[rdf#type -> owl#Class].
+bibo#Chapter[rdfs#comment -> "A chapter of a book."^^xsd#string].
+bibo#Chapter[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Chapter[rdfs#label -> "Chapter"^^xsd#string].
+bibo#Chapter[rdfs#subClassOf -> bibo#BookSection].
+bibo#Chapter[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Code[rdf#type -> owl#Class].
+bibo#Code[rdfs#comment -> "A collection of statutes."^^xsd#string].
+bibo#Code[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Code[rdfs#label -> "Code"^^xsd#string].
+bibo#Code[rdfs#subClassOf -> bibo#Periodical].
+"urn:X-bnode:bnode_bibo_0"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_0"^^\iri[owl#allValuesFrom -> bibo#Legislation].
+"urn:X-bnode:bnode_bibo_0"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Code[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_0"^^\iri].
+"urn:X-bnode:bnode_bibo_1"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_1"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_1"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Code[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_1"^^\iri].
+bibo#Code[ns#term_status -> "stable"^^xsd#string].
+
+bibo#CollectedDocument[rdf#type -> owl#Class].
+bibo#CollectedDocument[rdfs#comment -> "A document that simultaneously contains other documents."^^xsd#string].
+bibo#CollectedDocument[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#CollectedDocument[rdfs#label -> "Collected Document"^^xsd#string].
+bibo#CollectedDocument[rdfs#subClassOf -> bibo#Document].
+"urn:X-bnode:bnode_bibo_2"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_2"^^\iri[owl#allValuesFrom -> bibo#Document].
+"urn:X-bnode:bnode_bibo_2"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#CollectedDocument[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_2"^^\iri].
+"urn:X-bnode:bnode_bibo_3"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_3"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_3"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#CollectedDocument[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_3"^^\iri].
+bibo#CollectedDocument[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Collection[rdf#type -> owl#Class].
+bibo#Collection[rdfs#comment -> "A collection of Documents or Collections"^^xsd#string].
+bibo#Collection[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Collection[rdfs#label -> "Collection"^^xsd#string].
+"urn:X-bnode:bnode_bibo_4"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_5"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_5"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+"urn:X-bnode:bnode_bibo_4"^^\iri[owl#allValuesFrom -> "urn:X-bnode:bnode_bibo_5"^^\iri].
+"urn:X-bnode:bnode_bibo_4"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Collection[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_4"^^\iri].
+bibo#Collection[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Conference[rdf#type -> owl#Class].
+bibo#Conference[rdfs#comment -> "A meeting for consultation or discussion."^^xsd#string].
+bibo#Conference[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Conference[rdfs#label -> "Conference"^^xsd#string].
+bibo#Conference[rdfs#subClassOf -> event#Event].
+bibo#Conference[ns#term_status -> "stable"^^xsd#string].
+
+bibo#CourtReporter[rdf#type -> owl#Class].
+bibo#CourtReporter[rdfs#comment -> "A collection of legal cases."^^xsd#string].
+bibo#CourtReporter[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#CourtReporter[rdfs#label -> "Court Reporter"^^xsd#string].
+bibo#CourtReporter[rdfs#subClassOf -> bibo#Periodical].
+"urn:X-bnode:bnode_bibo_6"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_6"^^\iri[owl#allValuesFrom -> bibo#LegalDocument].
+"urn:X-bnode:bnode_bibo_6"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#CourtReporter[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_6"^^\iri].
+"urn:X-bnode:bnode_bibo_7"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_7"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_7"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#CourtReporter[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_7"^^\iri].
+bibo#CourtReporter[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Document[rdf#type -> owl#Class].
+bibo#Document[rdfs#comment -> "A document (noun) is a bounded physical representation of body of information designed with the capacity (and usually intent) to communicate. A document may manifest symbolic, diagrammatic or sensory-representational information."^^xsd#string].
+bibo#Document[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Document[rdfs#label -> "Document"^^xsd#string].
+bibo#Document[owl#equivalentClass -> foaf#Document].
+bibo#Document[ns#term_status -> "stable"^^xsd#string].
+
+bibo#DocumentPart[rdf#type -> owl#Class].
+bibo#DocumentPart[rdfs#comment -> "a distinct part of a larger document or collected document."^^xsd#string].
+bibo#DocumentPart[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#DocumentPart[rdfs#label -> "document part"^^xsd#string].
+bibo#DocumentPart[rdfs#subClassOf -> bibo#Document].
+"urn:X-bnode:bnode_bibo_8"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_8"^^\iri[owl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_8"^^\iri[owl#onProperty -> terms#isPartOf].
+bibo#DocumentPart[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_8"^^\iri].
+bibo#DocumentPart[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#DocumentStatus[rdf#type -> owl#Class].
+bibo#DocumentStatus[rdfs#comment -> "The status of the publication of a document."^^xsd#string].
+bibo#DocumentStatus[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#DocumentStatus[rdfs#label -> "Document Status"^^xsd#string].
+bibo#DocumentStatus[ns#term_status -> "stable"^^xsd#string].
+
+bibo#EditedBook[rdf#type -> owl#Class].
+bibo#EditedBook[rdfs#comment -> "An edited book."^^xsd#string].
+bibo#EditedBook[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#EditedBook[rdfs#label -> "Edited Book"^^xsd#string].
+bibo#EditedBook[rdfs#subClassOf -> bibo#CollectedDocument].
+bibo#EditedBook[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Email[rdf#type -> owl#Class].
+bibo#Email[rdfs#comment -> "A written communication addressed to a person or organization and transmitted electronically."^^xsd#string].
+bibo#Email[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Email[rdfs#label -> "EMail"^^xsd#string].
+bibo#Email[rdfs#subClassOf -> bibo#PersonalCommunicationDocument].
+bibo#Email[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Event[rdf#type -> owl#Class].
+
+bibo#Excerpt[rdf#type -> owl#Class].
+bibo#Excerpt[rdfs#comment -> "A passage selected from a larger work."^^xsd#string].
+bibo#Excerpt[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Excerpt[rdfs#label -> "Excerpt"^^xsd#string].
+bibo#Excerpt[rdfs#subClassOf -> bibo#DocumentPart].
+bibo#Excerpt[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Film[rdf#type -> owl#Class].
+bibo#Film[rdfs#comment -> "aka movie."^^xsd#string].
+bibo#Film[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Film[rdfs#label -> "Film"^^xsd#string].
+bibo#Film[rdfs#subClassOf -> bibo#AudioVisualDocument].
+bibo#Film[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Hearing[rdf#type -> owl#Class].
+bibo#Hearing[rdfs#comment -> "An instance or a session in which testimony and arguments are presented, esp. before an official, as a judge in a lawsuit."^^xsd#string].
+bibo#Hearing[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Hearing[rdfs#label -> "Hearing"^^xsd#string].
+bibo#Hearing[rdfs#subClassOf -> event#Event].
+bibo#Hearing[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Image[rdf#type -> owl#Class].
+bibo#Image[rdfs#comment -> "A document that presents visual or diagrammatic information."^^xsd#string].
+bibo#Image[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Image[rdfs#label -> "Image"^^xsd#string].
+bibo#Image[rdfs#subClassOf -> bibo#Document].
+bibo#Image[owl#equivalentClass -> foaf#Image].
+bibo#Image[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Interview[rdf#type -> owl#Class].
+bibo#Interview[rdfs#comment -> "A formalized discussion between two or more people."^^xsd#string].
+bibo#Interview[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Interview[rdfs#label -> "Interview"^^xsd#string].
+bibo#Interview[rdfs#subClassOf -> event#Event].
+bibo#Interview[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Issue[rdf#type -> owl#Class].
+bibo#Issue[rdfs#comment -> "something that is printed or published and distributed, esp. a given number of a periodical"^^xsd#string].
+bibo#Issue[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Issue[rdfs#label -> "Issue"^^xsd#string].
+bibo#Issue[rdfs#subClassOf -> bibo#CollectedDocument].
+"urn:X-bnode:bnode_bibo_9"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_9"^^\iri[owl#allValuesFrom -> bibo#Article].
+"urn:X-bnode:bnode_bibo_9"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Issue[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_9"^^\iri].
+"urn:X-bnode:bnode_bibo_10"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_10"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_10"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Issue[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_10"^^\iri].
+bibo#Issue[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Journal[rdf#type -> owl#Class].
+bibo#Journal[rdfs#comment -> "A periodical of scholarly journal Articles."^^xsd#string].
+bibo#Journal[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Journal[rdfs#label -> "Journal"^^xsd#string].
+bibo#Journal[rdfs#subClassOf -> bibo#Periodical].
+"urn:X-bnode:bnode_bibo_11"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_11"^^\iri[owl#allValuesFrom -> bibo#Issue].
+"urn:X-bnode:bnode_bibo_11"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Journal[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_11"^^\iri].
+"urn:X-bnode:bnode_bibo_12"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_12"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_12"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Journal[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_12"^^\iri].
+bibo#Journal[ns#term_status -> "stable"^^xsd#string].
+
+bibo#LegalCaseDocument[rdf#type -> owl#Class].
+bibo#LegalCaseDocument[rdfs#comment -> "A document accompanying a legal case."^^xsd#string].
+bibo#LegalCaseDocument[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#LegalCaseDocument[rdfs#label -> "Legal Case Document"^^xsd#string].
+bibo#LegalCaseDocument[rdfs#subClassOf -> bibo#LegalDocument].
+bibo#LegalCaseDocument[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#LegalDecision[rdf#type -> owl#Class].
+bibo#LegalDecision[rdfs#comment -> "A document containing an authoritative determination (as a decree or judgment) made after consideration of facts or law."^^xsd#string].
+bibo#LegalDecision[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#LegalDecision[rdfs#label -> "Decision"^^xsd#string].
+bibo#LegalDecision[rdfs#subClassOf -> bibo#LegalCaseDocument].
+bibo#LegalDecision[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#LegalDocument[rdf#type -> owl#Class].
+bibo#LegalDocument[rdfs#comment -> "A legal document; for example, a court decision, a brief, and so forth."^^xsd#string].
+bibo#LegalDocument[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#LegalDocument[rdfs#label -> "Legal Document"^^xsd#string].
+bibo#LegalDocument[rdfs#subClassOf -> bibo#Document].
+bibo#LegalDocument[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Legislation[rdf#type -> owl#Class].
+bibo#Legislation[rdfs#comment -> "A legal document proposing or enacting a law or a group of laws."^^xsd#string].
+bibo#Legislation[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Legislation[rdfs#label -> "Legislation"^^xsd#string].
+bibo#Legislation[rdfs#subClassOf -> bibo#LegalDocument].
+bibo#Legislation[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Letter[rdf#type -> owl#Class].
+bibo#Letter[rdfs#comment -> "A written or printed communication addressed to a person or organization and usually transmitted by mail."^^xsd#string].
+bibo#Letter[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Letter[rdfs#label -> "Letter"^^xsd#string].
+bibo#Letter[rdfs#subClassOf -> bibo#PersonalCommunicationDocument].
+bibo#Letter[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Magazine[rdf#type -> owl#Class].
+bibo#Magazine[rdfs#comment -> "A periodical of magazine Articles. A magazine is a publication that is issued periodically, usually bound in a paper cover, and typically contains essays, stories, poems, etc., by many writers, and often photographs and drawings, frequently specializing in a particular subject or area, as hobbies, news, or sports."^^xsd#string].
+bibo#Magazine[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Magazine[rdfs#label -> "Magazine"^^xsd#string].
+bibo#Magazine[rdfs#subClassOf -> bibo#Periodical].
+"urn:X-bnode:bnode_bibo_13"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_13"^^\iri[owl#allValuesFrom -> bibo#Issue].
+"urn:X-bnode:bnode_bibo_13"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Magazine[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_13"^^\iri].
+"urn:X-bnode:bnode_bibo_14"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_14"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_14"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Magazine[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_14"^^\iri].
+bibo#Magazine[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Manual[rdf#type -> owl#Class].
+bibo#Manual[rdfs#comment -> "A small reference book, especially one giving instructions."^^xsd#string].
+bibo#Manual[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Manual[rdfs#label -> "Manual"^^xsd#string].
+bibo#Manual[rdfs#subClassOf -> bibo#Document].
+bibo#Manual[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Manuscript[rdf#type -> owl#Class].
+bibo#Manuscript[rdfs#comment -> "An unpublished Document, which may also be submitted to a publisher for publication."^^xsd#string].
+bibo#Manuscript[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Manuscript[rdfs#label -> "Manuscript"^^xsd#string].
+bibo#Manuscript[rdfs#subClassOf -> bibo#Document].
+bibo#Manuscript[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Map[rdf#type -> owl#Class].
+bibo#Map[rdfs#comment -> "A graphical depiction of geographic features."^^xsd#string].
+bibo#Map[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Map[rdfs#label -> "Map"^^xsd#string].
+bibo#Map[rdfs#subClassOf -> bibo#Image].
+bibo#Map[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#MultiVolumeBook[rdf#type -> owl#Class].
+bibo#MultiVolumeBook[rdfs#comment -> "A loose, thematic, collection of Documents, often Books."^^xsd#string].
+bibo#MultiVolumeBook[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#MultiVolumeBook[rdfs#label -> "Series"^^xsd#string].
+bibo#MultiVolumeBook[rdfs#subClassOf -> bibo#Collection].
+"urn:X-bnode:bnode_bibo_15"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_15"^^\iri[owl#allValuesFrom -> bibo#Book].
+"urn:X-bnode:bnode_bibo_15"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#MultiVolumeBook[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_15"^^\iri].
+bibo#MultiVolumeBook[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Newspaper[rdf#type -> owl#Class].
+bibo#Newspaper[rdfs#comment -> "A periodical of documents, usually issued daily or weekly, containing current news, editorials, feature articles, and usually advertising."^^xsd#string].
+bibo#Newspaper[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Newspaper[rdfs#label -> "Newspaper"^^xsd#string].
+bibo#Newspaper[rdfs#subClassOf -> bibo#Periodical].
+"urn:X-bnode:bnode_bibo_16"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_16"^^\iri[owl#allValuesFrom -> bibo#Issue].
+"urn:X-bnode:bnode_bibo_16"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Newspaper[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_16"^^\iri].
+"urn:X-bnode:bnode_bibo_17"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_17"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_17"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Newspaper[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_17"^^\iri].
+bibo#Newspaper[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Note[rdf#type -> owl#Class].
+bibo#Note[rdfs#comment -> "Notes or annotations about a resource."^^xsd#string].
+bibo#Note[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Note[rdfs#label -> "Note"^^xsd#string].
+bibo#Note[rdfs#subClassOf -> bibo#Document].
+bibo#Note[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Patent[rdf#type -> owl#Class].
+bibo#Patent[rdfs#comment -> "A document describing the exclusive right granted by a government to an inventor to manufacture, use, or sell an invention for a certain number of years."^^xsd#string].
+bibo#Patent[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Patent[rdfs#label -> "Patent"^^xsd#string].
+bibo#Patent[rdfs#subClassOf -> bibo#Document].
+bibo#Patent[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Performance[rdf#type -> owl#Class].
+bibo#Performance[rdfs#comment -> "A public performance."^^xsd#string].
+bibo#Performance[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Performance[rdfs#label -> "Performance"^^xsd#string].
+bibo#Performance[rdfs#subClassOf -> event#Event].
+bibo#Performance[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Periodical[rdf#type -> owl#Class].
+bibo#Periodical[rdfs#comment -> "A group of related documents issued at regular intervals."^^xsd#string].
+bibo#Periodical[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Periodical[rdfs#label -> "Periodical"^^xsd#string].
+bibo#Periodical[rdfs#subClassOf -> bibo#Collection].
+"urn:X-bnode:bnode_bibo_18"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_18"^^\iri[owl#allValuesFrom -> bibo#Issue].
+"urn:X-bnode:bnode_bibo_18"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Periodical[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_18"^^\iri].
+"urn:X-bnode:bnode_bibo_19"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_19"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_19"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Periodical[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_19"^^\iri].
+bibo#Periodical[ns#term_status -> "stable"^^xsd#string].
+
+bibo#PersonalCommunication[rdf#type -> owl#Class].
+bibo#PersonalCommunication[rdfs#comment -> "A communication between an agent and one or more specific recipients."^^xsd#string].
+bibo#PersonalCommunication[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#PersonalCommunication[rdfs#label -> "Personal Communication"^^xsd#string].
+bibo#PersonalCommunication[rdfs#subClassOf -> event#Event].
+bibo#PersonalCommunication[ns#term_status -> "stable"^^xsd#string].
+
+bibo#PersonalCommunicationDocument[rdf#type -> owl#Class].
+bibo#PersonalCommunicationDocument[rdfs#comment -> "A personal communication manifested in some document."^^xsd#string].
+bibo#PersonalCommunicationDocument[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#PersonalCommunicationDocument[rdfs#label -> "Personal Communication Document"^^xsd#string].
+bibo#PersonalCommunicationDocument[rdfs#subClassOf -> bibo#Document].
+bibo#PersonalCommunicationDocument[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Proceedings[rdf#type -> owl#Class].
+bibo#Proceedings[rdfs#comment -> "A compilation of documents published from an event, such as a conference."^^xsd#string].
+bibo#Proceedings[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Proceedings[rdfs#label -> "Proceedings"^^xsd#string].
+bibo#Proceedings[rdfs#subClassOf -> bibo#Book].
+bibo#Proceedings[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Quote[rdf#type -> owl#Class].
+bibo#Quote[rdfs#comment -> "An excerpted collection of words."^^xsd#string].
+bibo#Quote[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Quote[rdfs#label -> "Quote"^^xsd#string].
+bibo#Quote[rdfs#subClassOf -> bibo#Excerpt].
+bibo#Quote[ns#term_status -> "stable"^^xsd#string].
+
+bibo#ReferenceSource[rdf#type -> owl#Class].
+bibo#ReferenceSource[rdfs#comment -> "A document that presents authoritative reference information, such as a dictionary or encylopedia ."^^xsd#string].
+bibo#ReferenceSource[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#ReferenceSource[rdfs#label -> "Reference Source"^^xsd#string].
+bibo#ReferenceSource[rdfs#subClassOf -> bibo#Document].
+bibo#ReferenceSource[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Report[rdf#type -> owl#Class].
+bibo#Report[rdfs#comment -> "A document describing an account or statement describing in detail an event, situation, or the like, usually as the result of observation, inquiry, etc.."^^xsd#string].
+bibo#Report[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Report[rdfs#label -> "Report"^^xsd#string].
+bibo#Report[rdfs#subClassOf -> bibo#Document].
+bibo#Report[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Series[rdf#type -> owl#Class].
+bibo#Series[rdfs#comment -> "A loose, thematic, collection of Documents, often Books."^^xsd#string].
+bibo#Series[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Series[rdfs#label -> "Series"^^xsd#string].
+bibo#Series[rdfs#subClassOf -> bibo#Collection].
+"urn:X-bnode:bnode_bibo_20"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_20"^^\iri[owl#allValuesFrom -> bibo#Document].
+"urn:X-bnode:bnode_bibo_20"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Series[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_20"^^\iri].
+bibo#Series[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Slide[rdf#type -> owl#Class].
+bibo#Slide[rdfs#comment -> "A slide in a slideshow"^^xsd#string].
+bibo#Slide[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Slide[rdfs#label -> "Slide"^^xsd#string].
+bibo#Slide[rdfs#subClassOf -> bibo#DocumentPart].
+bibo#Slide[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Slideshow[rdf#type -> owl#Class].
+bibo#Slideshow[rdfs#comment -> "A presentation of a series of slides, usually presented in front of an audience with written text and images."^^xsd#string].
+bibo#Slideshow[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Slideshow[rdfs#label -> "Slideshow"^^xsd#string].
+bibo#Slideshow[rdfs#subClassOf -> bibo#Document].
+"urn:X-bnode:bnode_bibo_21"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_21"^^\iri[owl#allValuesFrom -> bibo#Slide].
+"urn:X-bnode:bnode_bibo_21"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Slideshow[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_21"^^\iri].
+bibo#Slideshow[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Standard[rdf#type -> owl#Class].
+bibo#Standard[rdfs#comment -> "A document describing a standard"^^xsd#string].
+bibo#Standard[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Standard[rdfs#label -> "Standard"^^xsd#string].
+bibo#Standard[rdfs#subClassOf -> bibo#Document].
+bibo#Standard[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Statute[rdf#type -> owl#Class].
+bibo#Statute[rdfs#comment -> "A bill enacted into law."^^xsd#string].
+bibo#Statute[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Statute[rdfs#label -> "Statute"^^xsd#string].
+bibo#Statute[rdfs#subClassOf -> bibo#Legislation].
+bibo#Statute[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Thesis[rdf#type -> owl#Class].
+bibo#Thesis[rdfs#comment -> "A document created to summarize research findings associated with the completion of an academic degree."^^xsd#string].
+bibo#Thesis[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Thesis[rdfs#label -> "Thesis"^^xsd#string].
+bibo#Thesis[rdfs#subClassOf -> bibo#Document].
+bibo#Thesis[ns#term_status -> "stable"^^xsd#string].
+
+bibo#ThesisDegree[rdf#type -> owl#Class].
+bibo#ThesisDegree[rdfs#comment -> "The academic degree of a Thesis"^^xsd#string].
+bibo#ThesisDegree[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#ThesisDegree[rdfs#label -> "Thesis degree"^^xsd#string].
+bibo#ThesisDegree[ns#term_status -> "stable"^^xsd#string].
+
+bibo#Webpage[rdf#type -> owl#Class].
+bibo#Webpage[rdfs#comment -> "A web page is an online document available (at least initially) on the world wide web. A web page is written first and foremost to appear on the web, as distinct from other online resources such as books, manuscripts or audio documents which use the web primarily as a distribution mechanism alongside other more traditional methods such as print."^^xsd#string].
+bibo#Webpage[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Webpage[rdfs#label -> "Webpage"^^xsd#string].
+bibo#Webpage[rdfs#subClassOf -> bibo#Document].
+bibo#Webpage[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Website[rdf#type -> owl#Class].
+bibo#Website[rdfs#comment -> "A group of Webpages accessible on the Web."^^xsd#string].
+bibo#Website[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Website[rdfs#label -> "Website"^^xsd#string].
+bibo#Website[rdfs#subClassOf -> bibo#Collection].
+"urn:X-bnode:bnode_bibo_22"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_22"^^\iri[owl#allValuesFrom -> bibo#Webpage].
+"urn:X-bnode:bnode_bibo_22"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Website[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_22"^^\iri].
+"urn:X-bnode:bnode_bibo_23"^^\iri[rdf#type -> owl#Restriction].
+"urn:X-bnode:bnode_bibo_23"^^\iri[owl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+"urn:X-bnode:bnode_bibo_23"^^\iri[owl#onProperty -> terms#hasPart].
+bibo#Website[rdfs#subClassOf -> "urn:X-bnode:bnode_bibo_23"^^\iri].
+bibo#Website[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#Workshop[rdf#type -> owl#Class].
+bibo#Workshop[rdfs#comment -> "A seminar, discussion group, or the like, that emphasizes zxchange of ideas and the demonstration and application of techniques, skills, etc."^^xsd#string].
+bibo#Workshop[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#Workshop[rdfs#label -> "Workshop"^^xsd#string].
+bibo#Workshop[rdfs#subClassOf -> event#Event].
+bibo#Workshop[ns#term_status -> "stable"^^xsd#string].
+
+bibo#abstract[rdf#type -> owl#DatatypeProperty].
+bibo#abstract[rdfs#comment -> "A summary of the resource."^^xsd#string].
+bibo#abstract[rdfs#domain -> rdfs#Resource].
+bibo#abstract[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^xsd#anyURI].
+bibo#abstract[rdfs#label -> "abstract"^^xsd#string].
+bibo#abstract[rdfs#range -> rdfs#Literal].
+bibo#abstract[ns#term_status -> "stable"^^xsd#string].
+
+bibo#affirmedBy[rdf#type -> owl#ObjectProperty].
+bibo#affirmedBy[rdfs#comment -> "A legal decision that affirms a ruling."^^xsd#string].
+bibo#affirmedBy[rdfs#domain -> bibo#LegalDecision].
+bibo#affirmedBy[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#affirmedBy[rdfs#range -> bibo#LegalDecision].
+bibo#affirmedBy[rdfs#subPropertyOf -> bibo#subsequentLegalDecision].
+
+bibo#annotates[rdf#type -> owl#ObjectProperty].
+bibo#annotates[rdfs#comment -> "Critical or explanatory note for a Document."^^xsd#string].
+bibo#annotates[rdfs#domain -> bibo#Note].
+bibo#annotates[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#annotates[rdfs#label -> "annotates"^^xsd#string].
+bibo#annotates[rdfs#range -> rdfs#Resource].
+bibo#annotates[rdfs#subPropertyOf -> terms#relation].
+bibo#annotates[ns#term_status -> "stable"^^xsd#string].
+
+bibo#argued[rdf#type -> owl#DatatypeProperty].
+bibo#argued[rdfs#comment -> "The date on which a legal case is argued before a court. Date is of format xsd:date"^^xsd#string].
+bibo#argued[rdfs#domain -> bibo#LegalDocument].
+bibo#argued[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#argued[rdfs#label -> "date argued"^^xsd#string].
+bibo#argued[rdfs#range -> rdfs#Literal].
+bibo#argued[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#asin[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_24"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_24"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#asin[rdfs#domain -> "urn:X-bnode:bnode_bibo_24"^^\iri].
+bibo#asin[rdfs#range -> rdfs#Literal].
+bibo#asin[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#authorList[rdf#type -> owl#ObjectProperty].
+bibo#authorList[rdfs#comment -> "An ordered list of authors. Normally, this list is seen as a priority list that order authors by importance."^^xsd#string].
+bibo#authorList[rdfs#domain -> bibo#Document].
+bibo#authorList[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#authorList[rdfs#label -> "list of authors"^^xsd#string].
+"urn:X-bnode:bnode_bibo_25"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_25"^^\iri[owl#unionOf -> {rdf#List, rdf#Seq}].
+bibo#authorList[rdfs#range -> "urn:X-bnode:bnode_bibo_25"^^\iri].
+bibo#authorList[rdfs#subPropertyOf -> bibo#contributorList].
+bibo#authorList[ns#term_status -> "stable"^^xsd#string].
+
+bibo#bdarcus[rdf#type -> owl#Thing].
+bibo#bdarcus[rdf#type -> foaf#Person].
+bibo#bdarcus[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#bdarcus[rdfs#seeAlso -> "http://purl.org/net/darcusb/info#me"^^xsd#anyURI].
+bibo#bdarcus[foaf#name -> "Bruce D'Arcus"^^xsd#string].
+
+bibo#chapter[rdf#type -> owl#DatatypeProperty].
+bibo#chapter[rdfs#comment -> "An chapter number"^^xsd#string].
+bibo#chapter[rdfs#domain -> bibo#BookSection].
+bibo#chapter[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#chapter[rdfs#label -> "chapter"^^xsd#string].
+bibo#chapter[rdfs#range -> rdfs#Literal].
+bibo#chapter[rdfs#subPropertyOf -> bibo#locator].
+bibo#chapter[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#citedBy[rdf#type -> owl#ObjectProperty].
+bibo#citedBy[rdfs#comment -> "Relates a document to another document that cites the
+first document."^^xsd#string].
+bibo#citedBy[rdfs#domain -> bibo#Document].
+bibo#citedBy[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#citedBy[rdfs#label -> "cited by"^^xsd#string].
+bibo#citedBy[rdfs#range -> bibo#Document].
+bibo#citedBy[owl#inverseOf -> bibo#cites].
+bibo#citedBy[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#cites[rdf#type -> owl#ObjectProperty].
+bibo#cites[rdfs#comment -> "Relates a document to another document that is cited
+by the first document as reference, comment, review, quotation or for
+another purpose."^^xsd#string].
+bibo#cites[rdfs#domain -> bibo#Document].
+bibo#cites[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#cites[rdfs#label -> "cites"^^xsd#string].
+bibo#cites[rdfs#range -> bibo#Document].
+bibo#cites[rdfs#subPropertyOf -> terms#references].
+bibo#cites[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#coden[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_26"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_26"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#coden[rdfs#domain -> "urn:X-bnode:bnode_bibo_26"^^\iri].
+bibo#coden[rdfs#range -> rdfs#Literal].
+bibo#coden[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#content[rdf#type -> owl#DatatypeProperty].
+bibo#content[rdfs#comment -> "This property is for a plain-text rendering of the content of a Document. While the plain-text content of an entire document could be described by this property."^^xsd#string].
+bibo#content[rdfs#domain -> bibo#Document].
+bibo#content[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#content[rdfs#label -> "content"^^xsd#string].
+bibo#content[rdfs#range -> rdfs#Literal].
+bibo#content[owl#deprecated -> "true"^^xsd#boolean].
+bibo#content[ns#term_status -> "unstable"^^xsd#string].
+bibo#content[skos#historyNote -> "bibo:content has been deprecated; we recommend to use \"rdf:value\" for this purpose. Here is the rational behind this choice: http://www.w3.org/TR/2004/REC-rdf-primer-20040210/#rdfvalue"^^xsd#string].
+
+bibo#contributorList[rdf#type -> owl#ObjectProperty].
+bibo#contributorList[rdfs#comment -> "An ordered list of contributors. Normally, this list is seen as a priority list that order contributors by importance."^^xsd#string].
+bibo#contributorList[rdfs#domain -> bibo#Document].
+bibo#contributorList[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#contributorList[rdfs#label -> "list of contributors"^^xsd#string].
+"urn:X-bnode:bnode_bibo_27"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_27"^^\iri[owl#unionOf -> {rdf#List, rdf#Seq}].
+bibo#contributorList[rdfs#range -> "urn:X-bnode:bnode_bibo_27"^^\iri].
+bibo#contributorList[ns#term_status -> "stable"^^xsd#string].
+
+bibo#court[rdf#type -> owl#ObjectProperty].
+bibo#court[rdfs#comment -> "A court associated with a legal document; for example, that which issues a decision."^^xsd#string].
+bibo#court[rdfs#domain -> bibo#LegalDocument].
+bibo#court[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#court[rdfs#label -> "court"^^xsd#string].
+bibo#court[rdfs#range -> foaf#Organization].
+bibo#court[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#degree[rdf#type -> owl#ObjectProperty].
+bibo#degree[rdfs#comment -> "The thesis degree."^^xsd#string].
+bibo#degree[rdfs#domain -> bibo#Thesis].
+bibo#degree[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#degree[rdfs#label -> "degree"^^xsd#string].
+bibo#degree[rdfs#range -> bibo#ThesisDegree].
+bibo#degree[ns#term_status -> "unstable"^^xsd#string].
+bibo#degree[skos#editorialNote -> "We are not defining, using an enumeration, the range of the bibo:degree to the defined list of bibo:ThesisDegree. We won't do it because we want people to be able to define new degress if needed by some special usecases. Creating such an enumeration would restrict this to happen."^^xsd#string].
+
+degrees#ma[rdf#type -> bibo#ThesisDegree].
+degrees#ma[rdf#type -> owl#Thing].
+degrees#ma[rdfs#comment -> "masters degree in arts"^^xsd#string].
+degrees#ma[rdfs#label -> "M.A."^^xsd#string].
+degrees#ma[ns#term_status -> "stable"^^xsd#string].
+
+degrees#ms[rdf#type -> bibo#ThesisDegree].
+degrees#ms[rdf#type -> owl#Thing].
+degrees#ms[rdfs#comment -> "masters degree in science"^^xsd#string].
+degrees#ms[rdfs#label -> "M.S."^^xsd#string].
+degrees#ms[ns#term_status -> "stable"^^xsd#string].
+
+degrees#phd[rdf#type -> bibo#ThesisDegree].
+degrees#phd[rdf#type -> owl#Thing].
+degrees#phd[rdfs#comment -> "PhD degree"^^xsd#string].
+degrees#phd[rdfs#label -> "PhD degree"^^xsd#string].
+degrees#phd[ns#term_status -> "stable"^^xsd#string].
+
+bibo#director[rdf#type -> owl#ObjectProperty].
+bibo#director[rdfs#comment -> "A Film director."^^xsd#string].
+bibo#director[rdfs#domain -> bibo#AudioVisualDocument].
+bibo#director[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#director[rdfs#label -> "director"^^xsd#string].
+bibo#director[rdfs#range -> foaf#Agent].
+bibo#director[rdfs#subPropertyOf -> terms#contributor].
+bibo#director[ns#term_status -> "stable"^^xsd#string].
+
+bibo#distributor[rdf#type -> owl#ObjectProperty].
+bibo#distributor[rdfs#comment -> "Distributor of a document or a collection of documents."^^xsd#string].
+"urn:X-bnode:bnode_bibo_28"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_28"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#distributor[rdfs#domain -> "urn:X-bnode:bnode_bibo_28"^^\iri].
+bibo#distributor[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#distributor[rdfs#label -> "distributor"^^xsd#string].
+bibo#distributor[rdfs#range -> foaf#Agent].
+bibo#distributor[ns#term_status -> "stable"^^xsd#string].
+
+bibo#doi[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_29"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_29"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#doi[rdfs#domain -> "urn:X-bnode:bnode_bibo_29"^^\iri].
+bibo#doi[rdfs#range -> rdfs#Literal].
+bibo#doi[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#eanucc13[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_30"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_30"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#eanucc13[rdfs#domain -> "urn:X-bnode:bnode_bibo_30"^^\iri].
+bibo#eanucc13[rdfs#range -> rdfs#Literal].
+bibo#eanucc13[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#edition[rdf#type -> owl#DatatypeProperty].
+bibo#edition[rdfs#comment -> "The name defining a special edition of a document. Normally its a literal value composed of a version number and words."^^xsd#string].
+bibo#edition[rdfs#domain -> bibo#Document].
+bibo#edition[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#edition[rdfs#label -> "edition"^^xsd#string].
+bibo#edition[rdfs#range -> rdfs#Literal].
+bibo#edition[ns#term_status -> "stable"^^xsd#string].
+
+bibo#editor[rdf#type -> owl#ObjectProperty].
+bibo#editor[rdfs#comment -> "A person having managerial and sometimes policy-making responsibility for the editorial part of a publishing firm or of a newspaper, magazine, or other publication."^^xsd#string].
+"urn:X-bnode:bnode_bibo_31"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_31"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#editor[rdfs#domain -> "urn:X-bnode:bnode_bibo_31"^^\iri].
+bibo#editor[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#editor[rdfs#label -> "editor"^^xsd#string].
+bibo#editor[rdfs#range -> foaf#Agent].
+bibo#editor[rdfs#subPropertyOf -> terms#contributor].
+bibo#editor[ns#term_status -> "stable"^^xsd#string].
+
+bibo#editorList[rdf#type -> owl#ObjectProperty].
+bibo#editorList[rdfs#comment -> "An ordered list of editors. Normally, this list is seen as a priority list that order editors by importance."^^xsd#string].
+bibo#editorList[rdfs#domain -> bibo#Document].
+bibo#editorList[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#editorList[rdfs#label -> "list of editors"^^xsd#string].
+"urn:X-bnode:bnode_bibo_32"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_32"^^\iri[owl#unionOf -> {rdf#List, rdf#Seq}].
+bibo#editorList[rdfs#range -> "urn:X-bnode:bnode_bibo_32"^^\iri].
+bibo#editorList[rdfs#subPropertyOf -> bibo#contributorList].
+bibo#editorList[ns#term_status -> "stable"^^xsd#string].
+
+bibo#eissn[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_33"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_33"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#eissn[rdfs#domain -> "urn:X-bnode:bnode_bibo_33"^^\iri].
+bibo#eissn[rdfs#range -> rdfs#Literal].
+bibo#eissn[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#fgiasson[rdf#type -> owl#Thing].
+bibo#fgiasson[rdf#type -> foaf#Person].
+bibo#fgiasson[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#fgiasson[rdfs#seeAlso -> "http://fgiasson.com/me/"^^xsd#anyURI].
+bibo#fgiasson[foaf#name -> "Frederick Giasson"^^xsd#string].
+
+bibo#gtin14[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_34"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_34"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#gtin14[rdfs#domain -> "urn:X-bnode:bnode_bibo_34"^^\iri].
+bibo#gtin14[rdfs#range -> rdfs#Literal].
+bibo#gtin14[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#handle[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_35"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_35"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#handle[rdfs#domain -> "urn:X-bnode:bnode_bibo_35"^^\iri].
+bibo#handle[rdfs#range -> rdfs#Literal].
+bibo#handle[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#identifier[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_36"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_36"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#identifier[rdfs#domain -> "urn:X-bnode:bnode_bibo_36"^^\iri].
+bibo#identifier[rdfs#range -> rdfs#Literal].
+
+bibo#interviewee[rdf#type -> owl#ObjectProperty].
+bibo#interviewee[rdfs#comment -> "An agent that is interviewed by another agent."^^xsd#string].
+bibo#interviewee[rdfs#domain -> foaf#Agent].
+bibo#interviewee[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#interviewee[rdfs#label -> "interviewee"^^xsd#string].
+bibo#interviewee[rdfs#range -> foaf#Agent].
+bibo#interviewee[rdfs#subPropertyOf -> terms#contributor].
+bibo#interviewee[ns#term_status -> "stable"^^xsd#string].
+
+bibo#interviewer[rdf#type -> owl#ObjectProperty].
+bibo#interviewer[rdfs#comment -> "An agent that interview another agent."^^xsd#string].
+bibo#interviewer[rdfs#domain -> foaf#Agent].
+bibo#interviewer[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#interviewer[rdfs#label -> "interviewer"^^xsd#string].
+bibo#interviewer[rdfs#range -> foaf#Agent].
+bibo#interviewer[rdfs#subPropertyOf -> terms#contributor].
+bibo#interviewer[ns#term_status -> "stable"^^xsd#string].
+
+bibo#isbn[rdf#type -> owl#DatatypeProperty].
+bibo#isbn[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#isbn10[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_37"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_37"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#isbn10[rdfs#domain -> "urn:X-bnode:bnode_bibo_37"^^\iri].
+bibo#isbn10[rdfs#range -> rdfs#Literal].
+bibo#isbn10[rdfs#subPropertyOf -> bibo#isbn].
+
+bibo#isbn13[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_38"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_38"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#isbn13[rdfs#domain -> "urn:X-bnode:bnode_bibo_38"^^\iri].
+bibo#isbn13[rdfs#range -> rdfs#Literal].
+bibo#isbn13[rdfs#subPropertyOf -> bibo#isbn].
+
+bibo#issn[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_39"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_39"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#issn[rdfs#domain -> "urn:X-bnode:bnode_bibo_39"^^\iri].
+bibo#issn[rdfs#range -> rdfs#Literal].
+bibo#issn[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#issue[rdf#type -> owl#DatatypeProperty].
+bibo#issue[rdfs#comment -> "An issue number"^^xsd#string].
+bibo#issue[rdfs#domain -> bibo#Issue].
+bibo#issue[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#issue[rdfs#label -> "issue"^^xsd#string].
+bibo#issue[rdfs#range -> rdfs#Literal].
+bibo#issue[rdfs#subPropertyOf -> bibo#locator].
+bibo#issue[ns#term_status -> "stable"^^xsd#string].
+
+bibo#issuer[rdf#type -> owl#ObjectProperty].
+bibo#issuer[rdfs#comment -> "An entity responsible for issuing often informally published documents such as press releases, reports, etc."^^xsd#string].
+"urn:X-bnode:bnode_bibo_40"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_40"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#issuer[rdfs#domain -> "urn:X-bnode:bnode_bibo_40"^^\iri].
+bibo#issuer[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#issuer[rdfs#label -> "issuer"^^xsd#string].
+bibo#issuer[rdfs#range -> foaf#Agent].
+bibo#issuer[rdfs#subPropertyOf -> terms#publisher].
+bibo#issuer[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#lccn[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_41"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_41"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#lccn[rdfs#domain -> "urn:X-bnode:bnode_bibo_41"^^\iri].
+bibo#lccn[rdfs#range -> rdfs#Literal].
+bibo#lccn[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#locator[rdf#type -> owl#DatatypeProperty].
+bibo#locator[rdfs#comment -> "A description (often numeric) that locates an item within a containing document or collection."^^xsd#string].
+bibo#locator[rdfs#domain -> bibo#Document].
+bibo#locator[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#locator[rdfs#label -> "locator"^^xsd#string].
+bibo#locator[rdfs#range -> rdfs#Literal].
+bibo#locator[ns#term_status -> "stable"^^xsd#string].
+
+bibo#numPages[rdf#type -> owl#DatatypeProperty].
+bibo#numPages[rdfs#comment -> "The number of pages contained in a document"^^xsd#string].
+bibo#numPages[rdfs#domain -> bibo#Document].
+bibo#numPages[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#numPages[rdfs#label -> "number of pages"^^xsd#string].
+bibo#numPages[rdfs#range -> rdfs#Literal].
+bibo#numPages[ns#term_status -> "stable"^^xsd#string].
+
+bibo#numVolumes[rdf#type -> owl#DatatypeProperty].
+bibo#numVolumes[rdfs#comment -> "The number of volumes contained in a collection of documents (usually a series, periodical, etc.)."^^xsd#string].
+bibo#numVolumes[rdfs#domain -> bibo#Collection].
+bibo#numVolumes[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#numVolumes[rdfs#label -> "number of volumes"^^xsd#string].
+bibo#numVolumes[rdfs#range -> rdfs#Literal].
+bibo#numVolumes[ns#term_status -> "stable"^^xsd#string].
+
+bibo#number[rdf#type -> owl#DatatypeProperty].
+bibo#number[rdfs#comment -> "A generic item or document number. Not to be confused with issue number."^^xsd#string].
+bibo#number[rdfs#domain -> bibo#Document].
+bibo#number[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#number[rdfs#label -> "number"^^xsd#string].
+bibo#number[rdfs#range -> rdfs#Literal].
+bibo#number[ns#term_status -> "stable"^^xsd#string].
+
+bibo#oclcnum[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_42"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_42"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#oclcnum[rdfs#domain -> "urn:X-bnode:bnode_bibo_42"^^\iri].
+bibo#oclcnum[rdfs#range -> rdfs#Literal].
+bibo#oclcnum[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#organizer[rdf#type -> owl#ObjectProperty].
+bibo#organizer[rdfs#comment -> "The organizer of an event; includes conference organizers, but also government agencies or other bodies that are responsible for conducting hearings."^^xsd#string].
+bibo#organizer[rdfs#domain -> event#Event].
+bibo#organizer[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#organizer[rdfs#label -> "organizer"^^xsd#string].
+bibo#organizer[rdfs#range -> foaf#Agent].
+bibo#organizer[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#owner[rdf#type -> owl#ObjectProperty].
+bibo#owner[rdfs#comment -> "Owner of a document or a collection of documents."^^xsd#string].
+"urn:X-bnode:bnode_bibo_43"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_43"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#owner[rdfs#domain -> "urn:X-bnode:bnode_bibo_43"^^\iri].
+bibo#owner[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#owner[rdfs#label -> "owner"^^xsd#string].
+bibo#owner[rdfs#range -> foaf#Agent].
+bibo#owner[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#pageEnd[rdf#type -> owl#DatatypeProperty].
+bibo#pageEnd[rdfs#comment -> "Ending page number within a continuous page range."^^xsd#string].
+bibo#pageEnd[rdfs#domain -> bibo#Document].
+bibo#pageEnd[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#pageEnd[rdfs#label -> "page end"^^xsd#string].
+bibo#pageEnd[rdfs#range -> rdfs#Literal].
+bibo#pageEnd[rdfs#subPropertyOf -> bibo#locator].
+bibo#pageEnd[ns#term_status -> "stable"^^xsd#string].
+
+bibo#pageStart[rdf#type -> owl#DatatypeProperty].
+bibo#pageStart[rdfs#comment -> "Starting page number within a continuous page range."^^xsd#string].
+bibo#pageStart[rdfs#domain -> bibo#Document].
+bibo#pageStart[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#pageStart[rdfs#label -> "page start"^^xsd#string].
+bibo#pageStart[rdfs#range -> rdfs#Literal].
+bibo#pageStart[rdfs#subPropertyOf -> bibo#locator].
+bibo#pageStart[ns#term_status -> "stable"^^xsd#string].
+
+bibo#pages[rdf#type -> owl#DatatypeProperty].
+bibo#pages[rdfs#comment -> "A string of non-contiguous page spans that locate a Document within a Collection. Example: 23-25, 34, 54-56. For continuous page ranges, use the pageStart and pageEnd properties."^^xsd#string].
+bibo#pages[rdfs#domain -> bibo#Document].
+bibo#pages[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#pages[rdfs#label -> "pages"^^xsd#string].
+bibo#pages[rdfs#range -> rdfs#Literal].
+bibo#pages[rdfs#subPropertyOf -> bibo#locator].
+bibo#pages[ns#term_status -> "stable"^^xsd#string].
+
+bibo#performer[rdf#type -> owl#ObjectProperty].
+bibo#performer[rdfs#domain -> bibo#Performance].
+bibo#performer[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#performer[rdfs#label -> "performer"^^xsd#string].
+bibo#performer[rdfs#range -> foaf#Agent].
+bibo#performer[rdfs#subPropertyOf -> terms#contributor].
+bibo#performer[ns#term_status -> "stable"^^xsd#string].
+
+bibo#pmid[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_44"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_44"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#pmid[rdfs#domain -> "urn:X-bnode:bnode_bibo_44"^^\iri].
+bibo#pmid[rdfs#range -> rdfs#Literal].
+bibo#pmid[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#prefixName[rdf#type -> owl#DatatypeProperty].
+bibo#prefixName[rdfs#comment -> "The prefix of a name"^^xsd#string].
+bibo#prefixName[rdfs#domain -> foaf#Agent].
+bibo#prefixName[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#prefixName[rdfs#label -> "prefix name"^^xsd#string].
+bibo#prefixName[rdfs#range -> rdfs#Literal].
+bibo#prefixName[ns#term_status -> "stable"^^xsd#string].
+
+bibo#presentedAt[rdf#type -> owl#ObjectProperty].
+bibo#presentedAt[rdfs#comment -> "Relates a document to an event; for example, a paper to a conference."^^xsd#string].
+bibo#presentedAt[rdfs#domain -> bibo#Document].
+bibo#presentedAt[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#presentedAt[rdfs#label -> "presented at"^^xsd#string].
+bibo#presentedAt[rdfs#range -> bibo#Event].
+bibo#presentedAt[rdfs#subPropertyOf -> event#produced_in].
+bibo#presentedAt[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#presents[rdf#type -> owl#ObjectProperty].
+bibo#presents[rdfs#comment -> "Relates an event to associated documents; for example, conference to a paper."^^xsd#string].
+bibo#presents[rdfs#domain -> bibo#Event].
+bibo#presents[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#presents[rdfs#label -> "presented at"^^xsd#string].
+bibo#presents[rdfs#range -> bibo#Document].
+bibo#presents[rdfs#subPropertyOf -> event#product].
+bibo#presents[owl#inverseOf -> bibo#presentedAt].
+bibo#presents[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#producer[rdf#type -> owl#ObjectProperty].
+bibo#producer[rdfs#comment -> "Producer of a document or a collection of documents."^^xsd#string].
+"urn:X-bnode:bnode_bibo_45"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_45"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#producer[rdfs#domain -> "urn:X-bnode:bnode_bibo_45"^^\iri].
+bibo#producer[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#producer[rdfs#label -> "producer"^^xsd#string].
+bibo#producer[rdfs#range -> foaf#Agent].
+bibo#producer[ns#term_status -> "stable"^^xsd#string].
+
+bibo#recipient[rdf#type -> owl#ObjectProperty].
+bibo#recipient[rdfs#comment -> "An agent that receives a communication document."^^xsd#string].
+bibo#recipient[rdfs#domain -> bibo#PersonalCommunicationDocument].
+bibo#recipient[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#recipient[rdfs#label -> "recipient"^^xsd#string].
+bibo#recipient[rdfs#range -> foaf#Agent].
+bibo#recipient[ns#term_status -> "stable"^^xsd#string].
+
+bibo#reproducedIn[rdf#type -> owl#ObjectProperty].
+bibo#reproducedIn[rdfs#comment -> "The resource in which another resource is reproduced."^^xsd#string].
+bibo#reproducedIn[rdfs#domain -> bibo#Document].
+bibo#reproducedIn[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#reproducedIn[rdfs#range -> bibo#Document].
+bibo#reproducedIn[rdfs#subPropertyOf -> terms#isPartOf].
+bibo#reproducedIn[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#reversedBy[rdf#type -> owl#ObjectProperty].
+bibo#reversedBy[rdfs#comment -> "A legal decision that reverses a ruling."^^xsd#string].
+bibo#reversedBy[rdfs#domain -> bibo#LegalDecision].
+bibo#reversedBy[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#reversedBy[rdfs#range -> bibo#LegalDecision].
+bibo#reversedBy[rdfs#subPropertyOf -> bibo#subsequentLegalDecision].
+
+bibo#reviewOf[rdf#type -> owl#ObjectProperty].
+bibo#reviewOf[rdfs#comment -> "Relates a review document to a reviewed thing (resource, item, etc.)."^^xsd#string].
+bibo#reviewOf[rdfs#domain -> bibo#Document].
+bibo#reviewOf[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#reviewOf[rdfs#label -> "review of"^^xsd#string].
+bibo#reviewOf[rdfs#range -> rdfs#Resource].
+bibo#reviewOf[rdfs#subPropertyOf -> terms#relation].
+bibo#reviewOf[ns#term_status -> "stable"^^xsd#string].
+
+bibo#section[rdf#type -> owl#DatatypeProperty].
+bibo#section[rdfs#comment -> "A section number"^^xsd#string].
+bibo#section[rdfs#domain -> bibo#Document].
+bibo#section[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#section[rdfs#label -> "section"^^xsd#string].
+bibo#section[rdfs#range -> rdfs#Literal].
+bibo#section[rdfs#subPropertyOf -> bibo#locator].
+bibo#section[ns#term_status -> "unstable"^^xsd#string].
+bibo#section[skos#example -> "Di Rado, Alicia. 1995. Trekking through college: Classes explore
+modern society using the world of Star trek. Los Angeles Times, March
+15, sec. A, p. 3."^^xsd#string].
+
+bibo#shortDescription[rdf#type -> owl#DatatypeProperty].
+bibo#shortDescription[rdfs#domain -> bibo#Document].
+bibo#shortDescription[rdfs#range -> rdfs#Literal].
+
+bibo#shortTitle[rdf#type -> owl#DatatypeProperty].
+bibo#shortTitle[rdfs#comment -> "The abbreviation of a title."^^xsd#string].
+bibo#shortTitle[rdfs#domain -> bibo#Document].
+bibo#shortTitle[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#shortTitle[rdfs#label -> "short title"^^xsd#string].
+bibo#shortTitle[rdfs#range -> rdfs#Literal].
+bibo#shortTitle[ns#term_status -> "stable"^^xsd#string].
+
+bibo#sici[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_46"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_46"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#sici[rdfs#domain -> "urn:X-bnode:bnode_bibo_46"^^\iri].
+bibo#sici[rdfs#range -> rdfs#Literal].
+bibo#sici[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#status[rdf#type -> owl#ObjectProperty].
+bibo#status[rdfs#comment -> "The publication status of (typically academic) content."^^xsd#string].
+bibo#status[rdfs#domain -> bibo#Document].
+bibo#status[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#status[rdfs#label -> "status"^^xsd#string].
+bibo#status[rdfs#range -> bibo#DocumentStatus].
+bibo#status[ns#term_status -> "stable"^^xsd#string].
+bibo#status[skos#editorialNote -> "We are not defining, using an enumeration, the range of the bibo:status to the defined list of bibo:DocumentStatus. We won't do it because we want people to be able to define new status if needed by some special usecases. Creating such an enumeration would restrict this to happen."^^xsd#string].
+
+status#accepted[rdf#type -> bibo#DocumentStatus].
+status#accepted[rdf#type -> owl#Thing].
+status#accepted[rdfs#comment -> "Accepted for publication after peer reviewing."^^xsd#string].
+status#accepted[rdfs#label -> "accepted"^^xsd#string].
+status#accepted[ns#term_status -> "stable"^^xsd#string].
+
+status#draft[rdf#type -> bibo#DocumentStatus].
+status#draft[rdf#type -> owl#Thing].
+status#draft[rdfs#comment -> "Document drafted"^^xsd#string].
+status#draft[rdfs#label -> "draft"^^xsd#string].
+status#draft[ns#term_status -> "stable"^^xsd#string].
+
+status#forthcoming[rdf#type -> bibo#DocumentStatus].
+status#forthcoming[rdf#type -> owl#Thing].
+status#forthcoming[rdfs#comment -> "Document to be published"^^xsd#string].
+status#forthcoming[rdfs#label -> "forthcoming"^^xsd#string].
+status#forthcoming[ns#term_status -> "stable"^^xsd#string].
+
+status#legal[rdf#type -> bibo#DocumentStatus].
+status#legal[rdf#type -> owl#Thing].
+status#legal[rdfs#comment -> "Legal document"^^xsd#string].
+status#legal[rdfs#label -> "legal"^^xsd#string].
+status#legal[ns#term_status -> "stable"^^xsd#string].
+
+status#nonPeerReviewed[rdf#type -> bibo#DocumentStatus].
+status#nonPeerReviewed[rdf#type -> owl#Thing].
+status#nonPeerReviewed[rdfs#comment -> "A document that is not peer reviewed"^^xsd#string].
+status#nonPeerReviewed[rdfs#label -> "non peer reviewed"^^xsd#string].
+status#nonPeerReviewed[ns#term_status -> "stable"^^xsd#string].
+
+status#peerReviewed[rdf#type -> bibo#DocumentStatus].
+status#peerReviewed[rdf#type -> owl#Thing].
+status#peerReviewed[rdfs#comment -> "The process by which articles are chosen to be included in a refereed journal. An editorial board consisting of experts in the same field as the author review the article and decide if it is authoritative enough for publication."^^xsd#string].
+status#peerReviewed[rdfs#label -> "peer reviewed"^^xsd#string].
+status#peerReviewed[ns#term_status -> "stable"^^xsd#string].
+
+status#published[rdf#type -> bibo#DocumentStatus].
+status#published[rdf#type -> owl#Thing].
+status#published[rdfs#comment -> "Published document"^^xsd#string].
+status#published[rdfs#label -> "published"^^xsd#string].
+status#published[ns#term_status -> "stable"^^xsd#string].
+
+status#rejected[rdf#type -> bibo#DocumentStatus].
+status#rejected[rdf#type -> owl#Thing].
+status#rejected[rdfs#comment -> "Rejected for publication after peer reviewing."^^xsd#string].
+status#rejected[rdfs#label -> "rejected"^^xsd#string].
+status#rejected[ns#term_status -> "stable"^^xsd#string].
+
+status#unpublished[rdf#type -> bibo#DocumentStatus].
+status#unpublished[rdf#type -> owl#Thing].
+status#unpublished[rdfs#comment -> "Unpublished document"^^xsd#string].
+status#unpublished[rdfs#label -> "unpublished"^^xsd#string].
+status#unpublished[ns#term_status -> "stable"^^xsd#string].
+
+bibo#subsequentLegalDecision[rdf#type -> owl#ObjectProperty].
+bibo#subsequentLegalDecision[rdfs#comment -> "A legal decision on appeal that takes action on a case (affirming it, reversing it, etc.)."^^xsd#string].
+bibo#subsequentLegalDecision[rdfs#domain -> bibo#LegalDecision].
+bibo#subsequentLegalDecision[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#subsequentLegalDecision[rdfs#range -> bibo#LegalDecision].
+bibo#subsequentLegalDecision[rdfs#subPropertyOf -> terms#isReferencedBy].
+
+bibo#suffixName[rdf#type -> owl#DatatypeProperty].
+bibo#suffixName[rdfs#comment -> "The suffix of a name"^^xsd#string].
+bibo#suffixName[rdfs#domain -> foaf#Agent].
+bibo#suffixName[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#suffixName[rdfs#label -> "suffix name"^^xsd#string].
+bibo#suffixName[rdfs#range -> rdfs#Literal].
+bibo#suffixName[ns#term_status -> "stable"^^xsd#string].
+
+bibo#transcriptOf[rdf#type -> owl#ObjectProperty].
+bibo#transcriptOf[rdfs#comment -> "Relates a document to some transcribed original."^^xsd#string].
+bibo#transcriptOf[rdfs#domain -> bibo#Document].
+bibo#transcriptOf[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#transcriptOf[rdfs#label -> "transcript of"^^xsd#string].
+bibo#transcriptOf[rdfs#range -> rdfs#Resource].
+bibo#transcriptOf[rdfs#subPropertyOf -> terms#relation].
+bibo#transcriptOf[ns#term_status -> "unstable"^^xsd#string].
+
+bibo#translationOf[rdf#type -> owl#ObjectProperty].
+bibo#translationOf[rdfs#comment -> "Relates a translated document to the original document."^^xsd#string].
+bibo#translationOf[rdfs#domain -> bibo#Document].
+bibo#translationOf[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#translationOf[rdfs#label -> "translation of"^^xsd#string].
+bibo#translationOf[rdfs#range -> bibo#Document].
+bibo#translationOf[rdfs#subPropertyOf -> terms#isVersionOf].
+bibo#translationOf[ns#term_status -> "stable"^^xsd#string].
+
+bibo#translator[rdf#type -> owl#ObjectProperty].
+bibo#translator[rdfs#comment -> "A person who translates written document from one language to another."^^xsd#string].
+"urn:X-bnode:bnode_bibo_47"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_47"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#translator[rdfs#domain -> "urn:X-bnode:bnode_bibo_47"^^\iri].
+bibo#translator[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#translator[rdfs#label -> "translator"^^xsd#string].
+bibo#translator[rdfs#range -> foaf#Agent].
+bibo#translator[rdfs#subPropertyOf -> terms#contributor].
+bibo#translator[ns#term_status -> "stable"^^xsd#string].
+
+bibo#upc[rdf#type -> owl#DatatypeProperty].
+"urn:X-bnode:bnode_bibo_48"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_48"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#upc[rdfs#domain -> "urn:X-bnode:bnode_bibo_48"^^\iri].
+bibo#upc[rdfs#range -> rdfs#Literal].
+bibo#upc[rdfs#subPropertyOf -> bibo#identifier].
+
+bibo#uri[rdf#type -> owl#DatatypeProperty].
+bibo#uri[rdfs#comment -> "Universal Resource Identifier of a document"^^xsd#string].
+"urn:X-bnode:bnode_bibo_49"^^\iri[rdf#type -> owl#Class].
+"urn:X-bnode:bnode_bibo_49"^^\iri[owl#unionOf -> {bibo#Collection, bibo#Document}].
+bibo#uri[rdfs#domain -> "urn:X-bnode:bnode_bibo_49"^^\iri].
+bibo#uri[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#uri[rdfs#label -> "uri"^^xsd#string].
+bibo#uri[rdfs#range -> rdfs#Literal].
+bibo#uri[rdfs#subPropertyOf -> bibo#identifier].
+bibo#uri[ns#term_status -> "stable"^^xsd#string].
+
+bibo#volume[rdf#type -> owl#DatatypeProperty].
+bibo#volume[rdfs#comment -> "A volume number"^^xsd#string].
+bibo#volume[rdfs#domain -> bibo#Document].
+bibo#volume[rdfs#isDefinedBy -> "http://purl.org/ontology/bibo/"^^xsd#anyURI].
+bibo#volume[rdfs#label -> "volume"^^xsd#string].
+bibo#volume[rdfs#range -> rdfs#Literal].
+bibo#volume[rdfs#subPropertyOf -> bibo#locator].
+bibo#volume[ns#term_status -> "stable"^^xsd#string].
+
+schema#localityName[rdf#type -> owl#DatatypeProperty].
+schema#localityName[skos#scopeNote -> "Used to name the locality of a publisher, an author, etc."^^xsd#string].
+
+rdf#List[rdf#type -> owl#Class].
+
+rdf#Seq[rdf#type -> owl#Class].
+
+rdf#value[rdf#type -> owl#ObjectProperty].
+rdf#value[skos#scopeNote -> "Used to describe the content of a bibo:Document and othr bibliographic resouces.
+
+We suggest to use this property instead of the deprecated \"bibo:content\" one."^^xsd#string].
+
+rdfs#Resource[rdf#type -> owl#Class].
+
+owl#Thing[rdf#type -> owl#Class].
+
+owl#deprecated[rdf#type -> owl#AnnotationProperty].
+
+ns#term_status[rdf#type -> owl#AnnotationProperty].
+
+skos#changeNote[rdf#type -> owl#AnnotationProperty].
+
+skos#editorialNote[rdf#type -> owl#AnnotationProperty].
+
+skos#example[rdf#type -> owl#AnnotationProperty].
+
+skos#historyNote[rdf#type -> owl#AnnotationProperty].
+
+skos#note[rdf#type -> owl#AnnotationProperty].
+
+skos#scopeNote[rdf#type -> owl#AnnotationProperty].
+
+foaf#Agent[rdf#type -> owl#Class].
+foaf#Agent[skos#scopeNote -> "Used to describe any \"agent\" related to bibliographic items. Such agents can be persons, organizations or groups of any kind."^^xsd#string].
+
+foaf#Document[rdf#type -> owl#Class].
+
+foaf#Image[rdf#type -> owl#Class].
+
+foaf#Organization[rdf#type -> owl#Class].
+foaf#Organization[skos#scopeNote -> "Ued to describe an organization related to bibliographic items such as a publishing company, etc."^^xsd#string].
+
+foaf#Person[rdf#type -> owl#Class].
+foaf#Person[skos#scopeNote -> "Used to describe a Person related to a bibliographic ite such as an author, an editor, etc."^^xsd#string].
+
+foaf#based_near[rdf#type -> owl#ObjectProperty].
+foaf#based_near[skos#scopeNote -> "Used to link an agent, related to bibliographic things, to a place where it is based near: can be a city, a monument, a building, etc."^^xsd#string].
+
+foaf#depiction[rdf#type -> owl#ObjectProperty].
+foaf#depiction[skos#scopeNote -> "Used to link an agent with an image that depict it."^^xsd#string].
+
+foaf#family_name[rdf#type -> owl#DatatypeProperty].
+foaf#family_name[skos#scopeNote -> "This is the property we choose to use to describe the family name of a person related to a bibliographic resource."^^xsd#string].
+
+foaf#givenname[rdf#type -> owl#DatatypeProperty].
+foaf#givenname[skos#scopeNote -> "This is the property we choose to describe the given name of a Person related to a bibliographic resource. This is the first name of a person."^^xsd#string].
+
+foaf#homepage[rdf#type -> owl#ObjectProperty].
+foaf#homepage[skos#scopeNote -> "Used to link an agent to its homepage (which is a web page accessible using a URL)."^^xsd#string].
+
+foaf#name[rdf#type -> owl#DatatypeProperty].

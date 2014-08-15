@@ -1,0 +1,1221 @@
+:- iriprefix{dc='http://purl.org/dc/elements/1.1/'}.
+:- iriprefix{geo='http://www.w3.org/2003/01/geo/wgs84_pos#'}.
+:- iriprefix{ncal='http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#'}.
+:- iriprefix{nco='http://www.semanticdesktop.org/ontologies/2007/03/22/nco#'}.
+:- iriprefix{nfo='http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#'}.
+:- iriprefix{nie='http://www.semanticdesktop.org/ontologies/2007/01/19/nie#'}.
+:- iriprefix{nrl='http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#'}.
+:- iriprefix{owl='http://www.w3.org/2002/07/owl#'}.
+:- iriprefix{rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'}.
+:- iriprefix{rdfs='http://www.w3.org/2000/01/rdf-schema#'}.
+:- iriprefix{xsd='http://www.w3.org/2001/XMLSchema#'}.
+
+ncal#AccessClassification[rdf#type -> rdfs#Class].
+ncal#AccessClassification[rdfs#comment -> "Access classification of a calendar component. Introduced to express 
+the set of values for the ncal:class property. The user may use instances
+provided with this ontology or create his/her own with desired semantics.
+See the documentation of ncal:class for details."^^xsd#string].
+ncal#AccessClassification[rdfs#label -> "AccessClassification"^^xsd#string].
+ncal#AccessClassification[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Alarm[rdf#type -> rdfs#Class].
+ncal#Alarm[rdfs#comment -> "Provide a grouping of component properties that define an alarm."^^xsd#string].
+ncal#Alarm[rdfs#label -> "Alarm"^^xsd#string].
+ncal#Alarm[rdfs#subClassOf -> nie#InformationElement].
+ncal#Alarm[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyJournalTodo].
+ncal#Alarm[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyTodo].
+ncal#Alarm[rdfs#subClassOf -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#Alarm[rdfs#subClassOf -> ncal#UnionOfAlarmEventTodo].
+
+ncal#AlarmAction[rdf#type -> rdfs#Class].
+ncal#AlarmAction[rdfs#comment -> "Action to be performed on alarm. This class has been introduced to express the limited set of values of the ncal:action property. Please refer to the documentation of ncal:action for details."^^xsd#string].
+ncal#AlarmAction[rdfs#label -> "AlarmAction"^^xsd#string].
+ncal#AlarmAction[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Attachment[rdf#type -> rdfs#Class].
+ncal#Attachment[rdfs#comment -> "An object attached to a calendar entity. This class has been introduced to serve as a structured value of the ncal:attach property. See the documentation of ncal:attach for details."^^xsd#string].
+ncal#Attachment[rdfs#label -> "Attachment"^^xsd#string].
+ncal#Attachment[rdfs#subClassOf -> nfo#Attachment].
+ncal#Attachment[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#AttachmentEncoding[rdf#type -> rdfs#Class].
+ncal#AttachmentEncoding[rdfs#comment -> "Attachment encoding. This class has been introduced to express the limited vocabulary of values for the ncal:encoding property. See the documentation of ncal:encoding for details."^^xsd#string].
+ncal#AttachmentEncoding[rdfs#label -> "AttachmentEncoding"^^xsd#string].
+ncal#AttachmentEncoding[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Attendee[rdf#type -> rdfs#Class].
+ncal#Attendee[rdfs#comment -> "An attendee of an event. This class has been introduced to serve as the range for ncal:attendee property. See documentation of ncal:attendee for details."^^xsd#string].
+ncal#Attendee[rdfs#label -> "Attendee"^^xsd#string].
+ncal#Attendee[rdfs#subClassOf -> ncal#AttendeeOrOrganizer].
+
+ncal#AttendeeOrOrganizer[rdf#type -> rdfs#Class].
+ncal#AttendeeOrOrganizer[rdfs#comment -> "A common superclass for ncal:Attendee and ncal:Organizer."^^xsd#string].
+ncal#AttendeeOrOrganizer[rdfs#label -> "AttendeeOrOrganizer"^^xsd#string].
+ncal#AttendeeOrOrganizer[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#AttendeeRole[rdf#type -> rdfs#Class].
+ncal#AttendeeRole[rdfs#comment -> "A role the attendee is going to play during an event. This class has been introduced to express the limited vocabulary for the values of ncal:role property. Please refer to the documentation of ncal:role for details."^^xsd#string].
+ncal#AttendeeRole[rdfs#label -> "AttendeeRole"^^xsd#string].
+ncal#AttendeeRole[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#BydayRulePart[rdf#type -> rdfs#Class].
+ncal#BydayRulePart[rdfs#comment -> "Expresses the compound value of a byday part of a recurrence rule. It stores the weekday and the integer modifier. Inspired by RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#BydayRulePart[rdfs#label -> "BydayRulePart"^^xsd#string].
+ncal#BydayRulePart[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Calendar[rdf#type -> rdfs#Class].
+ncal#Calendar[rdfs#comment -> "A calendar. Inspirations for this class can be traced to the VCALENDAR component defined in RFC 2445 sec. 4.4, but it may just as well be used to represent any kind of Calendar."^^xsd#string].
+ncal#Calendar[rdfs#label -> "Calendar"^^xsd#string].
+ncal#Calendar[rdfs#subClassOf -> nie#InformationElement].
+
+ncal#CalendarDataObject[rdf#type -> rdfs#Class].
+ncal#CalendarDataObject[rdfs#comment -> "A DataObject found in a calendar. It is usually interpreted as one of the calendar entity types (e.g. Event, Journal, Todo etc.)"^^xsd#string].
+ncal#CalendarDataObject[rdfs#label -> "CalendarDataObject"^^xsd#string].
+ncal#CalendarDataObject[rdfs#subClassOf -> nie#DataObject].
+
+ncal#CalendarScale[rdf#type -> rdfs#Class].
+ncal#CalendarScale[rdfs#comment -> "A calendar scale. This class has been introduced to provide the limited vocabulary for the ncal:calscale property."^^xsd#string].
+ncal#CalendarScale[rdfs#label -> "CalendarScale"^^xsd#string].
+ncal#CalendarScale[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#CalendarUserType[rdf#type -> rdfs#Class].
+ncal#CalendarUserType[rdfs#comment -> "A calendar user type. This class has been introduced to express the limited vocabulary for the ncal:cutype property. See documentation of ncal:cutype for details."^^xsd#string].
+ncal#CalendarUserType[rdfs#label -> "CalendarUserType"^^xsd#string].
+ncal#CalendarUserType[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Event[rdf#type -> rdfs#Class].
+ncal#Event[rdfs#comment -> "Provide a grouping of component properties that describe an event."^^xsd#string].
+ncal#Event[rdfs#label -> "Event"^^xsd#string].
+ncal#Event[rdfs#subClassOf -> nie#InformationElement].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyJournalTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfAlarmEventTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfEventFreebusy].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfEventJournalTimezoneTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfEventJournalTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfEventTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo].
+ncal#Event[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo].
+
+ncal#EventStatus[rdf#type -> rdfs#Class].
+ncal#EventStatus[rdfs#comment -> "A status of an event. This class has been introduced to express
+the limited set of values for the ncal:status property. The user may
+use the instances provided with this ontology or create his/her own.
+See the documentation for ncal:eventStatus for details."^^xsd#string].
+ncal#EventStatus[rdfs#label -> "EventStatus"^^xsd#string].
+ncal#EventStatus[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Freebusy[rdf#type -> rdfs#Class].
+ncal#Freebusy[rdfs#comment -> "Provide a grouping of component properties that describe either a request for free/busy time, describe a response to a request for free/busy time or describe a published set of busy time."^^xsd#string].
+ncal#Freebusy[rdfs#label -> "Freebusy"^^xsd#string].
+ncal#Freebusy[rdfs#subClassOf -> nie#InformationElement].
+ncal#Freebusy[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyJournalTodo].
+ncal#Freebusy[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyTodo].
+ncal#Freebusy[rdfs#subClassOf -> ncal#UnionOfEventFreebusy].
+ncal#Freebusy[rdfs#subClassOf -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#Freebusy[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo].
+ncal#Freebusy[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo].
+
+ncal#FreebusyPeriod[rdf#type -> rdfs#Class].
+ncal#FreebusyPeriod[rdfs#comment -> "An aggregate of a period and a freebusy type. This class has been introduced to serve as a range of the ncal:freebusy property. See documentation for ncal:freebusy for details. Note that the specification of freebusy property states that the period is to be expressed using UTC time, so the timezone properties should NOT be used for instances of this class."^^xsd#string].
+ncal#FreebusyPeriod[rdfs#label -> "FreebusyPeriod"^^xsd#string].
+ncal#FreebusyPeriod[rdfs#subClassOf -> ncal#NcalPeriod].
+
+ncal#FreebusyType[rdf#type -> rdfs#Class].
+ncal#FreebusyType[rdfs#comment -> "Type of a Freebusy indication. This class has been introduced to serve as a limited set of values for the ncal:fbtype property. See the documentation of ncal:fbtype for details."^^xsd#string].
+ncal#FreebusyType[rdfs#label -> "FreebusyType"^^xsd#string].
+ncal#FreebusyType[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Journal[rdf#type -> rdfs#Class].
+ncal#Journal[rdfs#comment -> "Provide a grouping of component properties that describe a journal entry."^^xsd#string].
+ncal#Journal[rdfs#label -> "Journal"^^xsd#string].
+ncal#Journal[rdfs#subClassOf -> nie#InformationElement].
+ncal#Journal[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyJournalTodo].
+ncal#Journal[rdfs#subClassOf -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#Journal[rdfs#subClassOf -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#Journal[rdfs#subClassOf -> ncal#UnionOfEventJournalTimezoneTodo].
+ncal#Journal[rdfs#subClassOf -> ncal#UnionOfEventJournalTodo].
+ncal#Journal[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo].
+ncal#Journal[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo].
+
+ncal#JournalStatus[rdf#type -> rdfs#Class].
+ncal#JournalStatus[rdfs#comment -> "A status of a journal entry. This class has been introduced to express
+the limited set of values for the ncal:status property. The user may
+use the instances provided with this ontology or create his/her own.
+See the documentation for ncal:journalStatus for details."^^xsd#string].
+ncal#JournalStatus[rdfs#label -> "JournalStatus"^^xsd#string].
+ncal#JournalStatus[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#NcalDateTime[rdf#type -> rdfs#Class].
+ncal#NcalDateTime[rdfs#label -> "NcalDateTime"^^xsd#string].
+ncal#NcalDateTime[rdfs#subClassOf -> ncal#NcalTimeEntity].
+
+ncal#NcalPeriod[rdf#type -> rdfs#Class].
+ncal#NcalPeriod[rdfs#comment -> "A period of time. Inspired by the PERIOD datatype specified in RFC 2445 sec. 4.3.9"^^xsd#string].
+ncal#NcalPeriod[rdfs#label -> "NcalPeriod"^^xsd#string].
+ncal#NcalPeriod[rdfs#subClassOf -> ncal#NcalTimeEntity].
+
+ncal#NcalTimeEntity[rdf#type -> rdfs#Class].
+ncal#NcalTimeEntity[rdfs#comment -> "A time entity. Conceived as a common superclass for NcalDateTime and NcalPeriod. According to RFC 2445 both DateTime and Period can be interpreted in different timezones. The first case is explored in many properties. The second case is theoretically possible in ncal:rdate property. Therefore the timezone properties have been defined at this level."^^xsd#string].
+ncal#NcalTimeEntity[rdfs#label -> "NcalTimeEntity"^^xsd#string].
+ncal#NcalTimeEntity[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Organizer[rdf#type -> rdfs#Class].
+ncal#Organizer[rdfs#comment -> "An organizer of an event. This class has been introduced to serve as a range of ncal:organizer property. See documentation of ncal:organizer for details."^^xsd#string].
+ncal#Organizer[rdfs#label -> "Organizer"^^xsd#string].
+ncal#Organizer[rdfs#subClassOf -> ncal#AttendeeOrOrganizer].
+
+ncal#ParticipationStatus[rdf#type -> rdfs#Class].
+ncal#ParticipationStatus[rdfs#comment -> "Participation Status. This class has been introduced to express the limited vocabulary of values for the ncal:partstat property. See the documentation of ncal:partstat for details."^^xsd#string].
+ncal#ParticipationStatus[rdfs#label -> "ParticipationStatus"^^xsd#string].
+ncal#ParticipationStatus[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#RecurrenceFrequency[rdf#type -> rdfs#Class].
+ncal#RecurrenceFrequency[rdfs#comment -> "Frequency of a recurrence rule. This class has been introduced to express a limited set of allowed values for the ncal:freq property. See the documentation of ncal:freq for details."^^xsd#string].
+ncal#RecurrenceFrequency[rdfs#label -> "RecurrenceFrequency"^^xsd#string].
+ncal#RecurrenceFrequency[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#RecurrenceIdentifier[rdf#type -> rdfs#Class].
+ncal#RecurrenceIdentifier[rdfs#comment -> "Recurrence Identifier. Introduced to provide a structure for the value of ncal:recurrenceId property. See the documentation of ncal:recurrenceId for details."^^xsd#string].
+ncal#RecurrenceIdentifier[rdfs#label -> "RecurrenceIdentifier"^^xsd#string].
+ncal#RecurrenceIdentifier[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#RecurrenceIdentifierRange[rdf#type -> rdfs#Class].
+ncal#RecurrenceIdentifierRange[rdfs#comment -> "Recurrence Identifier Range. This class has been created to provide means to express the limited set of values for the ncal:range property. See documentation for ncal:range for details."^^xsd#string].
+ncal#RecurrenceIdentifierRange[rdfs#label -> "RecurrenceIdentifierRange"^^xsd#string].
+ncal#RecurrenceIdentifierRange[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#RecurrenceRule[rdf#type -> rdfs#Class].
+ncal#RecurrenceRule[rdfs#label -> "RecurrenceRule"^^xsd#string].
+ncal#RecurrenceRule[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#RequestStatus[rdf#type -> rdfs#Class].
+ncal#RequestStatus[rdfs#comment -> "Request Status. A class that was introduced to provide a structure for the value of ncal:requestStatus property. See documentation for ncal:requestStatus for details."^^xsd#string].
+ncal#RequestStatus[rdfs#label -> "RequestStatus"^^xsd#string].
+ncal#RequestStatus[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#TimeTransparency[rdf#type -> rdfs#Class].
+ncal#TimeTransparency[rdfs#comment -> "Time transparency. Introduced to provide a way to express
+the limited vocabulary for the values of ncal:transp property.
+See documentation of ncal:transp for details."^^xsd#string].
+ncal#TimeTransparency[rdfs#label -> "TimeTransparency"^^xsd#string].
+ncal#TimeTransparency[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Timezone[rdf#type -> rdfs#Class].
+ncal#Timezone[rdfs#comment -> "Provide a grouping of component properties that defines a time zone."^^xsd#string].
+ncal#Timezone[rdfs#label -> "Timezone"^^xsd#string].
+ncal#Timezone[rdfs#subClassOf -> nie#InformationElement].
+ncal#Timezone[rdfs#subClassOf -> ncal#UnionOfEventJournalTimezoneTodo].
+ncal#Timezone[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo].
+ncal#Timezone[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo].
+ncal#Timezone[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo].
+
+ncal#TimezoneObservance[rdf#type -> rdfs#Class].
+ncal#TimezoneObservance[rdfs#label -> "TimezoneObservance"^^xsd#string].
+ncal#TimezoneObservance[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo].
+ncal#TimezoneObservance[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo].
+ncal#TimezoneObservance[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo].
+
+ncal#Todo[rdf#type -> rdfs#Class].
+ncal#Todo[rdfs#comment -> "Provide a grouping of calendar properties that describe a to-do."^^xsd#string].
+ncal#Todo[rdfs#label -> "Todo"^^xsd#string].
+ncal#Todo[rdfs#subClassOf -> nie#InformationElement].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyJournalTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfAlarmEventFreebusyTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfAlarmEventTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfEventJournalTimezoneTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfEventJournalTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfEventTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo].
+ncal#Todo[rdfs#subClassOf -> ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo].
+
+ncal#TodoStatus[rdf#type -> rdfs#Class].
+ncal#TodoStatus[rdfs#comment -> "A status of a calendar entity. This class has been introduced to express
+the limited set of values for the ncal:status property. The user may
+use the instances provided with this ontology or create his/her own.
+See the documentation for ncal:todoStatus for details."^^xsd#string].
+ncal#TodoStatus[rdfs#label -> "TodoStatus"^^xsd#string].
+ncal#TodoStatus[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Trigger[rdf#type -> rdfs#Class].
+ncal#Trigger[rdfs#comment -> "An alarm trigger. This class has been created to serve as the range of ncal:trigger property. See the documentation for ncal:trigger for more details."^^xsd#string].
+ncal#Trigger[rdfs#label -> "Trigger"^^xsd#string].
+ncal#Trigger[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#TriggerRelation[rdf#type -> rdfs#Class].
+ncal#TriggerRelation[rdfs#comment -> "The relation between the trigger and its parent calendar component. This class has been introduced to express the limited vocabulary for the ncal:related property. See the documentation for ncal:related for more details."^^xsd#string].
+ncal#TriggerRelation[rdfs#label -> "TriggerRelation"^^xsd#string].
+ncal#TriggerRelation[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#UnionOfAlarmEventFreebusyJournalTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfAlarmEventFreebusyJournalTodo[rdfs#label -> "UnionOfAlarmEventFreebusyJournalTodo"^^xsd#string].
+ncal#UnionOfAlarmEventFreebusyJournalTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfAlarmEventFreebusyTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfAlarmEventFreebusyTodo[rdfs#label -> "UnionOfAlarmEventFreebusyTodo"^^xsd#string].
+ncal#UnionOfAlarmEventFreebusyTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfAlarmEventJournalTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfAlarmEventJournalTodo[rdfs#label -> "UnionOfAlarmEventJournalTodo"^^xsd#string].
+ncal#UnionOfAlarmEventJournalTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfAlarmEventTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfAlarmEventTodo[rdfs#label -> "UnionOfAlarmEventTodo"^^xsd#string].
+ncal#UnionOfAlarmEventTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfEventFreebusy[rdf#type -> rdfs#Class].
+ncal#UnionOfEventFreebusy[rdfs#label -> "UnionOfEventFreebusy"^^xsd#string].
+ncal#UnionOfEventFreebusy[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfEventFreebusyJournalTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfEventFreebusyJournalTodo[rdfs#label -> "UnionOfEventFreebusyJournalTodo"^^xsd#string].
+ncal#UnionOfEventFreebusyJournalTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfEventJournalTimezoneTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfEventJournalTimezoneTodo[rdfs#label -> "UnionOfEventJournalTimezoneTodo"^^xsd#string].
+ncal#UnionOfEventJournalTimezoneTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfEventJournalTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfEventJournalTodo[rdfs#label -> "UnionOfEventJournalTodo"^^xsd#string].
+ncal#UnionOfEventJournalTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfEventTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfEventTodo[rdfs#label -> "UnionOfEventTodo"^^xsd#string].
+ncal#UnionOfEventTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo[rdfs#label -> "UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo"^^xsd#string].
+ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo[rdfs#label -> "UnionOfTimezoneObservanceEventFreebusyTimezoneTodo"^^xsd#string].
+ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo[rdf#type -> rdfs#Class].
+ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo[rdfs#label -> "UnionOfTimezoneObservanceEventJournalTimezoneTodo"^^xsd#string].
+ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo[rdfs#subClassOf -> ncal#UnionParentClass].
+
+ncal#UnionParentClass[rdf#type -> rdfs#Class].
+ncal#UnionParentClass[rdfs#label -> "UnionParentClass"^^xsd#string].
+ncal#UnionParentClass[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#Weekday[rdf#type -> rdfs#Class].
+ncal#Weekday[rdfs#comment -> "Day of the week. This class has been created to provide the limited vocabulary for ncal:byday property. See the documentation for ncal:byday for details."^^xsd#string].
+ncal#Weekday[rdfs#label -> "Weekday"^^xsd#string].
+ncal#Weekday[rdfs#subClassOf -> rdfs#Resource].
+
+ncal#_8bitEncoding[rdf#type -> ncal#AttachmentEncoding].
+ncal#_8bitEncoding[rdfs#label -> "_8bitEncoding"^^xsd#string].
+
+ncal#acceptedParticipationStatus[rdf#type -> ncal#ParticipationStatus].
+ncal#acceptedParticipationStatus[rdfs#label -> "acceptedParticipationStatus"^^xsd#string].
+
+ncal#action[rdf#type -> rdf#Property].
+ncal#action[rdfs#comment -> "This property defines the action to be invoked when an alarm is triggered. Inspired by RFC 2445 sec 4.8.6.1. Originally this property had a limited set of values. They are expressed as instances of the AlarmAction class."^^xsd#string].
+ncal#action[rdfs#domain -> ncal#Alarm].
+ncal#action[rdfs#label -> "action"^^xsd#string].
+ncal#action[rdfs#range -> ncal#AlarmAction].
+
+ncal#attach[rdf#type -> rdf#Property].
+ncal#attach[rdfs#comment -> "The property provides the capability to associate a document object with a calendar component. Defined in the RFC 2445 sec. 4.8.1.1"^^xsd#string].
+ncal#attach[rdfs#domain -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#attach[rdfs#label -> "attach"^^xsd#string].
+ncal#attach[rdfs#range -> ncal#Attachment].
+ncal#attach[rdfs#subPropertyOf -> nie#hasPart].
+
+ncal#attachmentContent[rdf#type -> rdf#Property].
+ncal#attachmentContent[rdfs#comment -> "The uri of the attachment. Created to express the actual value of the ATTACH property defined in RFC 2445 sec. 4.8.1.1. This property expresses the BINARY datatype of that property. see ncal:attachmentUri for the URI datatype."^^xsd#string].
+ncal#attachmentContent[rdfs#domain -> ncal#Attachment].
+ncal#attachmentContent[rdfs#label -> "attachmentContent"^^xsd#string].
+ncal#attachmentContent[rdfs#range -> xsd#string].
+
+ncal#attachmentUri[rdf#type -> rdf#Property].
+ncal#attachmentUri[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#attachmentUri[rdfs#comment -> "The uri of the attachment. Created to express the actual value of the ATTACH property defined in RFC 2445 sec. 4.8.1.1. This property expresses the default URI datatype of that property. see ncal:attachmentContents for the BINARY datatype."^^xsd#string].
+ncal#attachmentUri[rdfs#domain -> ncal#Attachment].
+ncal#attachmentUri[rdfs#label -> "attachmentUri"^^xsd#string].
+ncal#attachmentUri[rdfs#range -> rdfs#Resource].
+
+ncal#attendee[rdf#type -> rdf#Property].
+ncal#attendee[rdfs#comment -> "The property defines an \"Attendee\" within a calendar component. Inspired by RFC 2445 sec. 4.8.4.1. Originally this property accepted many parameters. The Attendee class has been introduced to express them all. Note that NCAL is aligned with NCO. The actual value (of the CAL-ADDRESS type) is expressed as an instance of nco:Contact. Remember that the CN parameter has been removed from NCAL. Instead that value should be expressed using nco:fullname property of the above mentioned nco:Contact instance. The RFC stated that whenever this property is attached to a Valarm instance, the Attendee cannot have any parameters apart from involvedContact."^^xsd#string].
+ncal#attendee[rdfs#domain -> ncal#UnionOfAlarmEventFreebusyJournalTodo].
+ncal#attendee[rdfs#label -> "attendee"^^xsd#string].
+ncal#attendee[rdfs#range -> ncal#Attendee].
+
+ncal#audioAction[rdf#type -> ncal#AlarmAction].
+ncal#audioAction[rdfs#label -> "audioAction"^^xsd#string].
+
+ncal#base64Encoding[rdf#type -> ncal#AttachmentEncoding].
+ncal#base64Encoding[rdfs#label -> "base64Encoding"^^xsd#string].
+
+ncal#busyFreebusyType[rdf#type -> ncal#FreebusyType].
+ncal#busyFreebusyType[rdfs#label -> "busyFreebusyType"^^xsd#string].
+
+ncal#busyTentativeFreebusyType[rdf#type -> ncal#FreebusyType].
+ncal#busyTentativeFreebusyType[rdfs#label -> "busyTentativeFreebusyType"^^xsd#string].
+
+ncal#busyUnavailableFreebusyType[rdf#type -> ncal#FreebusyType].
+ncal#busyUnavailableFreebusyType[rdfs#label -> "busyUnavailableFreebusyType"^^xsd#string].
+
+ncal#byday[rdf#type -> rdf#Property].
+ncal#byday[rdfs#comment -> "Weekdays the recurrence should occur. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#byday[rdfs#domain -> ncal#RecurrenceRule].
+ncal#byday[rdfs#label -> "byday"^^xsd#string].
+ncal#byday[rdfs#range -> ncal#BydayRulePart].
+
+ncal#bydayModifier[rdf#type -> rdf#Property].
+ncal#bydayModifier[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#bydayModifier[rdfs#comment -> "An integer modifier for the BYDAY rule part.    Each BYDAY value can also be preceded by a positive (+n) or negative  (-n) integer. If present, this indicates the nth occurrence of the specific day within the MONTHLY or YEARLY RRULE. For example, within a MONTHLY rule, +1MO (or simply 1MO) represents the first Monday within the month, whereas -1MO represents the last Monday of the month. If an integer modifier is not present, it means all days of this type within the specified frequency. For example, within a MONTHLY rule, MO represents all Mondays within the month. Inspired by RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#bydayModifier[rdfs#domain -> ncal#BydayRulePart].
+ncal#bydayModifier[rdfs#label -> "bydayModifier"^^xsd#string].
+ncal#bydayModifier[rdfs#range -> xsd#integer].
+
+ncal#bydayWeekday[rdf#type -> rdf#Property].
+ncal#bydayWeekday[rdfs#comment -> "Connects a BydayRulePath with a weekday."^^xsd#string].
+ncal#bydayWeekday[rdfs#domain -> ncal#BydayRulePart].
+ncal#bydayWeekday[rdfs#label -> "bydayWeekday"^^xsd#string].
+ncal#bydayWeekday[rdfs#range -> ncal#Weekday].
+
+ncal#byhour[rdf#type -> rdf#Property].
+ncal#byhour[rdfs#comment -> "Hour of recurrence. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#byhour[rdfs#domain -> ncal#RecurrenceRule].
+ncal#byhour[rdfs#label -> "byhour"^^xsd#string].
+ncal#byhour[rdfs#range -> xsd#integer].
+
+ncal#byminute[rdf#type -> rdf#Property].
+ncal#byminute[rdfs#comment -> "Minute of recurrence. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#byminute[rdfs#domain -> ncal#RecurrenceRule].
+ncal#byminute[rdfs#label -> "byminute"^^xsd#string].
+ncal#byminute[rdfs#range -> xsd#integer].
+
+ncal#bymonth[rdf#type -> rdf#Property].
+ncal#bymonth[rdfs#comment -> "Number of the month of the recurrence. Valid values are integers from 1 (January) to 12 (December). Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#bymonth[rdfs#domain -> ncal#RecurrenceRule].
+ncal#bymonth[rdfs#label -> "bymonth"^^xsd#string].
+ncal#bymonth[rdfs#range -> xsd#integer].
+
+ncal#bymonthday[rdf#type -> rdf#Property].
+ncal#bymonthday[rdfs#comment -> "Day of the month when the event should recur. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#bymonthday[rdfs#domain -> ncal#RecurrenceRule].
+ncal#bymonthday[rdfs#label -> "bymonthday"^^xsd#string].
+ncal#bymonthday[rdfs#range -> xsd#integer].
+
+ncal#bysecond[rdf#type -> rdf#Property].
+ncal#bysecond[rdfs#comment -> "Second of a recurrence. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#bysecond[rdfs#domain -> ncal#RecurrenceRule].
+ncal#bysecond[rdfs#label -> "bysecond"^^xsd#string].
+ncal#bysecond[rdfs#range -> xsd#integer].
+
+ncal#bysetpos[rdf#type -> rdf#Property].
+ncal#bysetpos[rdfs#comment -> "The BYSETPOS rule part specify values which correspond to the nth occurrence within the set of events specified by the rule. Valid values are 1 to 366 or -366 to -1. It MUST only be used in conjunction with another BYxxx rule part. For example \"the last work day of the month\" could be represented as: RRULE: FREQ=MONTHLY; BYDAY=MO, TU, WE, TH, FR; BYSETPOS=-1. Each BYSETPOS value can include a positive (+n) or negative (-n)  integer. If present, this indicates the nth occurrence of the  specific occurrence within the set of events specified by the rule. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#bysetpos[rdfs#domain -> ncal#RecurrenceRule].
+ncal#bysetpos[rdfs#label -> "bysetpos"^^xsd#string].
+ncal#bysetpos[rdfs#range -> xsd#integer].
+
+ncal#byweekno[rdf#type -> rdf#Property].
+ncal#byweekno[rdfs#comment -> "The number of the week an event should recur. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#byweekno[rdfs#domain -> ncal#RecurrenceRule].
+ncal#byweekno[rdfs#label -> "byweekno"^^xsd#string].
+ncal#byweekno[rdfs#range -> xsd#integer].
+
+ncal#byyearday[rdf#type -> rdf#Property].
+ncal#byyearday[rdfs#comment -> "Day of the year the event should occur. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#byyearday[rdfs#domain -> ncal#RecurrenceRule].
+ncal#byyearday[rdfs#label -> "byyearday"^^xsd#string].
+ncal#byyearday[rdfs#range -> xsd#integer].
+
+ncal#calscale[rdf#type -> rdf#Property].
+ncal#calscale[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#calscale[rdfs#comment -> "This property defines the calendar scale used for the calendar information specified in the iCalendar object. Defined in RFC 2445 sec. 4.7.1"^^xsd#string].
+ncal#calscale[rdfs#domain -> ncal#Calendar].
+ncal#calscale[rdfs#label -> "calscale"^^xsd#string].
+ncal#calscale[rdfs#range -> ncal#CalendarScale].
+
+ncal#cancelledEventStatus[rdf#type -> ncal#EventStatus].
+ncal#cancelledEventStatus[rdfs#label -> "cancelledEventStatus"^^xsd#string].
+
+ncal#cancelledJournalStatus[rdf#type -> ncal#JournalStatus].
+ncal#cancelledJournalStatus[rdfs#label -> "cancelledJournalStatus"^^xsd#string].
+
+ncal#cancelledTodoStatus[rdf#type -> ncal#TodoStatus].
+ncal#cancelledTodoStatus[rdfs#label -> "cancelledTodoStatus"^^xsd#string].
+
+ncal#categories[rdf#type -> rdf#Property].
+ncal#categories[rdfs#comment -> "Categories for a calendar component. Inspired by RFC 2445 sec 4.8.1.2 with the following reservations: The LANGUAGE parameter has been discarded. Please use xml:lang literals to express multiple languages. This property can specify multiple comma-separated categories. The order of categories doesn't matter. Please use a separate triple for each category."^^xsd#string].
+ncal#categories[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#categories[rdfs#label -> "categories"^^xsd#string].
+ncal#categories[rdfs#range -> xsd#string].
+
+ncal#chairRole[rdf#type -> ncal#AttendeeRole].
+ncal#chairRole[rdfs#label -> "chairRole"^^xsd#string].
+
+ncal#class[rdf#type -> rdf#Property].
+ncal#class[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#class[rdfs#comment -> "Defines the access classification for a calendar component. Inspired by RFC 2445 sec. 4.8.1.3 with the following reservations:  this property has limited vocabulary. Possible values are:  PUBLIC, PRIVATE and CONFIDENTIAL. The default is PUBLIC. Those values are expressed as instances of the AccessClassification class. The user may create his/her own if necessary."^^xsd#string].
+ncal#class[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#class[rdfs#label -> "class"^^xsd#string].
+ncal#class[rdfs#range -> ncal#AccessClassification].
+
+ncal#comment[rdf#type -> rdf#Property].
+ncal#comment[rdfs#comment -> "Non-processing information intended to provide a comment to the calendar user. Inspired by RFC 2445 sec. 4.8.1.4 with the following reservations:  the LANGUAGE parameter has been discarded. Please use xml:lang literals to express language. For the ALTREP parameter use the commentAltRep property."^^xsd#string].
+ncal#comment[rdfs#domain -> ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo].
+ncal#comment[rdfs#label -> "comment"^^xsd#string].
+ncal#comment[rdfs#range -> xsd#string].
+ncal#comment[rdfs#subPropertyOf -> nie#comment].
+
+ncal#commentAltRep[rdf#type -> rdf#Property].
+ncal#commentAltRep[rdfs#comment -> "Alternate representation of the comment. Introduced to cover 
+the ALTREP parameter of the COMMENT property. See 
+documentation of ncal:comment for details."^^xsd#string].
+ncal#commentAltRep[rdfs#domain -> ncal#UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo].
+ncal#commentAltRep[rdfs#label -> "commentAltRep"^^xsd#string].
+ncal#commentAltRep[rdfs#range -> rdfs#Resource].
+
+ncal#completed[rdf#type -> rdf#Property].
+ncal#completed[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#completed[rdfs#comment -> "This property defines the date and time that a to-do was actually completed. Inspired by RFC 2445 sec. 4.8.2.1. Note that the RFC allows ONLY UTC time values for this property."^^xsd#string].
+ncal#completed[rdfs#domain -> ncal#Todo].
+ncal#completed[rdfs#label -> "completed"^^xsd#string].
+ncal#completed[rdfs#range -> xsd#dateTime].
+
+ncal#completedParticipationStatus[rdf#type -> ncal#ParticipationStatus].
+ncal#completedParticipationStatus[rdfs#label -> "completedParticipationStatus"^^xsd#string].
+
+ncal#completedStatus[rdf#type -> ncal#TodoStatus].
+ncal#completedStatus[rdfs#label -> "completedStatus"^^xsd#string].
+
+ncal#component[rdf#type -> rdf#Property].
+ncal#component[rdfs#comment -> "Links the Vcalendar instance with the calendar components. This property has no direct equivalent in the RFC specification. It has been introduced to express the containmnent relations."^^xsd#string].
+ncal#component[rdfs#domain -> ncal#Calendar].
+ncal#component[rdfs#label -> "component"^^xsd#string].
+ncal#component[rdfs#range -> ncal#CalendarDataObject].
+ncal#component[rdfs#subPropertyOf -> nie#hasPart].
+
+ncal#confidentialClassification[rdf#type -> ncal#AccessClassification].
+ncal#confidentialClassification[rdfs#label -> "confidentialClassification"^^xsd#string].
+
+ncal#confirmedStatus[rdf#type -> ncal#EventStatus].
+ncal#confirmedStatus[rdfs#label -> "confirmedStatus"^^xsd#string].
+
+ncal#contact[rdf#type -> rdf#Property].
+ncal#contact[rdfs#comment -> "The property is used to represent contact information or alternately a reference to contact information associated with the calendar component. Inspired by RFC 2445 sec. 4.8.4.2 with the following reservations: the LANGUAGE parameter has been discarded. Please use xml:lang literals to express language. For the ALTREP parameter use the contactAltRep property.RFC doesn't define any format for the string."^^xsd#string].
+ncal#contact[rdfs#domain -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#contact[rdfs#label -> "contact"^^xsd#string].
+ncal#contact[rdfs#range -> xsd#string].
+
+ncal#contactAltRep[rdf#type -> rdf#Property].
+ncal#contactAltRep[rdfs#comment -> "Alternate representation of the contact property. Introduced to cover 
+the ALTREP parameter of the CONTACT property. See 
+documentation of ncal:contact for details."^^xsd#string].
+ncal#contactAltRep[rdfs#domain -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#contactAltRep[rdfs#label -> "contactAltRep"^^xsd#string].
+ncal#contactAltRep[rdfs#range -> rdfs#Resource].
+
+ncal#count[rdf#type -> rdf#Property].
+ncal#count[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#count[rdfs#comment -> "How many times should an event be repeated. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#count[rdfs#domain -> ncal#RecurrenceRule].
+ncal#count[rdfs#label -> "count"^^xsd#string].
+ncal#count[rdfs#range -> xsd#integer].
+
+ncal#created[rdf#type -> rdf#Property].
+ncal#created[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#created[rdfs#comment -> "This property specifies the date and time that the calendar information was created by the calendar user agent in the calendar store. Note: This is analogous to the creation date and time for a file in the file system. Inspired by RFC 2445 sec. 4.8.7.1. Note that this property is a subproperty of nie:created. The domain of nie:created is nie:DataObject. It is not a superclass of UnionOf_Vevent_Vjournal_Vtodo, but since that union is conceived as an 'abstract' class, and in real-life all resources referenced by this property will also be DataObjects, than this shouldn't cause too much of a problem. Note that RFC allows ONLY UTC time values for this property."^^xsd#string].
+ncal#created[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#created[rdfs#label -> "created"^^xsd#string].
+ncal#created[rdfs#range -> xsd#dateTime].
+ncal#created[rdfs#subPropertyOf -> nie#created].
+
+ncal#cutype[rdf#type -> rdf#Property].
+ncal#cutype[rdfs#comment -> "To specify the type of calendar user specified by the property. Inspired by RFC 2445 sec. 4.2.3. This parameter has a limited vocabulary. The terms that may serve as values for this property have been expressed as instances of CalendarUserType class. The user may use instances provided with this ontology or create his own."^^xsd#string].
+ncal#cutype[rdfs#domain -> ncal#Attendee].
+ncal#cutype[rdfs#label -> "cutype"^^xsd#string].
+ncal#cutype[rdfs#range -> ncal#CalendarUserType].
+
+ncal#daily[rdf#type -> ncal#RecurrenceFrequency].
+ncal#daily[rdfs#label -> "daily"^^xsd#string].
+
+ncal#date[rdf#type -> rdf#Property].
+ncal#date[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#date[rdfs#comment -> "Date an instance of NcalDateTime refers to. It was conceived to express values in DATE datatype specified in RFC 2445 4.3.4"^^xsd#string].
+ncal#date[rdfs#domain -> ncal#NcalDateTime].
+ncal#date[rdfs#label -> "date"^^xsd#string].
+ncal#date[rdfs#range -> xsd#date].
+
+ncal#dateTime[rdf#type -> rdf#Property].
+ncal#dateTime[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#dateTime[rdfs#comment -> "Representation of a date an instance of NcalDateTime actually refers to. It's purpose is to express values in DATE-TIME datatype, as defined in RFC 2445 sec. 4.3.5"^^xsd#string].
+ncal#dateTime[rdfs#domain -> ncal#NcalDateTime].
+ncal#dateTime[rdfs#label -> "dateTime"^^xsd#string].
+ncal#dateTime[rdfs#range -> xsd#dateTime].
+
+ncal#daylight[rdf#type -> rdf#Property].
+ncal#daylight[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#daylight[rdfs#comment -> "Links a timezone with it's daylight observance. This property has no direct equivalent in the RFC 2445. It has been inspired by the structure of the Vtimezone component defined in sec.4.6.5"^^xsd#string].
+ncal#daylight[rdfs#domain -> ncal#Timezone].
+ncal#daylight[rdfs#label -> "daylight"^^xsd#string].
+ncal#daylight[rdfs#range -> ncal#TimezoneObservance].
+
+ncal#declinedParticipationStatus[rdf#type -> ncal#ParticipationStatus].
+ncal#declinedParticipationStatus[rdfs#label -> "declinedParticipationStatus"^^xsd#string].
+
+ncal#delegatedFrom[rdf#type -> rdf#Property].
+ncal#delegatedFrom[rdfs#comment -> "To specify the calendar users that have delegated their participation to the calendar user specified by the property. Inspired by RFC 2445 sec. 4.2.4. Originally the value type for this property was CAL-ADDRESS. This has been expressed as nco:Contact to promote integration between NCAL and NCO."^^xsd#string].
+ncal#delegatedFrom[rdfs#domain -> ncal#Attendee].
+ncal#delegatedFrom[rdfs#label -> "delegatedFrom"^^xsd#string].
+ncal#delegatedFrom[rdfs#range -> nco#Contact].
+
+ncal#delegatedParticipationStatus[rdf#type -> ncal#ParticipationStatus].
+ncal#delegatedParticipationStatus[rdfs#label -> "delegatedParticipationStatus"^^xsd#string].
+
+ncal#delegatedTo[rdf#type -> rdf#Property].
+ncal#delegatedTo[rdfs#comment -> "To specify the calendar users to whom the calendar user specified by the property has delegated participation. Inspired by RFC 2445 sec. 4.2.5. Originally the value type for this parameter was CAL-ADDRESS. This has been expressed as nco:Contact to promote integration between NCAL and NCO."^^xsd#string].
+ncal#delegatedTo[rdfs#domain -> ncal#Attendee].
+ncal#delegatedTo[rdfs#label -> "delegatedTo"^^xsd#string].
+ncal#delegatedTo[rdfs#range -> nco#Contact].
+
+ncal#description[rdf#type -> rdf#Property].
+ncal#description[rdfs#comment -> "A more complete description of the calendar component, than  that provided by the ncal:summary property.Inspired by RFC 2445 sec. 4.8.1.5 with following reservations:  the LANGUAGE parameter has been discarded. Please use xml:lang literals to express language. For the ALTREP parameter use the descriptionAltRep property."^^xsd#string].
+ncal#description[rdfs#domain -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#description[rdfs#label -> "description"^^xsd#string].
+ncal#description[rdfs#range -> xsd#string].
+ncal#description[rdfs#subPropertyOf -> nie#description].
+
+ncal#descriptionAltRep[rdf#type -> rdf#Property].
+ncal#descriptionAltRep[rdfs#comment -> "Alternate representation of the calendar entity description. Introduced to cover 
+the ALTREP parameter of the DESCRIPTION property. See 
+documentation of ncal:description for details."^^xsd#string].
+ncal#descriptionAltRep[rdfs#domain -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#descriptionAltRep[rdfs#label -> "descriptionAltRep"^^xsd#string].
+ncal#descriptionAltRep[rdfs#range -> rdfs#Resource].
+
+ncal#dir[rdf#type -> rdf#Property].
+ncal#dir[rdfs#comment -> "Specifies a reference to a directory entry associated with the calendar user specified by the property. Inspired by RFC 2445 sec. 4.2.6. Originally the data type of the value of this parameter was URI (Usually an LDAP URI). This has been expressed as rdfs:resource."^^xsd#string].
+ncal#dir[rdfs#domain -> ncal#AttendeeOrOrganizer].
+ncal#dir[rdfs#label -> "dir"^^xsd#string].
+ncal#dir[rdfs#range -> rdfs#Resource].
+
+ncal#displayAction[rdf#type -> ncal#AlarmAction].
+ncal#displayAction[rdfs#label -> "displayAction"^^xsd#string].
+
+ncal#draftStatus[rdf#type -> ncal#JournalStatus].
+ncal#draftStatus[rdfs#label -> "draftStatus"^^xsd#string].
+
+ncal#dtend[rdf#type -> rdf#Property].
+ncal#dtend[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#dtend[rdfs#comment -> "This property specifies the date and time that a calendar component ends. Inspired by RFC 2445 sec. 4.8.2.2"^^xsd#string].
+ncal#dtend[rdfs#domain -> ncal#UnionOfEventFreebusy].
+ncal#dtend[rdfs#label -> "dtend"^^xsd#string].
+ncal#dtend[rdfs#range -> ncal#NcalDateTime].
+
+ncal#dtstamp[rdf#type -> rdf#Property].
+ncal#dtstamp[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#dtstamp[rdfs#comment -> "The property indicates the date/time that the instance of the iCalendar object was created. Inspired by RFC 2445 sec. 4.8.7.1. Note that the RFC allows ONLY UTC values for this property."^^xsd#string].
+ncal#dtstamp[rdfs#domain -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#dtstamp[rdfs#label -> "dtstamp"^^xsd#string].
+ncal#dtstamp[rdfs#range -> xsd#dateTime].
+
+ncal#dtstart[rdf#type -> rdf#Property].
+ncal#dtstart[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#dtstart[rdfs#comment -> "This property specifies when the calendar component begins. Inspired by RFC 2445 sec. 4.8.2.4"^^xsd#string].
+ncal#dtstart[rdfs#domain -> ncal#UnionOfTimezoneObservanceEventFreebusyTimezoneTodo].
+ncal#dtstart[rdfs#label -> "dtstart"^^xsd#string].
+ncal#dtstart[rdfs#range -> ncal#NcalDateTime].
+
+ncal#due[rdf#type -> rdf#Property].
+ncal#due[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#due[rdfs#comment -> "This property defines the date and time that a to-do is expected to be completed. Inspired by RFC 2445 sec. 4.8.2.3"^^xsd#string].
+ncal#due[rdfs#domain -> ncal#Todo].
+ncal#due[rdfs#label -> "due"^^xsd#string].
+ncal#due[rdfs#range -> ncal#NcalDateTime].
+
+ncal#duration[rdf#type -> rdf#Property].
+ncal#duration[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#duration[rdfs#comment -> "The property specifies a positive duration of time. Inspired by RFC 2445 sec. 4.8.2.5"^^xsd#string].
+ncal#duration[rdfs#domain -> ncal#UnionOfAlarmEventFreebusyTodo].
+ncal#duration[rdfs#label -> "duration"^^xsd#string].
+ncal#duration[rdfs#range -> xsd#duration].
+
+ncal#emailAction[rdf#type -> ncal#AlarmAction].
+ncal#emailAction[rdfs#label -> "emailAction"^^xsd#string].
+
+ncal#encoding[rdf#type -> rdf#Property].
+ncal#encoding[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#encoding[rdfs#comment -> "To specify an alternate inline encoding for the property value. Inspired by RFC 2445 sec. 4.2.7. Originally this property had a limited vocabulary. ('8BIT' and 'BASE64'). The terms of this vocabulary have been expressed as instances of the AttachmentEncoding class"^^xsd#string].
+ncal#encoding[rdfs#domain -> ncal#Attachment].
+ncal#encoding[rdfs#label -> "encoding"^^xsd#string].
+ncal#encoding[rdfs#range -> ncal#AttachmentEncoding].
+
+ncal#endTriggerRelation[rdf#type -> ncal#TriggerRelation].
+ncal#endTriggerRelation[rdfs#label -> "endTriggerRelation"^^xsd#string].
+
+ncal#eventStatus[rdf#type -> rdf#Property].
+ncal#eventStatus[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#eventStatus[rdfs#comment -> "Defines the overall status or confirmation for an Event. Based on the STATUS property defined in RFC 2445 sec. 4.8.1.11."^^xsd#string].
+ncal#eventStatus[rdfs#domain -> ncal#Event].
+ncal#eventStatus[rdfs#label -> "status"^^xsd#string].
+ncal#eventStatus[rdfs#range -> ncal#EventStatus].
+
+ncal#exdate[rdf#type -> rdf#Property].
+ncal#exdate[rdfs#comment -> "This property defines the list of date/time exceptions for a recurring calendar component. Inspired by RFC 2445 sec. 4.8.5.1"^^xsd#string].
+ncal#exdate[rdfs#domain -> ncal#UnionOfEventJournalTimezoneTodo].
+ncal#exdate[rdfs#label -> "exdate"^^xsd#string].
+ncal#exdate[rdfs#range -> ncal#NcalDateTime].
+
+ncal#exrule[rdf#type -> rdf#Property].
+ncal#exrule[rdfs#comment -> "This property defines a rule or repeating pattern for an exception to a recurrence set. Inspired by RFC 2445 sec. 4.8.5.2."^^xsd#string].
+ncal#exrule[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#exrule[rdfs#label -> "exrule"^^xsd#string].
+ncal#exrule[rdfs#range -> ncal#RecurrenceRule].
+
+ncal#fbtype[rdf#type -> rdf#Property].
+ncal#fbtype[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#fbtype[rdfs#comment -> "To specify the free or busy time type. Inspired by RFC 2445 sec. 4.2.9. The RFC specified a limited vocabulary for the values of this property. The terms of this vocabulary have been expressed as instances of the FreebusyType class. The user can use instances provided with this ontology or create his own."^^xsd#string].
+ncal#fbtype[rdfs#domain -> ncal#FreebusyPeriod].
+ncal#fbtype[rdfs#label -> "fbtype"^^xsd#string].
+ncal#fbtype[rdfs#range -> ncal#FreebusyType].
+
+ncal#finalStatus[rdf#type -> ncal#JournalStatus].
+ncal#finalStatus[rdfs#label -> "finalStatus"^^xsd#string].
+
+ncal#fmttype[rdf#type -> rdf#Property].
+ncal#fmttype[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#fmttype[rdfs#comment -> "To specify the content type of a referenced object. Inspired by RFC 2445 sec. 4.2.8. The value of this property should be an IANA-registered content type (e.g. application/binary)"^^xsd#string].
+ncal#fmttype[rdfs#domain -> ncal#Attachment].
+ncal#fmttype[rdfs#label -> "fmttype"^^xsd#string].
+ncal#fmttype[rdfs#range -> xsd#string].
+
+ncal#freeFreebusyType[rdf#type -> ncal#FreebusyType].
+ncal#freeFreebusyType[rdfs#label -> "freeFreebusyType"^^xsd#string].
+
+ncal#freebusy[rdf#type -> rdf#Property].
+ncal#freebusy[rdfs#comment -> "The property defines one or more free or busy time intervals. Inspired by RFC 2445 sec. 4.8.2.6. Note that the periods specified by this property can only be expressed with UTC times. Originally this property could have many comma-separated values. Please use a separate triple for each value."^^xsd#string].
+ncal#freebusy[rdfs#domain -> ncal#Freebusy].
+ncal#freebusy[rdfs#label -> "freebusy"^^xsd#string].
+ncal#freebusy[rdfs#range -> ncal#FreebusyPeriod].
+
+ncal#freq[rdf#type -> rdf#Property].
+ncal#freq[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#freq[rdfs#comment -> "Frequency of a recurrence rule. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#freq[rdfs#domain -> ncal#RecurrenceRule].
+ncal#freq[rdfs#label -> "freq"^^xsd#string].
+ncal#freq[rdfs#range -> ncal#RecurrenceFrequency].
+
+ncal#friday[rdf#type -> ncal#Weekday].
+ncal#friday[rdfs#label -> "friday"^^xsd#string].
+
+ncal#geo[rdf#type -> rdf#Property].
+ncal#geo[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#geo[rdfs#comment -> "This property specifies information related to the global position for the activity specified by a calendar component. Inspired by RFC 2445 sec. 4.8.1.6"^^xsd#string].
+ncal#geo[rdfs#domain -> ncal#UnionOfEventTodo].
+ncal#geo[rdfs#label -> "geo"^^xsd#string].
+ncal#geo[rdfs#range -> geo#Point].
+
+ncal#gregorianCalendarScale[rdf#type -> ncal#CalendarScale].
+ncal#gregorianCalendarScale[rdfs#label -> "gregorianCalendarScale"^^xsd#string].
+
+ncal#groupUserType[rdf#type -> ncal#CalendarUserType].
+ncal#groupUserType[rdfs#label -> "groupUserType"^^xsd#string].
+
+ncal#hasAlarm[rdf#type -> rdf#Property].
+ncal#hasAlarm[rdfs#comment -> "Links an event or a todo with a DataObject that can be interpreted as an alarm. This property has no direct equivalent in the RFC 2445. It has been provided to express this relation."^^xsd#string].
+ncal#hasAlarm[rdfs#domain -> ncal#UnionOfEventTodo].
+ncal#hasAlarm[rdfs#label -> "hasAlarm"^^xsd#string].
+ncal#hasAlarm[rdfs#range -> ncal#CalendarDataObject].
+ncal#hasAlarm[rdfs#subPropertyOf -> nie#hasPart].
+
+ncal#hourly[rdf#type -> ncal#RecurrenceFrequency].
+ncal#hourly[rdfs#label -> "hourly"^^xsd#string].
+
+ncal#inProcessParticipationStatus[rdf#type -> ncal#ParticipationStatus].
+ncal#inProcessParticipationStatus[rdfs#label -> "inProcessParticipationStatus"^^xsd#string].
+
+ncal#inProcessStatus[rdf#type -> ncal#TodoStatus].
+ncal#inProcessStatus[rdfs#label -> "inProcessStatus"^^xsd#string].
+
+ncal#individualUserType[rdf#type -> ncal#CalendarUserType].
+ncal#individualUserType[rdfs#label -> "individualUserType"^^xsd#string].
+
+ncal#interval[rdf#type -> rdf#Property].
+ncal#interval[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#interval[rdfs#comment -> "The INTERVAL rule part contains a positive integer representing how often the recurrence rule repeats. The default value is \"1\", meaning every second for a SECONDLY rule, or every minute for a MINUTELY rule, every hour for an HOURLY rule, every day for a DAILY rule, every week for a WEEKLY rule, every month for a MONTHLY rule andevery year for a YEARLY rule. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#interval[rdfs#domain -> ncal#RecurrenceRule].
+ncal#interval[rdfs#label -> "interval"^^xsd#string].
+ncal#interval[rdfs#range -> xsd#integer].
+
+ncal#involvedContact[rdf#type -> rdf#Property].
+ncal#involvedContact[rdfs#comment -> "A contact of the Attendee or the organizer involved in an event or other calendar entity. This property has been introduced to express the actual value of the ATTENDEE and ORGANIZER properties. The contact will also represent the CN parameter of those properties. See documentation of ncal:attendee or ncal:organizer for more details."^^xsd#string].
+ncal#involvedContact[rdfs#domain -> ncal#AttendeeOrOrganizer].
+ncal#involvedContact[rdfs#label -> "involvedContact"^^xsd#string].
+ncal#involvedContact[rdfs#range -> nco#Contact].
+
+ncal#journalStatus[rdf#type -> rdf#Property].
+ncal#journalStatus[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#journalStatus[rdfs#comment -> "Defines the overall status or confirmation for a journal entry. Based on the STATUS property defined in RFC 2445 sec. 4.8.1.11."^^xsd#string].
+ncal#journalStatus[rdfs#domain -> ncal#Journal].
+ncal#journalStatus[rdfs#label -> "status"^^xsd#string].
+ncal#journalStatus[rdfs#range -> ncal#JournalStatus].
+
+ncal#lastModified[rdf#type -> rdf#Property].
+ncal#lastModified[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#lastModified[rdfs#comment -> "The property specifies the date and time that the information associated with the calendar component was last revised in the calendar store. Note: This is analogous to the modification date and time for a file in the file system. Inspired by RFC 2445 sec. 4.8.7.3. Note that the RFC allows ONLY UTC time values for this property."^^xsd#string].
+ncal#lastModified[rdfs#domain -> ncal#UnionOfEventJournalTimezoneTodo].
+ncal#lastModified[rdfs#label -> "lastModified"^^xsd#string].
+ncal#lastModified[rdfs#range -> xsd#dateTime].
+
+ncal#location[rdf#type -> rdf#Property].
+ncal#location[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#location[rdfs#comment -> "Defines the intended venue for the activity defined by a calendar component. Inspired by RFC 2445 sec 4.8.1.7 with the following reservations:  the LANGUAGE parameter has been discarded. Please use xml:lang literals to express language.  For the ALTREP parameter use the locationAltRep property."^^xsd#string].
+ncal#location[rdfs#domain -> ncal#UnionOfEventTodo].
+ncal#location[rdfs#label -> "location"^^xsd#string].
+ncal#location[rdfs#range -> xsd#string].
+
+ncal#locationAltRep[rdf#type -> rdf#Property].
+ncal#locationAltRep[rdfs#comment -> "Alternate representation of the event or todo location. 
+Introduced to cover the ALTREP parameter of the LOCATION 
+property. See documentation of ncal:location for details."^^xsd#string].
+ncal#locationAltRep[rdfs#domain -> ncal#UnionOfEventTodo].
+ncal#locationAltRep[rdfs#label -> "locationAltRep"^^xsd#string].
+ncal#locationAltRep[rdfs#range -> rdfs#Resource].
+
+ncal#member[rdf#type -> rdf#Property].
+ncal#member[rdfs#comment -> "To specify the group or list membership of the calendar user specified by the property. Inspired by RFC 2445 sec. 4.2.11. Originally this parameter had a value type of CAL-ADDRESS. This has been expressed as nco:Contact to promote integration between NCAL and NCO"^^xsd#string].
+ncal#member[rdfs#domain -> ncal#Attendee].
+ncal#member[rdfs#label -> "member"^^xsd#string].
+ncal#member[rdfs#range -> nco#Contact].
+
+ncal#method[rdf#type -> rdf#Property].
+ncal#method[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#method[rdfs#comment -> "This property defines the iCalendar object method associated with the calendar object. Defined in RFC 2445 sec. 4.7.2"^^xsd#string].
+ncal#method[rdfs#domain -> ncal#Calendar].
+ncal#method[rdfs#label -> "method"^^xsd#string].
+ncal#method[rdfs#range -> xsd#string].
+
+ncal#minutely[rdf#type -> ncal#RecurrenceFrequency].
+ncal#minutely[rdfs#label -> "minutely"^^xsd#string].
+
+ncal#monday[rdf#type -> ncal#Weekday].
+ncal#monday[rdfs#label -> "monday"^^xsd#string].
+
+ncal#monthly[rdf#type -> ncal#RecurrenceFrequency].
+ncal#monthly[rdfs#label -> "monthly"^^xsd#string].
+
+ncal#ncalRelation[rdf#type -> rdf#Property].
+ncal#ncalRelation[rdfs#comment -> "A common superproperty for all types of ncal relations. It is not to be used directly."^^xsd#string].
+ncal#ncalRelation[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#ncalRelation[rdfs#label -> "ncalRelation"^^xsd#string].
+ncal#ncalRelation[rdfs#range -> xsd#string].
+ncal#ncalRelation[rdfs#subPropertyOf -> dc#relation].
+
+ncal#ncalTimezone[rdf#type -> rdf#Property].
+ncal#ncalTimezone[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#ncalTimezone[rdfs#comment -> "The timezone instance that should be used to interpret an NcalDateTime. The purpose of this property is similar to the TZID parameter specified in RFC 2445 sec. 4.2.19"^^xsd#string].
+ncal#ncalTimezone[rdfs#domain -> ncal#NcalDateTime].
+ncal#ncalTimezone[rdfs#label -> "ncalTimezone"^^xsd#string].
+ncal#ncalTimezone[rdfs#range -> ncal#Timezone].
+
+ncal#needsActionParticipationStatus[rdf#type -> ncal#ParticipationStatus].
+ncal#needsActionParticipationStatus[rdfs#label -> "needsActionParticipationStatus"^^xsd#string].
+
+ncal#needsActionStatus[rdf#type -> ncal#TodoStatus].
+ncal#needsActionStatus[rdfs#label -> "needsActionStatus"^^xsd#string].
+
+ncal#nonParticipantRole[rdf#type -> ncal#AttendeeRole].
+ncal#nonParticipantRole[rdfs#label -> "nonParticipantRole"^^xsd#string].
+
+ncal#opaqueTransparency[rdf#type -> ncal#TimeTransparency].
+ncal#opaqueTransparency[rdfs#label -> "opaqueTransparency"^^xsd#string].
+
+ncal#optParticipantRole[rdf#type -> ncal#AttendeeRole].
+ncal#optParticipantRole[rdfs#label -> "optParticipantRole"^^xsd#string].
+
+ncal#organizer[rdf#type -> rdf#Property].
+ncal#organizer[rdfs#comment -> "The property defines the organizer for a calendar component. Inspired by RFC 2445 sec. 4.8.4.3. Originally this property accepted many parameters. The Organizer class has been introduced to express them all. Note that NCAL is aligned with NCO. The actual value (of the CAL-ADDRESS type) is expressed as an instance of nco:Contact. Remember that the CN parameter has been removed from NCAL. Instead that value should be expressed using nco:fullname property of the above mentioned nco:Contact instance."^^xsd#string].
+ncal#organizer[rdfs#domain -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#organizer[rdfs#label -> "organizer"^^xsd#string].
+ncal#organizer[rdfs#range -> ncal#Organizer].
+
+ncal#partstat[rdf#type -> rdf#Property].
+ncal#partstat[rdfs#comment -> "To specify the participation status for the calendar user specified by the property. Inspired by RFC 2445 sec. 4.2.12. Originally this parameter had three sets of allowed values. Which set applied to a particular case - depended on the type of calendar entity this parameter occured in. (event, todo, journal entry). This would be awkward to model in RDF so a single ParticipationStatus class has been introduced. Terms of the values vocabulary are expressed as instances of this class. Users are advised to pay attention which instances they use."^^xsd#string].
+ncal#partstat[rdfs#domain -> ncal#Attendee].
+ncal#partstat[rdfs#label -> "partstat"^^xsd#string].
+ncal#partstat[rdfs#range -> ncal#ParticipationStatus].
+
+ncal#percentComplete[rdf#type -> rdf#Property].
+ncal#percentComplete[rdfs#comment -> "This property is used by an assignee or delegatee of a to-do to convey the percent completion of a to-do to the Organizer. Inspired by RFC 2445 sec. 4.8.1.8"^^xsd#string].
+ncal#percentComplete[rdfs#domain -> ncal#Todo].
+ncal#percentComplete[rdfs#label -> "percentComplete"^^xsd#string].
+ncal#percentComplete[rdfs#range -> xsd#integer].
+
+ncal#periodBegin[rdf#type -> rdf#Property].
+ncal#periodBegin[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#periodBegin[rdfs#comment -> "Beginng of a period. Inspired by the first part of a structured value of the PERIOD datatype specified in RFC 2445 sec. 4.3.9"^^xsd#string].
+ncal#periodBegin[rdfs#domain -> ncal#NcalPeriod].
+ncal#periodBegin[rdfs#label -> "periodBegin"^^xsd#string].
+ncal#periodBegin[rdfs#range -> xsd#dateTime].
+
+ncal#periodDuration[rdf#type -> rdf#Property].
+ncal#periodDuration[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#periodDuration[rdfs#comment -> "Duration of a period of time. Inspired by the second part of a structured value of the PERIOD datatype specified in RFC 2445 sec. 4.3.9. Note that a single NcalPeriod instance shouldn't have the periodEnd and periodDuration properties specified simultaneously."^^xsd#string].
+ncal#periodDuration[rdfs#domain -> ncal#NcalPeriod].
+ncal#periodDuration[rdfs#label -> "periodDuration"^^xsd#string].
+ncal#periodDuration[rdfs#range -> xsd#duration].
+
+ncal#periodEnd[rdf#type -> rdf#Property].
+ncal#periodEnd[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#periodEnd[rdfs#comment -> "End of a period of time. Inspired by the second part of a structured value of a PERIOD datatype specified in RFC 2445 sec. 4.3.9. Note that a single NcalPeriod instance shouldn't have the periodEnd and periodDuration properties specified simultaneously."^^xsd#string].
+ncal#periodEnd[rdfs#domain -> ncal#NcalPeriod].
+ncal#periodEnd[rdfs#label -> "periodEnd"^^xsd#string].
+ncal#periodEnd[rdfs#range -> xsd#dateTime].
+
+ncal#priority[rdf#type -> rdf#Property].
+ncal#priority[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#priority[rdfs#comment -> "The property defines the relative priority for a calendar component. Inspired by RFC 2445 sec. 4.8.1.9"^^xsd#string].
+ncal#priority[rdfs#domain -> ncal#UnionOfEventTodo].
+ncal#priority[rdfs#label -> "priority"^^xsd#string].
+ncal#priority[rdfs#range -> xsd#integer].
+
+ncal#privateClassification[rdf#type -> ncal#AccessClassification].
+ncal#privateClassification[rdfs#label -> "privateClassification"^^xsd#string].
+
+ncal#procedureAction[rdf#type -> ncal#AlarmAction].
+ncal#procedureAction[rdfs#label -> "procedureAction"^^xsd#string].
+
+ncal#prodid[rdf#type -> rdf#Property].
+ncal#prodid[rdfs#comment -> "This property specifies the identifier for the product that created the iCalendar object. Defined in RFC 2445 sec. 4.7.2"^^xsd#string].
+ncal#prodid[rdfs#domain -> ncal#Calendar].
+ncal#prodid[rdfs#label -> "prodid"^^xsd#string].
+ncal#prodid[rdfs#range -> xsd#string].
+ncal#prodid[rdfs#subPropertyOf -> nie#generator].
+
+ncal#publicClassification[rdf#type -> ncal#AccessClassification].
+ncal#publicClassification[rdfs#label -> "publicClassification"^^xsd#string].
+
+ncal#range[rdf#type -> rdf#Property].
+ncal#range[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#range[rdfs#comment -> "To specify the effective range of recurrence instances from the instance specified by the recurrence identifier specified by the property. It is intended to express the RANGE parameter specified in RFC 2445 sec. 4.2.13. The set of possible values for this property is limited. See also the documentation for ncal:recurrenceId for more details."^^xsd#string].
+ncal#range[rdfs#domain -> ncal#RecurrenceIdentifier].
+ncal#range[rdfs#label -> "range"^^xsd#string].
+ncal#range[rdfs#range -> ncal#RecurrenceIdentifierRange].
+
+ncal#rdate[rdf#type -> rdf#Property].
+ncal#rdate[rdfs#comment -> "This property defines the list of date/times for a recurrence set. Inspired by RFC 2445 sec. 4.8.5.3. Note that RFC allows both DATE, DATE-TIME and PERIOD values for this property. That's why the range has been set to NcalTimeEntity."^^xsd#string].
+ncal#rdate[rdfs#domain -> ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo].
+ncal#rdate[rdfs#label -> "rdate"^^xsd#string].
+ncal#rdate[rdfs#range -> ncal#NcalTimeEntity].
+
+ncal#recurrenceId[rdf#type -> rdf#Property].
+ncal#recurrenceId[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#recurrenceId[rdfs#comment -> "This property is used in conjunction with the \"UID\" and \"SEQUENCE\" property to identify a specific instance of a recurring \"VEVENT\", \"VTODO\" or \"VJOURNAL\" calendar component. The property value is the effective value of the \"DTSTART\" property of the recurrence instance. Inspired by the RFC 2445 sec. 4.8.4.4"^^xsd#string].
+ncal#recurrenceId[rdfs#domain -> ncal#UnionOfEventJournalTimezoneTodo].
+ncal#recurrenceId[rdfs#label -> "recurrenceId"^^xsd#string].
+ncal#recurrenceId[rdfs#range -> ncal#RecurrenceIdentifier].
+
+ncal#recurrenceIdDateTime[rdf#type -> rdf#Property].
+ncal#recurrenceIdDateTime[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#recurrenceIdDateTime[rdfs#comment -> "The date and time of a recurrence identifier. Provided to express the actual value of the ncal:recurrenceId property. See documentation for ncal:recurrenceId for details."^^xsd#string].
+ncal#recurrenceIdDateTime[rdfs#domain -> ncal#RecurrenceIdentifier].
+ncal#recurrenceIdDateTime[rdfs#label -> "recurrenceIdDateTime"^^xsd#string].
+ncal#recurrenceIdDateTime[rdfs#range -> ncal#NcalDateTime].
+
+ncal#related[rdf#type -> rdf#Property].
+ncal#related[rdfs#comment -> "To specify the relationship of the alarm trigger with respect to the start or end of the calendar component. Inspired by RFC 2445 4.2.14. The RFC has specified two possible values for this property ('START' and 'END') they have been expressed as instances of the TriggerRelation class."^^xsd#string].
+ncal#related[rdfs#domain -> ncal#Trigger].
+ncal#related[rdfs#label -> "related"^^xsd#string].
+ncal#related[rdfs#range -> ncal#TriggerRelation].
+
+ncal#relatedToChild[rdf#type -> rdf#Property].
+ncal#relatedToChild[rdfs#comment -> "The property is used to represent a relationship or reference between one calendar component and another. Inspired by RFC 2445 sec. 4.8.4.5. Originally this property had a RELTYPE parameter. It has been decided to introduce three different properties to express the values of that parameter. This property expresses the RELATED-TO property with RELTYPE=CHILD parameter."^^xsd#string].
+ncal#relatedToChild[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#relatedToChild[rdfs#label -> "relatedToChild"^^xsd#string].
+ncal#relatedToChild[rdfs#range -> xsd#string].
+ncal#relatedToChild[rdfs#subPropertyOf -> ncal#ncalRelation].
+
+ncal#relatedToParent[rdf#type -> rdf#Property].
+ncal#relatedToParent[rdfs#comment -> "The property is used to represent a relationship or reference between one calendar component and another. Inspired by RFC 2445 sec. 4.8.4.5. Originally this property had a RELTYPE parameter. It has been decided that it is more natural to introduce three different properties to express the values of that parameter. This property expresses the RELATED-TO property with no RELTYPE parameter (the default value is PARENT), or with explicit RELTYPE=PARENT parameter."^^xsd#string].
+ncal#relatedToParent[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#relatedToParent[rdfs#label -> "relatedToParent"^^xsd#string].
+ncal#relatedToParent[rdfs#range -> xsd#string].
+ncal#relatedToParent[rdfs#subPropertyOf -> ncal#ncalRelation].
+
+ncal#relatedToSibling[rdf#type -> rdf#Property].
+ncal#relatedToSibling[rdfs#comment -> "The property is used to represent a relationship or reference between one calendar component and another. Inspired by RFC 2445 sec. 4.8.4.5. Originally this property had a RELTYPE parameter. It has been decided that it is more natural to introduce three different properties to express the values of that parameter. This property expresses the RELATED-TO property with RELTYPE=SIBLING parameter."^^xsd#string].
+ncal#relatedToSibling[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#relatedToSibling[rdfs#label -> "relatedToSibling"^^xsd#string].
+ncal#relatedToSibling[rdfs#range -> xsd#string].
+ncal#relatedToSibling[rdfs#subPropertyOf -> ncal#ncalRelation].
+
+ncal#repeat[rdf#type -> rdf#Property].
+ncal#repeat[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#repeat[rdfs#comment -> "This property defines the number of time the alarm should be repeated, after the initial trigger. Inspired by RFC 2445 sec. 4.8.6.2"^^xsd#string].
+ncal#repeat[rdfs#domain -> ncal#Alarm].
+ncal#repeat[rdfs#label -> "repeat"^^xsd#string].
+ncal#repeat[rdfs#range -> xsd#integer].
+
+ncal#reqParticipantRole[rdf#type -> ncal#AttendeeRole].
+ncal#reqParticipantRole[rdfs#label -> "reqParticipantRole"^^xsd#string].
+
+ncal#requestStatus[rdf#type -> rdf#Property].
+ncal#requestStatus[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#requestStatus[rdfs#comment -> "This property defines the status code returned for a scheduling request. Inspired by RFC 2445 sec. 4.8.8.2. Original value of this property was a four-element structure. The RequestStatus class has been introduced to express it. In RFC 2445 this property could have the LANGUAGE parameter. This has been discarded in this ontology. Use xml:lang literals to express it if necessary."^^xsd#string].
+ncal#requestStatus[rdfs#domain -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#requestStatus[rdfs#label -> "requestStatus"^^xsd#string].
+ncal#requestStatus[rdfs#range -> ncal#RequestStatus].
+
+ncal#requestStatusData[rdf#type -> rdf#Property].
+ncal#requestStatusData[rdfs#comment -> "Additional data associated with a request status. Inspired by the third part of the structured value for the REQUEST-STATUS property defined in RFC 2445 sec. 4.8.8.2 (\"Textual exception data. For example, the offending property name and value or complete property line\")"^^xsd#string].
+ncal#requestStatusData[rdfs#domain -> ncal#RequestStatus].
+ncal#requestStatusData[rdfs#label -> "requestStatusData"^^xsd#string].
+ncal#requestStatusData[rdfs#range -> xsd#string].
+
+ncal#resourceUserType[rdf#type -> ncal#CalendarUserType].
+ncal#resourceUserType[rdfs#label -> "resourceUserType"^^xsd#string].
+
+ncal#resources[rdf#type -> rdf#Property].
+ncal#resources[rdfs#comment -> "Defines the equipment or resources anticipated for an activity specified by a calendar entity. Inspired by RFC 2445 sec. 4.8.1.10 with the following reservations:  the LANGUAGE parameter has been discarded. Please use xml:lang literals to express language. For the ALTREP parameter use the resourcesAltRep property. This property specifies multiple resources. The order is not important. it is recommended to introduce a separate triple for each resource."^^xsd#string].
+ncal#resources[rdfs#domain -> ncal#UnionOfEventTodo].
+ncal#resources[rdfs#label -> "resources"^^xsd#string].
+ncal#resources[rdfs#range -> xsd#string].
+
+ncal#resourcesAltRep[rdf#type -> rdf#Property].
+ncal#resourcesAltRep[rdfs#comment -> "Alternate representation of the resources needed for an event or todo. Introduced to cover the ALTREP parameter of the resources property. See documentation for ncal:resources for details."^^xsd#string].
+ncal#resourcesAltRep[rdfs#domain -> ncal#UnionOfEventTodo].
+ncal#resourcesAltRep[rdfs#label -> "resourcesAltRep"^^xsd#string].
+ncal#resourcesAltRep[rdfs#range -> rdfs#Resource].
+
+ncal#returnStatus[rdf#type -> rdf#Property].
+ncal#returnStatus[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#returnStatus[rdfs#comment -> "Short return status. Inspired by the first element of the structured value of the REQUEST-STATUS property described in RFC 2445 sec. 4.8.8.2.
+
+The short return status is a PERIOD character (US-ASCII decimal 46) separated 3-tuple of integers. For example, \"3.1.1\". The successive  levels of integers provide for a successive level of status code granularity.
+
+The following are initial classes for the return status code. Individual iCalendar object methods will define specific return status codes for these classes. In addition, other classes for the return status code may be defined using the registration process defined later in this memo.
+
+ 1.xx - Preliminary success. This class of status of status code indicates that the request has request has been initially processed but that completion is pending.
+
+2.xx -Successful. This class of status code indicates that the request was completed successfuly. However, the exact status code can indicate that a fallback has been taken.
+
+3.xx - Client Error. This class of status code indicates that the request was not successful. The error is the result of either a syntax or a semantic error in the client formatted request. Request should not be retried until the condition in the request is corrected.
+
+4.xx - Scheduling Error. This class of status code indicates that the request was not successful. Some sort of error occurred within the  calendaring and scheduling service, not directly related to the request itself."^^xsd#string].
+ncal#returnStatus[rdfs#domain -> ncal#RequestStatus].
+ncal#returnStatus[rdfs#label -> "returnStatus"^^xsd#string].
+ncal#returnStatus[rdfs#range -> xsd#string].
+
+ncal#role[rdf#type -> rdf#Property].
+ncal#role[rdfs#comment -> "To specify the participation role for the calendar user specified by the property. Inspired by the RFC 2445 sec. 4.2.16. Originally this property had a limited vocabulary for values. The terms of that vocabulary have been expressed as instances of the AttendeeRole class."^^xsd#string].
+ncal#role[rdfs#domain -> ncal#Attendee].
+ncal#role[rdfs#label -> "role"^^xsd#string].
+ncal#role[rdfs#range -> ncal#AttendeeRole].
+
+ncal#roomUserType[rdf#type -> ncal#CalendarUserType].
+ncal#roomUserType[rdfs#label -> "roomUserType"^^xsd#string].
+
+ncal#rrule[rdf#type -> rdf#Property].
+ncal#rrule[rdfs#comment -> "This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions. sec. 4.8.5.4"^^xsd#string].
+ncal#rrule[rdfs#domain -> ncal#UnionOfTimezoneObservanceEventJournalTimezoneTodo].
+ncal#rrule[rdfs#label -> "rrule"^^xsd#string].
+ncal#rrule[rdfs#range -> ncal#RecurrenceRule].
+
+ncal#rsvp[rdf#type -> rdf#Property].
+ncal#rsvp[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#rsvp[rdfs#comment -> "To specify whether there is an expectation of a favor of a reply from the calendar user specified by the property value. Inspired by RFC 2445 sec. 4.2.17"^^xsd#string].
+ncal#rsvp[rdfs#domain -> ncal#Attendee].
+ncal#rsvp[rdfs#label -> "rsvp"^^xsd#string].
+ncal#rsvp[rdfs#range -> xsd#boolean].
+
+ncal#saturday[rdf#type -> ncal#Weekday].
+ncal#saturday[rdfs#label -> "saturday"^^xsd#string].
+
+ncal#secondly[rdf#type -> ncal#RecurrenceFrequency].
+ncal#secondly[rdfs#label -> "secondly"^^xsd#string].
+
+ncal#sentBy[rdf#type -> rdf#Property].
+ncal#sentBy[rdfs#comment -> "To specify the calendar user that is acting on behalf of the calendar user specified by the property. Inspired by RFC 2445 sec. 4.2.18. The original data type of this property was a mailto: URI. This has been changed to nco:Contact to promote integration between NCO and NCAL."^^xsd#string].
+ncal#sentBy[rdfs#domain -> ncal#AttendeeOrOrganizer].
+ncal#sentBy[rdfs#label -> "sentBy"^^xsd#string].
+ncal#sentBy[rdfs#range -> nco#Contact].
+
+ncal#sequence[rdf#type -> rdf#Property].
+ncal#sequence[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#sequence[rdfs#comment -> "This property defines the revision sequence number of the calendar component within a sequence of revisions. Inspired by RFC 2445 sec. 4.8.7.4"^^xsd#string].
+ncal#sequence[rdfs#domain -> ncal#UnionOfEventJournalTodo].
+ncal#sequence[rdfs#label -> "sequence"^^xsd#string].
+ncal#sequence[rdfs#range -> xsd#integer].
+
+ncal#standard[rdf#type -> rdf#Property].
+ncal#standard[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#standard[rdfs#comment -> "Links the timezone with the standard timezone observance. This property has no direct equivalent in the RFC 2445. It has been inspired by the structure of the Vtimezone component defined in sec.4.6.5"^^xsd#string].
+ncal#standard[rdfs#domain -> ncal#Timezone].
+ncal#standard[rdfs#label -> "standard"^^xsd#string].
+ncal#standard[rdfs#range -> ncal#TimezoneObservance].
+
+ncal#startTriggerRelation[rdf#type -> ncal#TriggerRelation].
+ncal#startTriggerRelation[rdfs#label -> "startTriggerRelation"^^xsd#string].
+
+ncal#statusDescription[rdf#type -> rdf#Property].
+ncal#statusDescription[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#statusDescription[rdfs#comment -> "Longer return status description. Inspired by the second part of the structured value of the REQUEST-STATUS property defined in RFC 2445 sec. 4.8.8.2"^^xsd#string].
+ncal#statusDescription[rdfs#domain -> ncal#RequestStatus].
+ncal#statusDescription[rdfs#label -> "statusDescription"^^xsd#string].
+ncal#statusDescription[rdfs#range -> xsd#string].
+
+ncal#summary[rdf#type -> rdf#Property].
+ncal#summary[rdfs#comment -> "Defines a short summary or subject for the calendar component. Inspired by RFC 2445 sec 4.8.1.12 with the following reservations: the LANGUAGE parameter has been discarded. Please use xml:lang literals to express language. For the ALTREP parameter use the summaryAltRep property."^^xsd#string].
+ncal#summary[rdfs#domain -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#summary[rdfs#label -> "summary"^^xsd#string].
+ncal#summary[rdfs#range -> xsd#string].
+
+ncal#summaryAltRep[rdf#type -> rdf#Property].
+ncal#summaryAltRep[rdfs#comment -> "Alternate representation of the comment. Introduced to cover 
+the ALTREP parameter of the SUMMARY property. See 
+documentation of ncal:summary for details."^^xsd#string].
+ncal#summaryAltRep[rdfs#domain -> ncal#UnionOfAlarmEventJournalTodo].
+ncal#summaryAltRep[rdfs#label -> "summaryAltRep"^^xsd#string].
+ncal#summaryAltRep[rdfs#range -> rdfs#Resource].
+
+ncal#sunday[rdf#type -> ncal#Weekday].
+ncal#sunday[rdfs#label -> "sunday"^^xsd#string].
+
+ncal#tentativeParticipationStatus[rdf#type -> ncal#ParticipationStatus].
+ncal#tentativeParticipationStatus[rdfs#label -> "tentativeParticipationStatus"^^xsd#string].
+
+ncal#tentativeStatus[rdf#type -> ncal#EventStatus].
+ncal#tentativeStatus[rdfs#label -> "tentativeStatus"^^xsd#string].
+
+ncal#thisAndFutureRange[rdf#type -> ncal#RecurrenceIdentifierRange].
+ncal#thisAndFutureRange[rdfs#label -> "thisAndFutureRange"^^xsd#string].
+
+ncal#thisAndPriorRange[rdf#type -> ncal#RecurrenceIdentifierRange].
+ncal#thisAndPriorRange[rdfs#label -> "thisAndPriorRange"^^xsd#string].
+
+ncal#thursday[rdf#type -> ncal#Weekday].
+ncal#thursday[rdfs#label -> "thursday"^^xsd#string].
+
+ncal#todoStatus[rdf#type -> rdf#Property].
+ncal#todoStatus[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#todoStatus[rdfs#comment -> "Defines the overall status or confirmation for a todo. Based on the STATUS property defined in RFC 2445 sec. 4.8.1.11."^^xsd#string].
+ncal#todoStatus[rdfs#domain -> ncal#Todo].
+ncal#todoStatus[rdfs#label -> "status"^^xsd#string].
+ncal#todoStatus[rdfs#range -> ncal#TodoStatus].
+
+ncal#transp[rdf#type -> rdf#Property].
+ncal#transp[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#transp[rdfs#comment -> "Defines whether an event is transparent or not  to busy time searches. Inspired by RFC 2445 sec.4.8.2.7. Values for this property can be chosen from a limited vocabulary. To express this a TimeTransparency class has been introduced."^^xsd#string].
+ncal#transp[rdfs#domain -> ncal#Event].
+ncal#transp[rdfs#label -> "transp"^^xsd#string].
+ncal#transp[rdfs#range -> ncal#TimeTransparency].
+
+ncal#transparentTransparency[rdf#type -> ncal#TimeTransparency].
+ncal#transparentTransparency[rdfs#label -> "transparentTransparency"^^xsd#string].
+
+ncal#trigger[rdf#type -> rdf#Property].
+ncal#trigger[rdfs#comment -> "This property specifies when an alarm will trigger. Inspired by RFC 2445 sec. 4.8.6.3 Originally the value of this property could accept two types : duration and date-time. To express this fact a Trigger class has been introduced. It also has a related property to account for the RELATED parameter."^^xsd#string].
+ncal#trigger[rdfs#domain -> ncal#UnionOfAlarmEventTodo].
+ncal#trigger[rdfs#label -> "trigger"^^xsd#string].
+ncal#trigger[rdfs#range -> ncal#Trigger].
+
+ncal#triggerDateTime[rdf#type -> rdf#Property].
+ncal#triggerDateTime[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#triggerDateTime[rdfs#comment -> "The exact date and time of the trigger. This property has been created to express the VALUE=DATE, and VALUE=DATE-TIME parameters of the TRIGGER property. See the documentation for ncal:trigger for more details"^^xsd#string].
+ncal#triggerDateTime[rdfs#domain -> ncal#Trigger].
+ncal#triggerDateTime[rdfs#label -> "triggerDateTime"^^xsd#string].
+ncal#triggerDateTime[rdfs#range -> xsd#dateTime].
+
+ncal#triggerDuration[rdf#type -> rdf#Property].
+ncal#triggerDuration[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#triggerDuration[rdfs#comment -> "The duration of a trigger. This property has been created to express the VALUE=DURATION parameter of the TRIGGER property. See documentation for ncal:trigger for more details."^^xsd#string].
+ncal#triggerDuration[rdfs#domain -> ncal#Trigger].
+ncal#triggerDuration[rdfs#label -> "triggerDuration"^^xsd#string].
+ncal#triggerDuration[rdfs#range -> xsd#duration].
+
+ncal#tuesday[rdf#type -> ncal#Weekday].
+ncal#tuesday[rdfs#label -> "tuesday"^^xsd#string].
+
+ncal#tzid[rdf#type -> rdf#Property].
+ncal#tzid[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#tzid[rdfs#comment -> "This property specifies the text value that uniquely identifies the \"VTIMEZONE\" calendar component. Inspired by RFC 2445 sec 4.8.3.1"^^xsd#string].
+ncal#tzid[rdfs#domain -> ncal#Timezone].
+ncal#tzid[rdfs#label -> "tzid"^^xsd#string].
+ncal#tzid[rdfs#range -> xsd#string].
+
+ncal#tzname[rdf#type -> rdf#Property].
+ncal#tzname[rdfs#comment -> "Specifies the customary designation for a timezone description. Inspired by RFC 2445 sec. 4.8.3.2 The LANGUAGE parameter has been discarded. Please xml:lang literals to express languages. Original specification for the domain of this property stated that it must appear within the timezone component. In this ontology the TimezoneObservance class has been itroduced to clarify this specification."^^xsd#string].
+ncal#tzname[rdfs#domain -> ncal#TimezoneObservance].
+ncal#tzname[rdfs#label -> "tzname"^^xsd#string].
+ncal#tzname[rdfs#range -> xsd#string].
+
+ncal#tzoffsetfrom[rdf#type -> rdf#Property].
+ncal#tzoffsetfrom[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#tzoffsetfrom[rdfs#comment -> "This property specifies the offset which is in use prior to this time zone observance. Inspired by RFC 2445 sec. 4.8.3.3. The original domain was underspecified. It said that this property must appear within a Timezone component. In this ontology a TimezoneObservance class has been introduced to clarify this specification. The original range was UTC-OFFSET. There is no equivalent among the XSD datatypes so plain string was chosen."^^xsd#string].
+ncal#tzoffsetfrom[rdfs#domain -> ncal#TimezoneObservance].
+ncal#tzoffsetfrom[rdfs#label -> "tzoffsetfrom"^^xsd#string].
+ncal#tzoffsetfrom[rdfs#range -> xsd#string].
+
+ncal#tzoffsetto[rdf#type -> rdf#Property].
+ncal#tzoffsetto[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#tzoffsetto[rdfs#comment -> "This property specifies the offset which is in use in this time zone observance. nspired by RFC 2445 sec. 4.8.3.4. The original domain was underspecified. It said that this property must appear within a Timezone component. In this ontology a TimezoneObservance class has been introduced to clarify this specification. The original range was UTC-OFFSET. There is no equivalent among the XSD datatypes so plain string was chosen."^^xsd#string].
+ncal#tzoffsetto[rdfs#domain -> ncal#TimezoneObservance].
+ncal#tzoffsetto[rdfs#label -> "tzoffsetto"^^xsd#string].
+ncal#tzoffsetto[rdfs#range -> xsd#string].
+
+ncal#tzurl[rdf#type -> rdf#Property].
+ncal#tzurl[rdfs#comment -> "The TZURL provides a means for a VTIMEZONE component to point to a network location that can be used to retrieve an up-to- date version of itself. Inspired by RFC 2445 sec. 4.8.3.5. Originally the range of this property had been specified as URI."^^xsd#string].
+ncal#tzurl[rdfs#domain -> ncal#Timezone].
+ncal#tzurl[rdfs#label -> "tzurl"^^xsd#string].
+ncal#tzurl[rdfs#range -> rdfs#Resource].
+
+ncal#uid[rdf#type -> rdf#Property].
+ncal#uid[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#uid[rdfs#comment -> "This property defines the persistent, globally unique identifier for the calendar component. Inspired by the RFC 2445 sec 4.8.4.7"^^xsd#string].
+ncal#uid[rdfs#domain -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#uid[rdfs#label -> "uid"^^xsd#string].
+ncal#uid[rdfs#range -> xsd#string].
+ncal#uid[rdfs#subPropertyOf -> nie#identifier].
+
+ncal#unknownUserType[rdf#type -> ncal#CalendarUserType].
+ncal#unknownUserType[rdfs#label -> "unknownUserType"^^xsd#string].
+
+ncal#until[rdf#type -> rdf#Property].
+ncal#until[rdfs#comment -> "The UNTIL rule part defines a date-time value which bounds the recurrence rule in an inclusive manner. If the value specified by UNTIL is synchronized with the specified recurrence, this date or date-time becomes the last instance of the recurrence. If specified as a date-time value, then it MUST be specified in an UTC time format. If not present, and the COUNT rule part is also not present, the RRULE is considered to repeat forever."^^xsd#string].
+ncal#until[rdfs#domain -> ncal#RecurrenceRule].
+ncal#until[rdfs#label -> "until"^^xsd#string].
+ncal#until[rdfs#range -> xsd#dateTime].
+
+ncal#url[rdf#type -> rdf#Property].
+ncal#url[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#url[rdfs#comment -> "This property defines a Uniform Resource Locator (URL) associated with the iCalendar object. Inspired by the RFC 2445 sec. 4.8.4.6. Original range had been specified as URI."^^xsd#string].
+ncal#url[rdfs#domain -> ncal#UnionOfEventFreebusyJournalTodo].
+ncal#url[rdfs#label -> "url"^^xsd#string].
+ncal#url[rdfs#range -> rdfs#Resource].
+
+ncal#version[rdf#type -> rdf#Property].
+ncal#version[rdfs#comment -> "This property specifies the identifier corresponding to the highest version number or the minimum and maximum range of the iCalendar specification that is required in order to interpret the iCalendar object. Defined in RFC 2445 sec. 4.7.4"^^xsd#string].
+ncal#version[rdfs#domain -> ncal#Calendar].
+ncal#version[rdfs#label -> "version"^^xsd#string].
+ncal#version[rdfs#range -> xsd#string].
+ncal#version[rdfs#subPropertyOf -> nie#generatorOption].
+
+ncal#wednesday[rdf#type -> ncal#Weekday].
+ncal#wednesday[rdfs#label -> "wednesday"^^xsd#string].
+
+ncal#weekly[rdf#type -> ncal#RecurrenceFrequency].
+ncal#weekly[rdfs#label -> "weekly"^^xsd#string].
+
+ncal#wkst[rdf#type -> rdf#Property].
+ncal#wkst[nrl#maxCardinality -> "1"^^xsd#integer].
+ncal#wkst[rdfs#comment -> "The day that's counted as the start of the week. It is used to disambiguate the byweekno rule. Defined in RFC 2445 sec. 4.3.10"^^xsd#string].
+ncal#wkst[rdfs#domain -> ncal#RecurrenceRule].
+ncal#wkst[rdfs#label -> "wkst"^^xsd#string].
+ncal#wkst[rdfs#range -> ncal#Weekday].
+
+ncal#yearly[rdf#type -> ncal#RecurrenceFrequency].
+ncal#yearly[rdfs#label -> "yearly"^^xsd#string].
+
+"http://www.semanticdesktop.org/ontologies/2007/04/02/ncal/v1.1/"^^\iri[rdf#type -> owl#Ontology].

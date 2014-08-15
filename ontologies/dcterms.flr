@@ -1,0 +1,972 @@
+:- iriprefix{dcam='http://purl.org/dc/dcam/'}.
+:- iriprefix{dcterms='http://purl.org/dc/terms/'}.
+:- iriprefix{owl='http://www.w3.org/2002/07/owl#'}.
+:- iriprefix{rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'}.
+:- iriprefix{rdfs='http://www.w3.org/2000/01/rdf-schema#'}.
+:- iriprefix{skos='http://www.w3.org/2004/02/skos/core#'}.
+:- iriprefix{xsd='http://www.w3.org/2001/XMLSchema#'}.
+
+"http://purl.org/dc/terms/"^^\iri[dcterms#modified -> "2010-10-11"^^xsd#string].
+"http://purl.org/dc/terms/"^^\iri[dcterms#publisher -> "http://purl.org/dc/aboutdcmi#DCMI"^^\iri].
+"http://purl.org/dc/terms/"^^\iri[dcterms#title -> "DCMI Metadata Terms in the /terms/ namespace"^^xsd#string].
+
+dcterms#Agent[rdf#type -> dcterms#AgentClass].
+dcterms#Agent[rdf#type -> rdfs#Class].
+dcterms#Agent[dcterms#description -> "Examples of Agent include person, organization, and software agent."^^xsd#string].
+dcterms#Agent[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Agent-001"^^\iri].
+dcterms#Agent[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#Agent[rdfs#comment -> "A resource that acts or has the power to act."^^xsd#string].
+dcterms#Agent[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Agent[rdfs#label -> "Agent"^^xsd#string].
+
+dcterms#AgentClass[rdf#type -> rdfs#Class].
+dcterms#AgentClass[dcterms#description -> "Examples of Agent Class include groups seen as classes, such as students, women, charities, lecturers."^^xsd#string].
+dcterms#AgentClass[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#AgentClass-001"^^\iri].
+dcterms#AgentClass[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#AgentClass[rdfs#comment -> "A group of agents."^^xsd#string].
+dcterms#AgentClass[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#AgentClass[rdfs#label -> "Agent Class"^^xsd#string].
+dcterms#AgentClass[rdfs#subClassOf -> dcterms#AgentClass].
+
+dcterms#BibliographicResource[rdf#type -> rdfs#Class].
+dcterms#BibliographicResource[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#BibliographicResource-001"^^\iri].
+dcterms#BibliographicResource[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#BibliographicResource[rdfs#comment -> "A book, article, or other documentary resource."^^xsd#string].
+dcterms#BibliographicResource[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#BibliographicResource[rdfs#label -> "Bibliographic Resource"^^xsd#string].
+
+dcterms#Box[rdf#type -> rdfs#Datatype].
+dcterms#Box[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Box-003"^^\iri].
+dcterms#Box[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#Box[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#Box[rdfs#comment -> "The set of regions in space defined by their geographic coordinates according to the DCMI Box Encoding Scheme."^^xsd#string].
+dcterms#Box[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Box[rdfs#label -> "DCMI Box"^^xsd#string].
+dcterms#Box[rdfs#seeAlso -> "http://dublincore.org/documents/dcmi-box/"^^\iri].
+
+dcterms#DCMIType[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#DCMIType[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#DCMIType-003"^^\iri].
+dcterms#DCMIType[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#DCMIType[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#DCMIType[rdfs#comment -> "The set of classes specified by the DCMI Type Vocabulary, used to categorize the nature or genre of the resource."^^xsd#string].
+dcterms#DCMIType[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#DCMIType[rdfs#label -> "DCMI Type Vocabulary"^^xsd#string].
+dcterms#DCMIType[rdfs#seeAlso -> "http://dublincore.org/documents/dcmi-type-vocabulary/"^^\iri].
+dcterms#DCMIType[rdfs#seeAlso -> "http://purl.org/dc/dcmitype/"^^\iri].
+
+dcterms#DDC[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#DDC[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#DDC-003"^^\iri].
+dcterms#DDC[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#DDC[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#DDC[rdfs#comment -> "The set of conceptual resources specified by the Dewey Decimal Classification."^^xsd#string].
+dcterms#DDC[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#DDC[rdfs#label -> "DDC"^^xsd#string].
+dcterms#DDC[rdfs#seeAlso -> "http://www.oclc.org/dewey/"^^\iri].
+
+dcterms#FileFormat[rdf#type -> rdfs#Class].
+dcterms#FileFormat[dcterms#description -> "Examples include the formats defined by the list of Internet Media Types."^^xsd#string].
+dcterms#FileFormat[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#FileFormat-001"^^\iri].
+dcterms#FileFormat[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#FileFormat[rdfs#comment -> "A digital resource format."^^xsd#string].
+dcterms#FileFormat[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#FileFormat[rdfs#label -> "File Format"^^xsd#string].
+dcterms#FileFormat[rdfs#subClassOf -> dcterms#MediaType].
+
+dcterms#Frequency[rdf#type -> rdfs#Class].
+dcterms#Frequency[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Frequency-001"^^\iri].
+dcterms#Frequency[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#Frequency[rdfs#comment -> "A rate at which something recurs."^^xsd#string].
+dcterms#Frequency[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Frequency[rdfs#label -> "Frequency"^^xsd#string].
+
+dcterms#IMT[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#IMT[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#IMT-004"^^\iri].
+dcterms#IMT[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#IMT[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#IMT[rdfs#comment -> "The set of media types specified by the Internet Assigned Numbers Authority."^^xsd#string].
+dcterms#IMT[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#IMT[rdfs#label -> "IMT"^^xsd#string].
+dcterms#IMT[rdfs#seeAlso -> "http://www.iana.org/assignments/media-types/"^^\iri].
+
+dcterms#ISO3166[rdf#type -> rdfs#Datatype].
+dcterms#ISO3166[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#ISO3166-004"^^\iri].
+dcterms#ISO3166[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#ISO3166[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#ISO3166[rdfs#comment -> "The set of codes listed in ISO 3166-1 for the representation of names of countries."^^xsd#string].
+dcterms#ISO3166[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#ISO3166[rdfs#label -> "ISO 3166"^^xsd#string].
+dcterms#ISO3166[rdfs#seeAlso -> "http://www.iso.org/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/list-en1.html"^^\iri].
+
+dcterms#'ISO639-2'[rdf#type -> rdfs#Datatype].
+dcterms#'ISO639-2'[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#ISO639-2-003"^^\iri].
+dcterms#'ISO639-2'[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#'ISO639-2'[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#'ISO639-2'[rdfs#comment -> "The three-letter alphabetic codes listed in ISO639-2 for the representation of names of languages."^^xsd#string].
+dcterms#'ISO639-2'[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#'ISO639-2'[rdfs#label -> "ISO 639-2"^^xsd#string].
+dcterms#'ISO639-2'[rdfs#seeAlso -> "http://lcweb.loc.gov/standards/iso639-2/langhome.html"^^\iri].
+
+dcterms#'ISO639-3'[rdf#type -> rdfs#Datatype].
+dcterms#'ISO639-3'[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#ISO639-3-001"^^\iri].
+dcterms#'ISO639-3'[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#'ISO639-3'[rdfs#comment -> "The set of three-letter codes listed in ISO 639-3 for the representation of names of languages."^^xsd#string].
+dcterms#'ISO639-3'[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#'ISO639-3'[rdfs#label -> "ISO 639-3"^^xsd#string].
+dcterms#'ISO639-3'[rdfs#seeAlso -> "http://www.sil.org/iso639-3/"^^\iri].
+
+dcterms#Jurisdiction[rdf#type -> rdfs#Class].
+dcterms#Jurisdiction[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Jurisdiction-001"^^\iri].
+dcterms#Jurisdiction[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#Jurisdiction[rdfs#comment -> "The extent or range of judicial, law enforcement, or other authority."^^xsd#string].
+dcterms#Jurisdiction[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Jurisdiction[rdfs#label -> "Jurisdiction"^^xsd#string].
+dcterms#Jurisdiction[rdfs#subClassOf -> dcterms#LocationPeriodOrJurisdiction].
+
+dcterms#LCC[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#LCC[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#LCC-003"^^\iri].
+dcterms#LCC[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#LCC[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#LCC[rdfs#comment -> "The set of conceptual resources specified by the Library of Congress Classification."^^xsd#string].
+dcterms#LCC[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#LCC[rdfs#label -> "LCC"^^xsd#string].
+dcterms#LCC[rdfs#seeAlso -> "http://lcweb.loc.gov/catdir/cpso/lcco/lcco.html"^^\iri].
+
+dcterms#LCSH[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#LCSH[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#LCSH-003"^^\iri].
+dcterms#LCSH[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#LCSH[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#LCSH[rdfs#comment -> "The set of labeled concepts specified by the Library of Congress Subject Headings."^^xsd#string].
+dcterms#LCSH[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#LCSH[rdfs#label -> "LCSH"^^xsd#string].
+
+dcterms#LicenseDocument[rdf#type -> rdfs#Class].
+dcterms#LicenseDocument[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#LicenseDocument-001"^^\iri].
+dcterms#LicenseDocument[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#LicenseDocument[rdfs#comment -> "A legal document giving official permission to do something with a Resource."^^xsd#string].
+dcterms#LicenseDocument[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#LicenseDocument[rdfs#label -> "License Document"^^xsd#string].
+dcterms#LicenseDocument[rdfs#subClassOf -> dcterms#RightsStatement].
+
+dcterms#LinguisticSystem[rdf#type -> rdfs#Class].
+dcterms#LinguisticSystem[dcterms#description -> "Examples include written, spoken, sign, and computer languages."^^xsd#string].
+dcterms#LinguisticSystem[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#LinguisticSystem-001"^^\iri].
+dcterms#LinguisticSystem[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#LinguisticSystem[rdfs#comment -> "A system of signs, symbols, sounds, gestures, or rules used in communication."^^xsd#string].
+dcterms#LinguisticSystem[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#LinguisticSystem[rdfs#label -> "Linguistic System"^^xsd#string].
+
+dcterms#Location[rdf#type -> rdfs#Class].
+dcterms#Location[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Location-001"^^\iri].
+dcterms#Location[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#Location[rdfs#comment -> "A spatial region or named place."^^xsd#string].
+dcterms#Location[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Location[rdfs#label -> "Location"^^xsd#string].
+dcterms#Location[rdfs#subClassOf -> dcterms#LocationPeriodOrJurisdiction].
+
+dcterms#LocationPeriodOrJurisdiction[rdf#type -> rdfs#Class].
+dcterms#LocationPeriodOrJurisdiction[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#LocationPeriodOrJurisdiction-001"^^\iri].
+dcterms#LocationPeriodOrJurisdiction[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#LocationPeriodOrJurisdiction[rdfs#comment -> "A location, period of time, or jurisdiction."^^xsd#string].
+dcterms#LocationPeriodOrJurisdiction[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#LocationPeriodOrJurisdiction[rdfs#label -> "Location, Period, or Jurisdiction"^^xsd#string].
+
+dcterms#MESH[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#MESH[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#MESH-003"^^\iri].
+dcterms#MESH[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#MESH[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#MESH[rdfs#comment -> "The set of labeled concepts specified by the Medical Subject Headings."^^xsd#string].
+dcterms#MESH[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#MESH[rdfs#label -> "MeSH"^^xsd#string].
+dcterms#MESH[rdfs#seeAlso -> "http://www.nlm.nih.gov/mesh/meshhome.html"^^\iri].
+
+dcterms#MediaType[rdf#type -> rdfs#Class].
+dcterms#MediaType[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#MediaType-001"^^\iri].
+dcterms#MediaType[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#MediaType[rdfs#comment -> "A file format or physical medium."^^xsd#string].
+dcterms#MediaType[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#MediaType[rdfs#label -> "Media Type"^^xsd#string].
+dcterms#MediaType[rdfs#subClassOf -> dcterms#MediaTypeOrExtent].
+
+dcterms#MediaTypeOrExtent[rdf#type -> rdfs#Class].
+dcterms#MediaTypeOrExtent[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#MediaTypeOrExtent-001"^^\iri].
+dcterms#MediaTypeOrExtent[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#MediaTypeOrExtent[rdfs#comment -> "A media type or extent."^^xsd#string].
+dcterms#MediaTypeOrExtent[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#MediaTypeOrExtent[rdfs#label -> "Media Type or Extent"^^xsd#string].
+
+dcterms#MethodOfAccrual[rdf#type -> rdfs#Class].
+dcterms#MethodOfAccrual[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#MethodOfAccrual-001"^^\iri].
+dcterms#MethodOfAccrual[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#MethodOfAccrual[rdfs#comment -> "A method by which resources are added to a collection."^^xsd#string].
+dcterms#MethodOfAccrual[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#MethodOfAccrual[rdfs#label -> "Method of Accrual"^^xsd#string].
+
+dcterms#MethodOfInstruction[rdf#type -> rdfs#Class].
+dcterms#MethodOfInstruction[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#MethodOfInstruction-001"^^\iri].
+dcterms#MethodOfInstruction[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#MethodOfInstruction[rdfs#comment -> "A process that is used to engender knowledge, attitudes, and skills."^^xsd#string].
+dcterms#MethodOfInstruction[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#MethodOfInstruction[rdfs#label -> "Method of Instruction"^^xsd#string].
+
+dcterms#NLM[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#NLM[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#NLM-002"^^\iri].
+dcterms#NLM[dcterms#issued -> "2005-06-13"^^xsd#string].
+dcterms#NLM[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#NLM[rdfs#comment -> "The set of conceptual resources specified by the National Library of Medicine Classification."^^xsd#string].
+dcterms#NLM[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#NLM[rdfs#label -> "NLM"^^xsd#string].
+dcterms#NLM[rdfs#seeAlso -> "http://wwwcf.nlm.nih.gov/class/"^^\iri].
+
+dcterms#Period[rdf#type -> rdfs#Datatype].
+dcterms#Period[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Period-003"^^\iri].
+dcterms#Period[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#Period[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#Period[rdfs#comment -> "The set of time intervals defined by their limits according to the DCMI Period Encoding Scheme."^^xsd#string].
+dcterms#Period[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Period[rdfs#label -> "DCMI Period"^^xsd#string].
+dcterms#Period[rdfs#seeAlso -> "http://dublincore.org/documents/dcmi-period/"^^\iri].
+
+dcterms#PeriodOfTime[rdf#type -> rdfs#Class].
+dcterms#PeriodOfTime[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#PeriodOfTime-001"^^\iri].
+dcterms#PeriodOfTime[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#PeriodOfTime[rdfs#comment -> "An interval of time that is named or defined by its start and end dates."^^xsd#string].
+dcterms#PeriodOfTime[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#PeriodOfTime[rdfs#label -> "Period of Time"^^xsd#string].
+dcterms#PeriodOfTime[rdfs#subClassOf -> dcterms#LocationPeriodOrJurisdiction].
+
+dcterms#PhysicalMedium[rdf#type -> rdfs#Class].
+dcterms#PhysicalMedium[dcterms#description -> "Examples include paper, canvas, or DVD."^^xsd#string].
+dcterms#PhysicalMedium[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#PhysicalMedium-001"^^\iri].
+dcterms#PhysicalMedium[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#PhysicalMedium[rdfs#comment -> "A physical material or carrier."^^xsd#string].
+dcterms#PhysicalMedium[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#PhysicalMedium[rdfs#label -> "Physical Medium"^^xsd#string].
+dcterms#PhysicalMedium[rdfs#subClassOf -> dcterms#MediaType].
+
+dcterms#PhysicalResource[rdf#type -> rdfs#Class].
+dcterms#PhysicalResource[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#PhysicalResource-001"^^\iri].
+dcterms#PhysicalResource[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#PhysicalResource[rdfs#comment -> "A material thing."^^xsd#string].
+dcterms#PhysicalResource[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#PhysicalResource[rdfs#label -> "Physical Resource"^^xsd#string].
+
+dcterms#Point[rdf#type -> rdfs#Datatype].
+dcterms#Point[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Point-003"^^\iri].
+dcterms#Point[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#Point[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#Point[rdfs#comment -> "The set of points in space defined by their geographic coordinates according to the DCMI Point Encoding Scheme."^^xsd#string].
+dcterms#Point[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Point[rdfs#label -> "DCMI Point"^^xsd#string].
+dcterms#Point[rdfs#seeAlso -> "http://dublincore.org/documents/dcmi-point/"^^\iri].
+
+dcterms#Policy[rdf#type -> rdfs#Class].
+dcterms#Policy[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Policy-001"^^\iri].
+dcterms#Policy[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#Policy[rdfs#comment -> "A plan or course of action by an authority, intended to influence and determine decisions, actions, and other matters."^^xsd#string].
+dcterms#Policy[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Policy[rdfs#label -> "Policy"^^xsd#string].
+
+dcterms#ProvenanceStatement[rdf#type -> rdfs#Class].
+dcterms#ProvenanceStatement[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#ProvenanceStatement-001"^^\iri].
+dcterms#ProvenanceStatement[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#ProvenanceStatement[rdfs#comment -> "A statement of any changes in ownership and custody of a resource since its creation that are significant for its authenticity, integrity, and interpretation."^^xsd#string].
+dcterms#ProvenanceStatement[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#ProvenanceStatement[rdfs#label -> "Provenance Statement"^^xsd#string].
+
+dcterms#RFC1766[rdf#type -> rdfs#Datatype].
+dcterms#RFC1766[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#RFC1766-003"^^\iri].
+dcterms#RFC1766[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#RFC1766[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#RFC1766[rdfs#comment -> "The set of tags, constructed according to RFC 1766, for the identification of languages."^^xsd#string].
+dcterms#RFC1766[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#RFC1766[rdfs#label -> "RFC 1766"^^xsd#string].
+dcterms#RFC1766[rdfs#seeAlso -> "http://www.ietf.org/rfc/rfc1766.txt"^^\iri].
+
+dcterms#RFC3066[rdf#type -> rdfs#Datatype].
+dcterms#RFC3066[dcterms#description -> "RFC 3066 has been obsoleted by RFC 4646."^^xsd#string].
+dcterms#RFC3066[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#RFC3066-002"^^\iri].
+dcterms#RFC3066[dcterms#issued -> "2002-07-13"^^xsd#string].
+dcterms#RFC3066[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#RFC3066[rdfs#comment -> "The set of tags constructed according to RFC 3066 for the identification of languages."^^xsd#string].
+dcterms#RFC3066[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#RFC3066[rdfs#label -> "RFC 3066"^^xsd#string].
+dcterms#RFC3066[rdfs#seeAlso -> "http://www.ietf.org/rfc/rfc3066.txt"^^\iri].
+
+dcterms#RFC4646[rdf#type -> rdfs#Datatype].
+dcterms#RFC4646[dcterms#description -> "RFC 4646 obsoletes RFC 3066."^^xsd#string].
+dcterms#RFC4646[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#RFC4646-001"^^\iri].
+dcterms#RFC4646[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#RFC4646[rdfs#comment -> "The set of tags constructed according to RFC 4646 for the identification of languages."^^xsd#string].
+dcterms#RFC4646[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#RFC4646[rdfs#label -> "RFC 4646"^^xsd#string].
+dcterms#RFC4646[rdfs#seeAlso -> "http://www.ietf.org/rfc/rfc4646.txt"^^\iri].
+
+dcterms#RFC5646[rdf#type -> rdfs#Datatype].
+dcterms#RFC5646[dcterms#description -> "RFC 5646 obsoletes RFC 4646."^^xsd#string].
+dcterms#RFC5646[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#RFC5646-001"^^\iri].
+dcterms#RFC5646[dcterms#issued -> "2010-10-11"^^xsd#string].
+dcterms#RFC5646[rdfs#comment -> "The set of tags constructed according to RFC 5646 for the identification of languages."^^xsd#string].
+dcterms#RFC5646[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#RFC5646[rdfs#label -> "RFC 5646"^^xsd#string].
+dcterms#RFC5646[rdfs#seeAlso -> "http://www.ietf.org/rfc/rfc5646.txt"^^\iri].
+
+dcterms#RightsStatement[rdf#type -> rdfs#Class].
+dcterms#RightsStatement[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#RightsStatement-001"^^\iri].
+dcterms#RightsStatement[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#RightsStatement[rdfs#comment -> "A statement about the intellectual property rights (IPR) held in or over a Resource, a legal document giving official permission to do something with a resource, or a statement about access rights."^^xsd#string].
+dcterms#RightsStatement[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#RightsStatement[rdfs#label -> "Rights Statement"^^xsd#string].
+
+dcterms#SizeOrDuration[rdf#type -> rdfs#Class].
+dcterms#SizeOrDuration[dcterms#description -> "Examples include a number of pages, a specification of length, width, and breadth, or a period in hours, minutes, and seconds."^^xsd#string].
+dcterms#SizeOrDuration[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#SizeOrDuration-001"^^\iri].
+dcterms#SizeOrDuration[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#SizeOrDuration[rdfs#comment -> "A dimension or extent, or a time taken to play or execute."^^xsd#string].
+dcterms#SizeOrDuration[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#SizeOrDuration[rdfs#label -> "Size or Duration"^^xsd#string].
+dcterms#SizeOrDuration[rdfs#subClassOf -> dcterms#MediaTypeOrExtent].
+
+dcterms#Standard[rdf#type -> rdfs#Class].
+dcterms#Standard[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#Standard-001"^^\iri].
+dcterms#Standard[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#Standard[rdfs#comment -> "A basis for comparison; a reference point against which other things can be evaluated."^^xsd#string].
+dcterms#Standard[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#Standard[rdfs#label -> "Standard"^^xsd#string].
+
+dcterms#TGN[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#TGN[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#TGN-003"^^\iri].
+dcterms#TGN[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#TGN[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#TGN[rdfs#comment -> "The set of places specified by the Getty Thesaurus of Geographic Names."^^xsd#string].
+dcterms#TGN[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#TGN[rdfs#label -> "TGN"^^xsd#string].
+dcterms#TGN[rdfs#seeAlso -> "http://www.getty.edu/research/tools/vocabulary/tgn/index.html"^^\iri].
+
+dcterms#UDC[rdf#type -> dcam#VocabularyEncodingScheme].
+dcterms#UDC[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#UDC-003"^^\iri].
+dcterms#UDC[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#UDC[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#UDC[rdfs#comment -> "The set of conceptual resources specified by the Universal Decimal Classification."^^xsd#string].
+dcterms#UDC[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#UDC[rdfs#label -> "UDC"^^xsd#string].
+dcterms#UDC[rdfs#seeAlso -> "http://www.udcc.org/"^^\iri].
+
+dcterms#URI[rdf#type -> rdfs#Datatype].
+dcterms#URI[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#URI-003"^^\iri].
+dcterms#URI[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#URI[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#URI[rdfs#comment -> "The set of identifiers constructed according to the generic syntax for Uniform Resource Identifiers as specified by the Internet Engineering Task Force."^^xsd#string].
+dcterms#URI[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#URI[rdfs#label -> "URI"^^xsd#string].
+dcterms#URI[rdfs#seeAlso -> "http://www.ietf.org/rfc/rfc3986.txt"^^\iri].
+
+dcterms#W3CDTF[rdf#type -> rdfs#Datatype].
+dcterms#W3CDTF[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#W3CDTF-003"^^\iri].
+dcterms#W3CDTF[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#W3CDTF[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#W3CDTF[rdfs#comment -> "The set of dates and times constructed according to the W3C Date and Time Formats Specification."^^xsd#string].
+dcterms#W3CDTF[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#W3CDTF[rdfs#label -> "W3C-DTF"^^xsd#string].
+dcterms#W3CDTF[rdfs#seeAlso -> "http://www.w3.org/TR/NOTE-datetime"^^\iri].
+
+dcterms#abstract[rdf#type -> rdf#Property].
+dcterms#abstract[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#abstract-003"^^\iri].
+dcterms#abstract[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#abstract[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#abstract[rdfs#comment -> "A summary of the resource."^^xsd#string].
+dcterms#abstract[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#abstract[rdfs#label -> "Abstract"^^xsd#string].
+dcterms#abstract[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/description"^^\iri].
+dcterms#abstract[rdfs#subPropertyOf -> dcterms#description].
+
+dcterms#accessRights[rdf#type -> rdf#Property].
+dcterms#accessRights[dcterms#description -> "Access Rights may include information regarding access or restrictions based on privacy, security, or other policies."^^xsd#string].
+dcterms#accessRights[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#accessRights-002"^^\iri].
+dcterms#accessRights[dcterms#issued -> "2003-02-15"^^xsd#string].
+dcterms#accessRights[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#accessRights[rdfs#comment -> "Information about who can access the resource or an indication of its security status."^^xsd#string].
+dcterms#accessRights[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#accessRights[rdfs#label -> "Access Rights"^^xsd#string].
+dcterms#accessRights[rdfs#range -> dcterms#RightsStatement].
+dcterms#accessRights[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/rights"^^\iri].
+dcterms#accessRights[rdfs#subPropertyOf -> dcterms#rights].
+
+dcterms#accrualMethod[rdf#type -> rdf#Property].
+dcterms#accrualMethod[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#accrualMethod-003"^^\iri].
+dcterms#accrualMethod[dcterms#issued -> "2005-06-13"^^xsd#string].
+dcterms#accrualMethod[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#accrualMethod[rdfs#comment -> "The method by which items are added to a collection."^^xsd#string].
+dcterms#accrualMethod[rdfs#domain -> "http://purl.org/dc/dcmitype/Collection"^^\iri].
+dcterms#accrualMethod[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#accrualMethod[rdfs#label -> "Accrual Method"^^xsd#string].
+dcterms#accrualMethod[rdfs#range -> dcterms#MethodOfAccrual].
+
+dcterms#accrualPeriodicity[rdf#type -> rdf#Property].
+dcterms#accrualPeriodicity[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#accrualPeriodicity-003"^^\iri].
+dcterms#accrualPeriodicity[dcterms#issued -> "2005-06-13"^^xsd#string].
+dcterms#accrualPeriodicity[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#accrualPeriodicity[rdfs#comment -> "The frequency with which items are added to a collection."^^xsd#string].
+dcterms#accrualPeriodicity[rdfs#domain -> "http://purl.org/dc/dcmitype/Collection"^^\iri].
+dcterms#accrualPeriodicity[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#accrualPeriodicity[rdfs#label -> "Accrual Periodicity"^^xsd#string].
+dcterms#accrualPeriodicity[rdfs#range -> dcterms#Frequency].
+
+dcterms#accrualPolicy[rdf#type -> rdf#Property].
+dcterms#accrualPolicy[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#accrualPolicy-003"^^\iri].
+dcterms#accrualPolicy[dcterms#issued -> "2005-06-13"^^xsd#string].
+dcterms#accrualPolicy[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#accrualPolicy[rdfs#comment -> "The policy governing the addition of items to a collection."^^xsd#string].
+dcterms#accrualPolicy[rdfs#domain -> "http://purl.org/dc/dcmitype/Collection"^^\iri].
+dcterms#accrualPolicy[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#accrualPolicy[rdfs#label -> "Accrual Policy"^^xsd#string].
+dcterms#accrualPolicy[rdfs#range -> dcterms#Policy].
+
+dcterms#alternative[rdf#type -> rdf#Property].
+dcterms#alternative[dcterms#description -> "The distinction between titles and alternative titles is application-specific."^^xsd#string].
+dcterms#alternative[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#alternative-003"^^\iri].
+dcterms#alternative[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#alternative[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#alternative[rdfs#comment -> "An alternative name for the resource."^^xsd#string].
+dcterms#alternative[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#alternative[rdfs#label -> "Alternative Title"^^xsd#string].
+dcterms#alternative[rdfs#range -> rdfs#Literal].
+dcterms#alternative[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/title"^^\iri].
+dcterms#alternative[rdfs#subPropertyOf -> dcterms#title].
+
+dcterms#audience[rdf#type -> rdf#Property].
+dcterms#audience[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#audience-003"^^\iri].
+dcterms#audience[dcterms#issued -> "2001-05-21"^^xsd#string].
+dcterms#audience[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#audience[rdfs#comment -> "A class of entity for whom the resource is intended or useful."^^xsd#string].
+dcterms#audience[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#audience[rdfs#label -> "Audience"^^xsd#string].
+dcterms#audience[rdfs#range -> dcterms#AgentClass].
+
+dcterms#available[rdf#type -> rdf#Property].
+dcterms#available[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#available-003"^^\iri].
+dcterms#available[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#available[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#available[rdfs#comment -> "Date (often a range) that the resource became or will become available."^^xsd#string].
+dcterms#available[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#available[rdfs#label -> "Date Available"^^xsd#string].
+dcterms#available[rdfs#range -> rdfs#Literal].
+dcterms#available[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+dcterms#available[rdfs#subPropertyOf -> dcterms#date].
+
+dcterms#bibliographicCitation[rdf#type -> rdf#Property].
+dcterms#bibliographicCitation[dcterms#description -> "Recommended practice is to include sufficient bibliographic detail to identify the resource as unambiguously as possible."^^xsd#string].
+dcterms#bibliographicCitation[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#bibliographicCitation-002"^^\iri].
+dcterms#bibliographicCitation[dcterms#issued -> "2003-02-15"^^xsd#string].
+dcterms#bibliographicCitation[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#bibliographicCitation[rdfs#comment -> "A bibliographic reference for the resource."^^xsd#string].
+dcterms#bibliographicCitation[rdfs#domain -> dcterms#BibliographicResource].
+dcterms#bibliographicCitation[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#bibliographicCitation[rdfs#label -> "Bibliographic Citation"^^xsd#string].
+dcterms#bibliographicCitation[rdfs#range -> rdfs#Literal].
+dcterms#bibliographicCitation[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/identifier"^^\iri].
+dcterms#bibliographicCitation[rdfs#subPropertyOf -> dcterms#identifier].
+
+dcterms#conformsTo[rdf#type -> rdf#Property].
+dcterms#conformsTo[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#conformsTo-003"^^\iri].
+dcterms#conformsTo[dcterms#issued -> "2001-05-21"^^xsd#string].
+dcterms#conformsTo[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#conformsTo[rdfs#comment -> "An established standard to which the described resource conforms."^^xsd#string].
+dcterms#conformsTo[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#conformsTo[rdfs#label -> "Conforms To"^^xsd#string].
+dcterms#conformsTo[rdfs#range -> dcterms#Standard].
+dcterms#conformsTo[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#conformsTo[rdfs#subPropertyOf -> dcterms#relation].
+
+dcterms#contributor[rdf#type -> rdf#Property].
+dcterms#contributor[dcterms#description -> "Examples of a Contributor include a person, an organization, or a service."^^xsd#string].
+dcterms#contributor[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#contributorT-001"^^\iri].
+dcterms#contributor[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#contributor[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#contributor[rdfs#comment -> "An entity responsible for making contributions to the resource."^^xsd#string].
+dcterms#contributor[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#contributor[rdfs#label -> "Contributor"^^xsd#string].
+dcterms#contributor[rdfs#range -> dcterms#Agent].
+dcterms#contributor[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/contributor"^^\iri].
+
+dcterms#coverage[rdf#type -> rdf#Property].
+dcterms#coverage[dcterms#description -> "Spatial topic and spatial applicability may be a named place or a location specified by its geographic coordinates. Temporal topic may be a named period, date, or date range. A jurisdiction may be a named administrative entity or a geographic place to which the resource applies. Recommended best practice is to use a controlled vocabulary such as the Thesaurus of Geographic Names [TGN]. Where appropriate, named places or time periods can be used in preference to numeric identifiers such as sets of coordinates or date ranges."^^xsd#string].
+dcterms#coverage[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#coverageT-001"^^\iri].
+dcterms#coverage[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#coverage[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#coverage[rdfs#comment -> "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant."^^xsd#string].
+dcterms#coverage[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#coverage[rdfs#label -> "Coverage"^^xsd#string].
+dcterms#coverage[rdfs#range -> dcterms#LocationPeriodOrJurisdiction].
+dcterms#coverage[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/coverage"^^\iri].
+
+dcterms#created[rdf#type -> rdf#Property].
+dcterms#created[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#created-003"^^\iri].
+dcterms#created[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#created[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#created[rdfs#comment -> "Date of creation of the resource."^^xsd#string].
+dcterms#created[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#created[rdfs#label -> "Date Created"^^xsd#string].
+dcterms#created[rdfs#range -> rdfs#Literal].
+dcterms#created[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+dcterms#created[rdfs#subPropertyOf -> dcterms#date].
+
+dcterms#creator[rdf#type -> rdf#Property].
+dcterms#creator[dcterms#description -> "Examples of a Creator include a person, an organization, or a service."^^xsd#string].
+dcterms#creator[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#creatorT-002"^^\iri].
+dcterms#creator[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#creator[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#creator[rdfs#comment -> "An entity primarily responsible for making the resource."^^xsd#string].
+dcterms#creator[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#creator[rdfs#label -> "Creator"^^xsd#string].
+dcterms#creator[rdfs#range -> dcterms#Agent].
+dcterms#creator[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/creator"^^\iri].
+dcterms#creator[rdfs#subPropertyOf -> dcterms#contributor].
+dcterms#creator[owl#equivalentProperty -> "http://xmlns.com/foaf/0.1/maker"^^\iri].
+
+dcterms#date[rdf#type -> rdf#Property].
+dcterms#date[dcterms#description -> "Date may be used to express temporal information at any level of granularity.  Recommended best practice is to use an encoding scheme, such as the W3CDTF profile of ISO 8601 [W3CDTF]."^^xsd#string].
+dcterms#date[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#dateT-001"^^\iri].
+dcterms#date[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#date[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#date[rdfs#comment -> "A point or period of time associated with an event in the lifecycle of the resource."^^xsd#string].
+dcterms#date[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#date[rdfs#label -> "Date"^^xsd#string].
+dcterms#date[rdfs#range -> rdfs#Literal].
+dcterms#date[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+
+dcterms#dateAccepted[rdf#type -> rdf#Property].
+dcterms#dateAccepted[dcterms#description -> "Examples of resources to which a Date Accepted may be relevant are a thesis (accepted by a university department) or an article (accepted by a journal)."^^xsd#string].
+dcterms#dateAccepted[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#dateAccepted-002"^^\iri].
+dcterms#dateAccepted[dcterms#issued -> "2002-07-13"^^xsd#string].
+dcterms#dateAccepted[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#dateAccepted[rdfs#comment -> "Date of acceptance of the resource."^^xsd#string].
+dcterms#dateAccepted[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#dateAccepted[rdfs#label -> "Date Accepted"^^xsd#string].
+dcterms#dateAccepted[rdfs#range -> rdfs#Literal].
+dcterms#dateAccepted[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+dcterms#dateAccepted[rdfs#subPropertyOf -> dcterms#date].
+
+dcterms#dateCopyrighted[rdf#type -> rdf#Property].
+dcterms#dateCopyrighted[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#dateCopyrighted-002"^^\iri].
+dcterms#dateCopyrighted[dcterms#issued -> "2002-07-13"^^xsd#string].
+dcterms#dateCopyrighted[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#dateCopyrighted[rdfs#comment -> "Date of copyright."^^xsd#string].
+dcterms#dateCopyrighted[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#dateCopyrighted[rdfs#label -> "Date Copyrighted"^^xsd#string].
+dcterms#dateCopyrighted[rdfs#range -> rdfs#Literal].
+dcterms#dateCopyrighted[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+dcterms#dateCopyrighted[rdfs#subPropertyOf -> dcterms#date].
+
+dcterms#dateSubmitted[rdf#type -> rdf#Property].
+dcterms#dateSubmitted[dcterms#description -> "Examples of resources to which a Date Submitted may be relevant are a thesis (submitted to a university department) or an article (submitted to a journal)."^^xsd#string].
+dcterms#dateSubmitted[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#dateSubmitted-002"^^\iri].
+dcterms#dateSubmitted[dcterms#issued -> "2002-07-13"^^xsd#string].
+dcterms#dateSubmitted[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#dateSubmitted[rdfs#comment -> "Date of submission of the resource."^^xsd#string].
+dcterms#dateSubmitted[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#dateSubmitted[rdfs#label -> "Date Submitted"^^xsd#string].
+dcterms#dateSubmitted[rdfs#range -> rdfs#Literal].
+dcterms#dateSubmitted[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+dcterms#dateSubmitted[rdfs#subPropertyOf -> dcterms#date].
+
+dcterms#description[rdf#type -> rdf#Property].
+dcterms#description[dcterms#description -> "Description may include but is not limited to: an abstract, a table of contents, a graphical representation, or a free-text account of the resource."^^xsd#string].
+dcterms#description[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#descriptionT-001"^^\iri].
+dcterms#description[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#description[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#description[rdfs#comment -> "An account of the resource."^^xsd#string].
+dcterms#description[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#description[rdfs#label -> "Description"^^xsd#string].
+dcterms#description[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/description"^^\iri].
+
+dcterms#educationLevel[rdf#type -> rdf#Property].
+dcterms#educationLevel[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#educationLevel-002"^^\iri].
+dcterms#educationLevel[dcterms#issued -> "2002-07-13"^^xsd#string].
+dcterms#educationLevel[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#educationLevel[rdfs#comment -> "A class of entity, defined in terms of progression through an educational or training context, for which the described resource is intended."^^xsd#string].
+dcterms#educationLevel[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#educationLevel[rdfs#label -> "Audience Education Level"^^xsd#string].
+dcterms#educationLevel[rdfs#range -> dcterms#AgentClass].
+dcterms#educationLevel[rdfs#subPropertyOf -> dcterms#audience].
+
+dcterms#extent[rdf#type -> rdf#Property].
+dcterms#extent[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#extent-003"^^\iri].
+dcterms#extent[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#extent[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#extent[rdfs#comment -> "The size or duration of the resource."^^xsd#string].
+dcterms#extent[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#extent[rdfs#label -> "Extent"^^xsd#string].
+dcterms#extent[rdfs#range -> dcterms#SizeOrDuration].
+dcterms#extent[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/format"^^\iri].
+dcterms#extent[rdfs#subPropertyOf -> dcterms#format].
+
+dcterms#format[rdf#type -> rdf#Property].
+dcterms#format[dcterms#description -> "Examples of dimensions include size and duration. Recommended best practice is to use a controlled vocabulary such as the list of Internet Media Types [MIME]."^^xsd#string].
+dcterms#format[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#formatT-001"^^\iri].
+dcterms#format[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#format[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#format[rdfs#comment -> "The file format, physical medium, or dimensions of the resource."^^xsd#string].
+dcterms#format[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#format[rdfs#label -> "Format"^^xsd#string].
+dcterms#format[rdfs#range -> dcterms#MediaTypeOrExtent].
+dcterms#format[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/format"^^\iri].
+
+dcterms#hasFormat[rdf#type -> rdf#Property].
+dcterms#hasFormat[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#hasFormat-003"^^\iri].
+dcterms#hasFormat[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#hasFormat[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#hasFormat[rdfs#comment -> "A related resource that is substantially the same as the pre-existing described resource, but in another format."^^xsd#string].
+dcterms#hasFormat[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#hasFormat[rdfs#label -> "Has Format"^^xsd#string].
+dcterms#hasFormat[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#hasFormat[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#hasFormat[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#hasPart[rdf#type -> rdf#Property].
+dcterms#hasPart[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#hasPart-003"^^\iri].
+dcterms#hasPart[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#hasPart[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#hasPart[rdfs#comment -> "A related resource that is included either physically or logically in the described resource."^^xsd#string].
+dcterms#hasPart[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#hasPart[rdfs#label -> "Has Part"^^xsd#string].
+dcterms#hasPart[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#hasPart[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#hasPart[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#hasVersion[rdf#type -> rdf#Property].
+dcterms#hasVersion[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#hasVersion-003"^^\iri].
+dcterms#hasVersion[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#hasVersion[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#hasVersion[rdfs#comment -> "A related resource that is a version, edition, or adaptation of the described resource."^^xsd#string].
+dcterms#hasVersion[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#hasVersion[rdfs#label -> "Has Version"^^xsd#string].
+dcterms#hasVersion[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#hasVersion[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#hasVersion[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#identifier[rdf#type -> rdf#Property].
+dcterms#identifier[dcterms#description -> "Recommended best practice is to identify the resource by means of a string conforming to a formal identification system. "^^xsd#string].
+dcterms#identifier[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#identifierT-001"^^\iri].
+dcterms#identifier[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#identifier[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#identifier[rdfs#comment -> "An unambiguous reference to the resource within a given context."^^xsd#string].
+dcterms#identifier[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#identifier[rdfs#label -> "Identifier"^^xsd#string].
+dcterms#identifier[rdfs#range -> rdfs#Literal].
+dcterms#identifier[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/identifier"^^\iri].
+
+dcterms#instructionalMethod[rdf#type -> rdf#Property].
+dcterms#instructionalMethod[dcterms#description -> "Instructional Method will typically include ways of presenting instructional materials or conducting instructional activities, patterns of learner-to-learner and learner-to-instructor interactions, and mechanisms by which group and individual levels of learning are measured.  Instructional methods include all aspects of the instruction and learning processes from planning and implementation through evaluation and feedback."^^xsd#string].
+dcterms#instructionalMethod[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#instructionalMethod-002"^^\iri].
+dcterms#instructionalMethod[dcterms#issued -> "2005-06-13"^^xsd#string].
+dcterms#instructionalMethod[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#instructionalMethod[rdfs#comment -> "A process, used to engender knowledge, attitudes and skills, that the described resource is designed to support."^^xsd#string].
+dcterms#instructionalMethod[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#instructionalMethod[rdfs#label -> "Instructional Method"^^xsd#string].
+dcterms#instructionalMethod[rdfs#range -> dcterms#MethodOfInstruction].
+
+dcterms#isFormatOf[rdf#type -> rdf#Property].
+dcterms#isFormatOf[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#isFormatOf-003"^^\iri].
+dcterms#isFormatOf[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#isFormatOf[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#isFormatOf[rdfs#comment -> "A related resource that is substantially the same as the described resource, but in another format."^^xsd#string].
+dcterms#isFormatOf[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#isFormatOf[rdfs#label -> "Is Format Of"^^xsd#string].
+dcterms#isFormatOf[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#isFormatOf[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#isFormatOf[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#isPartOf[rdf#type -> rdf#Property].
+dcterms#isPartOf[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#isPartOf-003"^^\iri].
+dcterms#isPartOf[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#isPartOf[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#isPartOf[rdfs#comment -> "A related resource in which the described resource is physically or logically included."^^xsd#string].
+dcterms#isPartOf[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#isPartOf[rdfs#label -> "Is Part Of"^^xsd#string].
+dcterms#isPartOf[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#isPartOf[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#isPartOf[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#isReferencedBy[rdf#type -> rdf#Property].
+dcterms#isReferencedBy[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#isReferencedBy-003"^^\iri].
+dcterms#isReferencedBy[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#isReferencedBy[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#isReferencedBy[rdfs#comment -> "A related resource that references, cites, or otherwise points to the described resource."^^xsd#string].
+dcterms#isReferencedBy[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#isReferencedBy[rdfs#label -> "Is Referenced By"^^xsd#string].
+dcterms#isReferencedBy[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#isReferencedBy[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#isReferencedBy[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#isReplacedBy[rdf#type -> rdf#Property].
+dcterms#isReplacedBy[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#isReplacedBy-003"^^\iri].
+dcterms#isReplacedBy[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#isReplacedBy[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#isReplacedBy[rdfs#comment -> "A related resource that supplants, displaces, or supersedes the described resource."^^xsd#string].
+dcterms#isReplacedBy[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#isReplacedBy[rdfs#label -> "Is Replaced By"^^xsd#string].
+dcterms#isReplacedBy[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#isReplacedBy[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#isReplacedBy[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#isRequiredBy[rdf#type -> rdf#Property].
+dcterms#isRequiredBy[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#isRequiredBy-003"^^\iri].
+dcterms#isRequiredBy[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#isRequiredBy[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#isRequiredBy[rdfs#comment -> "A related resource that requires the described resource to support its function, delivery, or coherence."^^xsd#string].
+dcterms#isRequiredBy[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#isRequiredBy[rdfs#label -> "Is Required By"^^xsd#string].
+dcterms#isRequiredBy[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#isRequiredBy[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#isRequiredBy[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#isVersionOf[rdf#type -> rdf#Property].
+dcterms#isVersionOf[dcterms#description -> "Changes in version imply substantive changes in content rather than differences in format."^^xsd#string].
+dcterms#isVersionOf[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#isVersionOf-003"^^\iri].
+dcterms#isVersionOf[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#isVersionOf[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#isVersionOf[rdfs#comment -> "A related resource of which the described resource is a version, edition, or adaptation."^^xsd#string].
+dcterms#isVersionOf[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#isVersionOf[rdfs#label -> "Is Version Of"^^xsd#string].
+dcterms#isVersionOf[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#isVersionOf[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#isVersionOf[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#issued[rdf#type -> rdf#Property].
+dcterms#issued[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#issued-003"^^\iri].
+dcterms#issued[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#issued[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#issued[rdfs#comment -> "Date of formal issuance (e.g., publication) of the resource."^^xsd#string].
+dcterms#issued[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#issued[rdfs#label -> "Date Issued"^^xsd#string].
+dcterms#issued[rdfs#range -> rdfs#Literal].
+dcterms#issued[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+dcterms#issued[rdfs#subPropertyOf -> dcterms#date].
+
+dcterms#language[rdf#type -> rdf#Property].
+dcterms#language[dcterms#description -> "Recommended best practice is to use a controlled vocabulary such as RFC 4646 [RFC4646]."^^xsd#string].
+dcterms#language[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#languageT-001"^^\iri].
+dcterms#language[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#language[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#language[rdfs#comment -> "A language of the resource."^^xsd#string].
+dcterms#language[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#language[rdfs#label -> "Language"^^xsd#string].
+dcterms#language[rdfs#range -> dcterms#LinguisticSystem].
+dcterms#language[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/language"^^\iri].
+
+dcterms#license[rdf#type -> rdf#Property].
+dcterms#license[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#license-002"^^\iri].
+dcterms#license[dcterms#issued -> "2004-06-14"^^xsd#string].
+dcterms#license[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#license[rdfs#comment -> "A legal document giving official permission to do something with the resource."^^xsd#string].
+dcterms#license[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#license[rdfs#label -> "License"^^xsd#string].
+dcterms#license[rdfs#range -> dcterms#LicenseDocument].
+dcterms#license[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/rights"^^\iri].
+dcterms#license[rdfs#subPropertyOf -> dcterms#rights].
+
+dcterms#mediator[rdf#type -> rdf#Property].
+dcterms#mediator[dcterms#description -> "In an educational context, a mediator might be a parent, teacher, teaching assistant, or care-giver."^^xsd#string].
+dcterms#mediator[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#mediator-003"^^\iri].
+dcterms#mediator[dcterms#issued -> "2001-05-21"^^xsd#string].
+dcterms#mediator[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#mediator[rdfs#comment -> "An entity that mediates access to the resource and for whom the resource is intended or useful."^^xsd#string].
+dcterms#mediator[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#mediator[rdfs#label -> "Mediator"^^xsd#string].
+dcterms#mediator[rdfs#range -> dcterms#AgentClass].
+dcterms#mediator[rdfs#subPropertyOf -> dcterms#audience].
+
+dcterms#medium[rdf#type -> rdf#Property].
+dcterms#medium[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#medium-003"^^\iri].
+dcterms#medium[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#medium[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#medium[rdfs#comment -> "The material or physical carrier of the resource."^^xsd#string].
+dcterms#medium[rdfs#domain -> dcterms#PhysicalResource].
+dcterms#medium[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#medium[rdfs#label -> "Medium"^^xsd#string].
+dcterms#medium[rdfs#range -> dcterms#PhysicalMedium].
+dcterms#medium[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/format"^^\iri].
+dcterms#medium[rdfs#subPropertyOf -> dcterms#format].
+
+dcterms#modified[rdf#type -> rdf#Property].
+dcterms#modified[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#modified-003"^^\iri].
+dcterms#modified[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#modified[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#modified[rdfs#comment -> "Date on which the resource was changed."^^xsd#string].
+dcterms#modified[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#modified[rdfs#label -> "Date Modified"^^xsd#string].
+dcterms#modified[rdfs#range -> rdfs#Literal].
+dcterms#modified[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+dcterms#modified[rdfs#subPropertyOf -> dcterms#date].
+
+dcterms#provenance[rdf#type -> rdf#Property].
+dcterms#provenance[dcterms#description -> "The statement may include a description of any changes successive custodians made to the resource."^^xsd#string].
+dcterms#provenance[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#provenance-002"^^\iri].
+dcterms#provenance[dcterms#issued -> "2004-09-20"^^xsd#string].
+dcterms#provenance[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#provenance[rdfs#comment -> "A statement of any changes in ownership and custody of the resource since its creation that are significant for its authenticity, integrity, and interpretation."^^xsd#string].
+dcterms#provenance[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#provenance[rdfs#label -> "Provenance"^^xsd#string].
+dcterms#provenance[rdfs#range -> dcterms#ProvenanceStatement].
+
+dcterms#publisher[rdf#type -> rdf#Property].
+dcterms#publisher[dcterms#description -> "Examples of a Publisher include a person, an organization, or a service."^^xsd#string].
+dcterms#publisher[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#publisherT-001"^^\iri].
+dcterms#publisher[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#publisher[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#publisher[rdfs#comment -> "An entity responsible for making the resource available."^^xsd#string].
+dcterms#publisher[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#publisher[rdfs#label -> "Publisher"^^xsd#string].
+dcterms#publisher[rdfs#range -> dcterms#Agent].
+dcterms#publisher[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/publisher"^^\iri].
+
+dcterms#references[rdf#type -> rdf#Property].
+dcterms#references[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#references-003"^^\iri].
+dcterms#references[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#references[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#references[rdfs#comment -> "A related resource that is referenced, cited, or otherwise pointed to by the described resource."^^xsd#string].
+dcterms#references[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#references[rdfs#label -> "References"^^xsd#string].
+dcterms#references[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#references[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#references[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#relation[rdf#type -> rdf#Property].
+dcterms#relation[dcterms#description -> "Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system. "^^xsd#string].
+dcterms#relation[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#relationT-001"^^\iri].
+dcterms#relation[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#relation[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#relation[rdfs#comment -> "A related resource."^^xsd#string].
+dcterms#relation[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#relation[rdfs#label -> "Relation"^^xsd#string].
+dcterms#relation[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#relation[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#replaces[rdf#type -> rdf#Property].
+dcterms#replaces[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#replaces-003"^^\iri].
+dcterms#replaces[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#replaces[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#replaces[rdfs#comment -> "A related resource that is supplanted, displaced, or superseded by the described resource."^^xsd#string].
+dcterms#replaces[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#replaces[rdfs#label -> "Replaces"^^xsd#string].
+dcterms#replaces[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#replaces[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#replaces[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#requires[rdf#type -> rdf#Property].
+dcterms#requires[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#requires-003"^^\iri].
+dcterms#requires[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#requires[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#requires[rdfs#comment -> "A related resource that is required by the described resource to support its function, delivery, or coherence."^^xsd#string].
+dcterms#requires[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#requires[rdfs#label -> "Requires"^^xsd#string].
+dcterms#requires[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/relation"^^\iri].
+dcterms#requires[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#requires[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#rights[rdf#type -> rdf#Property].
+dcterms#rights[dcterms#description -> "Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights."^^xsd#string].
+dcterms#rights[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#rightsT-001"^^\iri].
+dcterms#rights[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#rights[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#rights[rdfs#comment -> "Information about rights held in and over the resource."^^xsd#string].
+dcterms#rights[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#rights[rdfs#label -> "Rights"^^xsd#string].
+dcterms#rights[rdfs#range -> dcterms#RightsStatement].
+dcterms#rights[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/rights"^^\iri].
+
+dcterms#rightsHolder[rdf#type -> rdf#Property].
+dcterms#rightsHolder[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#rightsHolder-002"^^\iri].
+dcterms#rightsHolder[dcterms#issued -> "2004-06-14"^^xsd#string].
+dcterms#rightsHolder[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#rightsHolder[rdfs#comment -> "A person or organization owning or managing rights over the resource."^^xsd#string].
+dcterms#rightsHolder[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#rightsHolder[rdfs#label -> "Rights Holder"^^xsd#string].
+dcterms#rightsHolder[rdfs#range -> dcterms#Agent].
+
+dcterms#source[rdf#type -> rdf#Property].
+dcterms#source[dcterms#description -> "The described resource may be derived from the related resource in whole or in part. Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system."^^xsd#string].
+dcterms#source[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#sourceT-001"^^\iri].
+dcterms#source[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#source[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#source[rdfs#comment -> "A related resource from which the described resource is derived."^^xsd#string].
+dcterms#source[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#source[rdfs#label -> "Source"^^xsd#string].
+dcterms#source[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/source"^^\iri].
+dcterms#source[rdfs#subPropertyOf -> dcterms#relation].
+dcterms#source[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#spatial[rdf#type -> rdf#Property].
+dcterms#spatial[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#spatial-003"^^\iri].
+dcterms#spatial[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#spatial[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#spatial[rdfs#comment -> "Spatial characteristics of the resource."^^xsd#string].
+dcterms#spatial[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#spatial[rdfs#label -> "Spatial Coverage"^^xsd#string].
+dcterms#spatial[rdfs#range -> dcterms#Location].
+dcterms#spatial[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/coverage"^^\iri].
+dcterms#spatial[rdfs#subPropertyOf -> dcterms#coverage].
+
+dcterms#subject[rdf#type -> rdf#Property].
+dcterms#subject[dcterms#description -> "Typically, the subject will be represented using keywords, key phrases, or classification codes. Recommended best practice is to use a controlled vocabulary. To describe the spatial or temporal topic of the resource, use the Coverage element."^^xsd#string].
+dcterms#subject[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#subjectT-001"^^\iri].
+dcterms#subject[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#subject[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#subject[rdfs#comment -> "The topic of the resource."^^xsd#string].
+dcterms#subject[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#subject[rdfs#label -> "Subject"^^xsd#string].
+dcterms#subject[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/subject"^^\iri].
+dcterms#subject[skos#note -> "This term is intended to be used with non-literal values as defined in the DCMI Abstract Model (http://dublincore.org/documents/abstract-model/).  As of December 2007, the DCMI Usage Board is seeking a way to express this intention with a formal range declaration."^^xsd#string].
+
+dcterms#tableOfContents[rdf#type -> rdf#Property].
+dcterms#tableOfContents[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#tableOfContents-003"^^\iri].
+dcterms#tableOfContents[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#tableOfContents[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#tableOfContents[rdfs#comment -> "A list of subunits of the resource."^^xsd#string].
+dcterms#tableOfContents[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#tableOfContents[rdfs#label -> "Table Of Contents"^^xsd#string].
+dcterms#tableOfContents[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/description"^^\iri].
+dcterms#tableOfContents[rdfs#subPropertyOf -> dcterms#description].
+
+dcterms#temporal[rdf#type -> rdf#Property].
+dcterms#temporal[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#temporal-003"^^\iri].
+dcterms#temporal[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#temporal[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#temporal[rdfs#comment -> "Temporal characteristics of the resource."^^xsd#string].
+dcterms#temporal[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#temporal[rdfs#label -> "Temporal Coverage"^^xsd#string].
+dcterms#temporal[rdfs#range -> dcterms#PeriodOfTime].
+dcterms#temporal[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/coverage"^^\iri].
+dcterms#temporal[rdfs#subPropertyOf -> dcterms#coverage].
+
+dcterms#title[rdf#type -> rdf#Property].
+dcterms#title[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#titleT-002"^^\iri].
+dcterms#title[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#title[dcterms#modified -> "2010-10-11"^^xsd#string].
+dcterms#title[rdfs#comment -> "A name given to the resource."^^xsd#string].
+dcterms#title[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#title[rdfs#label -> "Title"^^xsd#string].
+dcterms#title[rdfs#range -> rdfs#Literal].
+dcterms#title[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/title"^^\iri].
+
+dcterms#type[rdf#type -> rdf#Property].
+dcterms#type[dcterms#description -> "Recommended best practice is to use a controlled vocabulary such as the DCMI Type Vocabulary [DCMITYPE]. To describe the file format, physical medium, or dimensions of the resource, use the Format element."^^xsd#string].
+dcterms#type[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#typeT-001"^^\iri].
+dcterms#type[dcterms#issued -> "2008-01-14"^^xsd#string].
+dcterms#type[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#type[rdfs#comment -> "The nature or genre of the resource."^^xsd#string].
+dcterms#type[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#type[rdfs#label -> "Type"^^xsd#string].
+dcterms#type[rdfs#range -> rdfs#Class].
+dcterms#type[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/type"^^\iri].
+
+dcterms#valid[rdf#type -> rdf#Property].
+dcterms#valid[dcterms#hasVersion -> "http://dublincore.org/usage/terms/history/#valid-003"^^\iri].
+dcterms#valid[dcterms#issued -> "2000-07-11"^^xsd#string].
+dcterms#valid[dcterms#modified -> "2008-01-14"^^xsd#string].
+dcterms#valid[rdfs#comment -> "Date (often a range) of validity of a resource."^^xsd#string].
+dcterms#valid[rdfs#isDefinedBy -> "http://purl.org/dc/terms/"^^\iri].
+dcterms#valid[rdfs#label -> "Date Valid"^^xsd#string].
+dcterms#valid[rdfs#range -> rdfs#Literal].
+dcterms#valid[rdfs#subPropertyOf -> "http://purl.org/dc/elements/1.1/date"^^\iri].
+dcterms#valid[rdfs#subPropertyOf -> dcterms#date].

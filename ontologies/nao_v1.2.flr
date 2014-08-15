@@ -1,0 +1,361 @@
+:- iriprefix{dc='http://purl.org/dc/elements/1.1/'}.
+:- iriprefix{dcterms='http://purl.org/dc/terms/'}.
+:- iriprefix{nao='http://www.semanticdesktop.org/ontologies/2007/08/15/nao#'}.
+:- iriprefix{nrl='http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#'}.
+:- iriprefix{owl='http://www.w3.org/2002/07/owl#'}.
+:- iriprefix{pimo='http://www.semanticdesktop.org/ontologies/2007/11/01/pimo#'}.
+:- iriprefix{rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'}.
+:- iriprefix{rdfs='http://www.w3.org/2000/01/rdf-schema#'}.
+:- iriprefix{xsd='http://www.w3.org/2001/XMLSchema#'}.
+
+nao#Agent[rdf#type -> rdfs#Class].
+nao#Agent[rdfs#comment -> "An agent is the artificial counterpart to nao:Party. It can be a software component or some service."^^xsd#string].
+nao#Agent[rdfs#label -> "agent"^^xsd#string].
+nao#Agent[rdfs#subClassOf -> rdfs#Resource].
+
+nao#FreeDesktopIcon[rdf#type -> rdfs#Class].
+nao#FreeDesktopIcon[rdfs#comment -> "Represents a desktop icon as defined in the FreeDesktop Icon Naming Standard (http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html)."^^xsd#string].
+nao#FreeDesktopIcon[rdfs#label -> "freedesktopicon"^^xsd#string].
+nao#FreeDesktopIcon[rdfs#subClassOf -> nao#Symbol].
+
+nao#Party[rdf#type -> rdfs#Class].
+nao#Party[rdfs#comment -> "Represents a single or a group of individuals"^^xsd#string].
+nao#Party[rdfs#label -> "party"^^xsd#string].
+nao#Party[rdfs#subClassOf -> rdfs#Resource].
+
+nao#Symbol[rdf#type -> rdfs#Class].
+nao#Symbol[rdfs#comment -> "Represents a symbol, a visual representation of a resource. Typically a local or remote file would be double-typed to be used as a symbol. An alternative is nao:FreeDesktopIcon."^^xsd#string].
+nao#Symbol[rdfs#label -> "symbol"^^xsd#string].
+nao#Symbol[rdfs#subClassOf -> rdfs#Resource].
+
+nao#Tag[rdf#type -> rdfs#Class].
+nao#Tag[rdfs#comment -> "Represents a generic tag"^^xsd#string].
+nao#Tag[rdfs#label -> "tag"^^xsd#string].
+nao#Tag[rdfs#subClassOf -> rdfs#Resource].
+
+nao#altLabel[rdf#type -> rdf#Property].
+nao#altLabel[rdfs#comment -> "An alternative label alongside the preferred label for a resource"^^xsd#string].
+nao#altLabel[rdfs#label -> "alternative label"^^xsd#string].
+nao#altLabel[rdfs#range -> rdfs#Literal].
+nao#altLabel[rdfs#subPropertyOf -> rdfs#label].
+
+nao#altSymbol[rdf#type -> rdf#Property].
+nao#altSymbol[rdfs#comment -> "An alternative symbol representation for a resource"^^xsd#string].
+nao#altSymbol[rdfs#domain -> rdfs#Resource].
+nao#altSymbol[rdfs#label -> "alternative symbol"^^xsd#string].
+nao#altSymbol[rdfs#range -> nao#Symbol].
+nao#altSymbol[rdfs#subPropertyOf -> nao#hasSymbol].
+
+nao#annotation[rdf#type -> rdf#Property].
+nao#annotation[rdfs#comment -> "Generic annotation for a resource"^^xsd#string].
+nao#annotation[rdfs#domain -> rdfs#Resource].
+nao#annotation[rdfs#label -> "annotation"^^xsd#string].
+
+nao#contributor[rdf#type -> rdf#Property].
+nao#contributor[rdfs#comment -> "Refers to a single or a group of individuals that contributed to a resource"^^xsd#string].
+nao#contributor[rdfs#domain -> rdfs#Resource].
+nao#contributor[rdfs#label -> "contributor"^^xsd#string].
+nao#contributor[rdfs#range -> nao#Party].
+nao#contributor[rdfs#subPropertyOf -> dc#contributor].
+nao#contributor[rdfs#subPropertyOf -> nao#annotation].
+
+nao#created[rdf#type -> rdf#Property].
+nao#created[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#created[rdfs#comment -> "States the creation, or first modification time for a resource"^^xsd#string].
+nao#created[rdfs#domain -> rdfs#Resource].
+nao#created[rdfs#label -> "created at"^^xsd#string].
+nao#created[rdfs#range -> xsd#dateTime].
+nao#created[rdfs#subPropertyOf -> nao#modified].
+
+nao#creator[rdf#type -> rdf#Property].
+nao#creator[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#creator[rdfs#comment -> "Refers to the single or group of individuals that created the resource"^^xsd#string].
+nao#creator[rdfs#domain -> rdfs#Resource].
+nao#creator[rdfs#label -> "creator"^^xsd#string].
+nao#creator[rdfs#range -> nao#Party].
+nao#creator[rdfs#subPropertyOf -> dc#creator].
+nao#creator[rdfs#subPropertyOf -> nao#annotation].
+
+nao#deprecated[rdf#type -> rdf#Property].
+nao#deprecated[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#deprecated[rdfs#comment -> "If this property is assigned, the subject class, property, or resource, is deprecated and should not be used in production systems any longer. It may be removed without further notice."^^xsd#string].
+nao#deprecated[rdfs#domain -> rdfs#Resource].
+nao#deprecated[rdfs#label -> "deprecated"^^xsd#string].
+nao#deprecated[rdfs#range -> rdfs#Resource].
+
+nao#description[rdf#type -> rdf#Property].
+nao#description[rdfs#comment -> "A non-technical textual annotation for a resource"^^xsd#string].
+nao#description[rdfs#label -> "description"^^xsd#string].
+nao#description[rdfs#range -> rdfs#Literal].
+nao#description[rdfs#subPropertyOf -> nao#annotation].
+nao#description[rdfs#subPropertyOf -> rdfs#comment].
+
+nao#directTrust[rdf#type -> rdf#Property].
+nao#directTrust[rdfs#comment -> "A direct trust value assigned to an agent, either manually by a user or semi-/automatically by a system. Allowed values range from 0 (no trust) to 1 (very high trust)."^^xsd#string].
+nao#directTrust[rdfs#domain -> pimo#Agent].
+nao#directTrust[rdfs#label -> "direct trust"^^xsd#string].
+nao#directTrust[rdfs#range -> xsd#double].
+nao#directTrust[rdfs#subPropertyOf -> nao#trustLevel].
+
+nao#endorsedBy[rdf#type -> rdf#Property].
+nao#endorsedBy[rdfs#comment -> "Signifies social endorsment of a resource by a specific agent. Endorsement includes social actions like favouriting, liking, voting for, starring a resource."^^xsd#string].
+nao#endorsedBy[rdfs#domain -> rdfs#Resource].
+nao#endorsedBy[rdfs#label -> "endorsed by"^^xsd#string].
+nao#endorsedBy[rdfs#range -> nao#Party].
+
+nao#engineeringTool[rdf#type -> rdf#Property].
+nao#engineeringTool[rdfs#comment -> "Specifies the engineering tool used to generate the graph"^^xsd#string].
+nao#engineeringTool[rdfs#domain -> nrl#Data].
+nao#engineeringTool[rdfs#label -> "engineering tool"^^xsd#string].
+nao#engineeringTool[rdfs#range -> rdfs#Literal].
+nao#engineeringTool[rdfs#subPropertyOf -> nao#annotation].
+
+nao#externalIdentifier[rdf#type -> rdf#Property].
+nao#externalIdentifier[rdfs#comment -> "An external identifier for a resource that has been retreived from an external source."^^xsd#string].
+nao#externalIdentifier[rdfs#domain -> rdfs#Resource].
+nao#externalIdentifier[rdfs#label -> "external identifier"^^xsd#string].
+nao#externalIdentifier[rdfs#range -> rdfs#Literal].
+nao#externalIdentifier[rdfs#subPropertyOf -> nao#identifier].
+
+nao#favouritedBy[rdf#type -> rdf#Property].
+nao#favouritedBy[rdfs#comment -> "Signifies social endorsment by an agent, by way of marking the resource as a favourite."^^xsd#string].
+nao#favouritedBy[rdfs#domain -> rdfs#Resource].
+nao#favouritedBy[rdfs#label -> "favourited by"^^xsd#string].
+nao#favouritedBy[rdfs#range -> nao#Party].
+nao#favouritedBy[rdfs#subPropertyOf -> nao#endorsedBy].
+
+nao#hasDataGraph[rdf#type -> rdf#Property].
+nao#hasDataGraph[nrl#inverseProperty -> nao#isDataGraphFor].
+nao#hasDataGraph[rdfs#comment -> "Links a resource to the graph which contains its metadata. Its typical usage would be to link the file resource to the graph containing its extracted file metadata. This allows for easy maintenance later on. Inverse property of nao:isDataGraphFor."^^xsd#string].
+nao#hasDataGraph[rdfs#domain -> rdfs#Resource].
+nao#hasDataGraph[rdfs#label -> "has data graph"^^xsd#string].
+nao#hasDataGraph[rdfs#range -> nrl#InstanceBase].
+
+nao#hasDefaultNamespace[rdf#type -> rdf#Property].
+nao#hasDefaultNamespace[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#hasDefaultNamespace[rdfs#comment -> "Defines the default static namespace for a graph"^^xsd#string].
+nao#hasDefaultNamespace[rdfs#domain -> nrl#Data].
+nao#hasDefaultNamespace[rdfs#label -> "has default namespace"^^xsd#string].
+nao#hasDefaultNamespace[rdfs#range -> rdfs#Literal].
+nao#hasDefaultNamespace[rdfs#subPropertyOf -> nao#annotation].
+
+nao#hasDefaultNamespaceAbbreviation[rdf#type -> rdf#Property].
+nao#hasDefaultNamespaceAbbreviation[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#hasDefaultNamespaceAbbreviation[rdfs#comment -> "Defines the default static namespace abbreviation for a graph"^^xsd#string].
+nao#hasDefaultNamespaceAbbreviation[rdfs#domain -> nrl#Data].
+nao#hasDefaultNamespaceAbbreviation[rdfs#label -> "has default namespace abbreviation"^^xsd#string].
+nao#hasDefaultNamespaceAbbreviation[rdfs#range -> rdfs#Literal].
+nao#hasDefaultNamespaceAbbreviation[rdfs#subPropertyOf -> nao#annotation].
+
+nao#hasSubResource[rdf#type -> rdf#Property].
+nao#hasSubResource[nrl#inverseProperty -> nao#hasSuperResource].
+nao#hasSubResource[rdfs#comment -> "Defines a relationship between a resource and one or more sub resources. Descriptions of sub-resources are only interpretable when the super-resource exists. Deleting a super-resource should then also delete all sub-resources, and transferring a super-resource (for example, sending it to another user) must also include the sub-resource."^^xsd#string].
+nao#hasSubResource[rdfs#label -> "has Subresource"^^xsd#string].
+nao#hasSubResource[rdfs#range -> rdfs#Resource].
+nao#hasSubResource[rdfs#subPropertyOf -> nao#isRelated].
+
+nao#hasSuperResource[rdf#type -> rdf#Property].
+nao#hasSuperResource[nrl#inverseProperty -> nao#hasSubResource].
+nao#hasSuperResource[rdfs#comment -> "Defines a relationship between a resource and one or more super resources"^^xsd#string].
+nao#hasSuperResource[rdfs#label -> "has Superresource"^^xsd#string].
+nao#hasSuperResource[rdfs#range -> rdfs#Resource].
+nao#hasSuperResource[rdfs#subPropertyOf -> nao#isRelated].
+
+nao#hasSymbol[rdf#type -> rdf#Property].
+nao#hasSymbol[rdfs#comment -> "Annotation for a resource in the form of a visual representation. Typically the symbol is a double-typed image file or a nao:FreeDesktopIcon."^^xsd#string].
+nao#hasSymbol[rdfs#domain -> rdfs#Resource].
+nao#hasSymbol[rdfs#label -> "has symbol"^^xsd#string].
+nao#hasSymbol[rdfs#range -> nao#Symbol].
+
+nao#hasTag[rdf#type -> rdf#Property].
+nao#hasTag[nrl#inverseProperty -> nao#isTagFor].
+nao#hasTag[rdfs#comment -> "Defines an existing tag for a resource"^^xsd#string].
+nao#hasTag[rdfs#domain -> rdfs#Resource].
+nao#hasTag[rdfs#label -> "has tag"^^xsd#string].
+nao#hasTag[rdfs#range -> nao#Tag].
+nao#hasTag[rdfs#subPropertyOf -> nao#annotation].
+
+nao#hasTopic[rdf#type -> rdf#Property].
+nao#hasTopic[nrl#inverseProperty -> nao#isTopicOf].
+nao#hasTopic[rdfs#comment -> "Defines a relationship between two resources, where the object is a topic of the subject"^^xsd#string].
+nao#hasTopic[rdfs#label -> "has topic"^^xsd#string].
+nao#hasTopic[rdfs#range -> rdfs#Resource].
+nao#hasTopic[rdfs#subPropertyOf -> nao#isRelated].
+
+nao#iconName[rdf#type -> rdf#Property].
+nao#iconName[nrl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#iconName[rdfs#comment -> "Defines a name for a FreeDesktop Icon as defined in the FreeDesktop Icon Naming Standard"^^xsd#string].
+nao#iconName[rdfs#domain -> nao#FreeDesktopIcon].
+nao#iconName[rdfs#label -> "iconname"^^xsd#string].
+nao#iconName[rdfs#range -> rdfs#Literal].
+nao#iconName[rdfs#subPropertyOf -> nao#identifier].
+
+nao#identifier[rdf#type -> rdf#Property].
+nao#identifier[rdfs#comment -> "Defines a generic identifier for a resource"^^xsd#string].
+nao#identifier[rdfs#domain -> rdfs#Resource].
+nao#identifier[rdfs#label -> "identifier"^^xsd#string].
+
+nao#isDataGraphFor[rdf#type -> rdf#Property].
+nao#isDataGraphFor[nrl#inverseProperty -> nao#hasDataGraph].
+nao#isDataGraphFor[rdfs#comment -> "Links a named graph to the resource for which it contains metadata. Its typical usage would be to link the graph containing extracted file metadata to the file resource. This allows for easy maintenance later on. Inverse property of nao:hasDataGraph."^^xsd#string].
+nao#isDataGraphFor[rdfs#domain -> nrl#InstanceBase].
+nao#isDataGraphFor[rdfs#label -> "is data graph for"^^xsd#string].
+nao#isDataGraphFor[rdfs#range -> rdfs#Resource].
+
+nao#isRelated[rdf#type -> nrl#SymmetricProperty].
+nao#isRelated[rdf#type -> rdf#Property].
+nao#isRelated[rdfs#comment -> "Defines an annotation for a resource in the form of a relationship between the subject resource and another resource"^^xsd#string].
+nao#isRelated[rdfs#label -> "is related to"^^xsd#string].
+nao#isRelated[rdfs#range -> rdfs#Resource].
+nao#isRelated[rdfs#subPropertyOf -> nao#annotation].
+
+nao#isTagFor[rdf#type -> rdf#Property].
+nao#isTagFor[nrl#inverseProperty -> nao#hasTag].
+nao#isTagFor[rdfs#comment -> "States which resources a tag is associated with"^^xsd#string].
+nao#isTagFor[rdfs#domain -> nao#Tag].
+nao#isTagFor[rdfs#label -> "is tag for"^^xsd#string].
+nao#isTagFor[rdfs#range -> rdfs#Resource].
+nao#isTagFor[rdfs#subPropertyOf -> nao#annotation].
+
+nao#isTopicOf[rdf#type -> rdf#Property].
+nao#isTopicOf[nrl#inverseProperty -> nao#hasTopic].
+nao#isTopicOf[rdfs#comment -> "Defines a relationship between two resources, where the subject is a topic of the object"^^xsd#string].
+nao#isTopicOf[rdfs#label -> "is topic of"^^xsd#string].
+nao#isTopicOf[rdfs#range -> rdfs#Resource].
+nao#isTopicOf[rdfs#subPropertyOf -> nao#isRelated].
+
+nao#lastModified[rdf#type -> rdf#Property].
+nao#lastModified[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#lastModified[rdfs#comment -> "States the last modification time for a resource"^^xsd#string].
+nao#lastModified[rdfs#domain -> rdfs#Resource].
+nao#lastModified[rdfs#label -> "last modified at"^^xsd#string].
+nao#lastModified[rdfs#range -> xsd#dateTime].
+nao#lastModified[rdfs#subPropertyOf -> nao#modified].
+
+nao#maintainedBy[rdf#type -> rdf#Property].
+nao#maintainedBy[rdfs#comment -> "The agent that maintains this resource, ie. created it and knows what to do with it."^^xsd#string].
+nao#maintainedBy[rdfs#domain -> rdfs#Resource].
+nao#maintainedBy[rdfs#label -> "maintained by"^^xsd#string].
+nao#maintainedBy[rdfs#range -> nao#Agent].
+nao#maintainedBy[rdfs#subPropertyOf -> nao#annotation].
+
+nao#modified[rdf#type -> rdf#Property].
+nao#modified[rdfs#comment -> "States the modification time for a resource"^^xsd#string].
+nao#modified[rdfs#domain -> rdfs#Resource].
+nao#modified[rdfs#label -> "modified at"^^xsd#string].
+nao#modified[rdfs#range -> xsd#dateTime].
+nao#modified[rdfs#subPropertyOf -> dcterms#modified].
+nao#modified[rdfs#subPropertyOf -> nao#annotation].
+
+nao#networkTrust[rdf#type -> rdf#Property].
+nao#networkTrust[rdfs#comment -> "A network-derived trust value assigned to an agent, based on the shared direct trust values for the same agent, as set by participating agents in a network. Allowed values range from 0 (no trust) to 1 (very high trust)."^^xsd#string].
+nao#networkTrust[rdfs#domain -> pimo#Agent].
+nao#networkTrust[rdfs#label -> "network trust"^^xsd#string].
+nao#networkTrust[rdfs#range -> xsd#double].
+nao#networkTrust[rdfs#subPropertyOf -> nao#trustLevel].
+
+nao#numericRating[rdf#type -> rdf#Property].
+nao#numericRating[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#numericRating[rdfs#comment -> " Annotation for a resource in the form of a numeric rating (float value), allowed values are between 1 and 10 whereas 0 is interpreted as not set"^^xsd#string].
+nao#numericRating[rdfs#domain -> rdfs#Resource].
+nao#numericRating[rdfs#label -> "numeric rating"^^xsd#string].
+nao#numericRating[rdfs#range -> xsd#integer].
+nao#numericRating[rdfs#subPropertyOf -> nao#rating].
+nao#numericRating[rdfs#subPropertyOf -> nao#scoreParameter].
+
+nao#personalIdentifier[rdf#type -> nrl#InverseFunctionalProperty].
+nao#personalIdentifier[rdf#type -> rdf#Property].
+nao#personalIdentifier[rdfs#comment -> "Defines a personal string identifier for a resource"^^xsd#string].
+nao#personalIdentifier[rdfs#label -> "personal identifier"^^xsd#string].
+nao#personalIdentifier[rdfs#range -> rdfs#Literal].
+nao#personalIdentifier[rdfs#subPropertyOf -> nao#identifier].
+
+nao#pluralPrefLabel[rdf#type -> rdf#Property].
+nao#pluralPrefLabel[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#pluralPrefLabel[rdfs#comment -> "The plural form of the preferred label for a resource"^^xsd#string].
+nao#pluralPrefLabel[rdfs#label -> "preferred label plural form"^^xsd#string].
+nao#pluralPrefLabel[rdfs#range -> rdfs#Literal].
+nao#pluralPrefLabel[rdfs#subPropertyOf -> rdfs#label].
+
+nao#prefLabel[rdf#type -> rdf#Property].
+nao#prefLabel[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#prefLabel[rdfs#comment -> "A preferred label for a resource"^^xsd#string].
+nao#prefLabel[rdfs#label -> "preferred label"^^xsd#string].
+nao#prefLabel[rdfs#range -> rdfs#Literal].
+nao#prefLabel[rdfs#subPropertyOf -> rdfs#label].
+
+nao#prefSymbol[rdf#type -> rdf#Property].
+nao#prefSymbol[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#prefSymbol[rdfs#comment -> "A unique preferred symbol representation for a resource"^^xsd#string].
+nao#prefSymbol[rdfs#domain -> rdfs#Resource].
+nao#prefSymbol[rdfs#label -> "preferred symbol"^^xsd#string].
+nao#prefSymbol[rdfs#range -> nao#Symbol].
+nao#prefSymbol[rdfs#subPropertyOf -> nao#hasSymbol].
+
+nao#privacyLevel[rdf#type -> rdf#Property].
+nao#privacyLevel[rdfs#comment -> "A privacy level as defined for a resource. Allowed values range from 0 (private) to 1 (public)."^^xsd#string].
+nao#privacyLevel[rdfs#domain -> rdfs#Resource].
+nao#privacyLevel[rdfs#label -> "privacy level"^^xsd#string].
+nao#privacyLevel[rdfs#range -> xsd#double].
+nao#privacyLevel[rdfs#subPropertyOf -> nao#annotation].
+
+nao#rating[rdf#type -> rdf#Property].
+nao#rating[rdfs#comment -> "Annotation for a resource in the form of an unrestricted rating"^^xsd#string].
+nao#rating[rdfs#domain -> rdfs#Resource].
+nao#rating[rdfs#label -> "rating"^^xsd#string].
+nao#rating[rdfs#subPropertyOf -> nao#annotation].
+
+nao#score[rdf#type -> rdf#Property].
+nao#score[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#score[rdfs#comment -> "An authoritative score for an item valued between 0 and 1"^^xsd#string].
+nao#score[rdfs#domain -> rdfs#Resource].
+nao#score[rdfs#label -> "score"^^xsd#string].
+nao#score[rdfs#range -> xsd#float].
+nao#score[rdfs#subPropertyOf -> nao#annotation].
+
+nao#scoreParameter[rdf#type -> rdf#Property].
+nao#scoreParameter[rdfs#comment -> "A marker property to mark selected properties which are input to a mathematical algorithm to generate scores for resources. Properties are marked by being defined as subproperties of this property"^^xsd#string].
+nao#scoreParameter[rdfs#domain -> rdfs#Resource].
+nao#scoreParameter[rdfs#label -> "scoreparameter"^^xsd#string].
+nao#scoreParameter[rdfs#range -> xsd#float].
+nao#scoreParameter[rdfs#subPropertyOf -> nao#annotation].
+
+nao#serializationLanguage[rdf#type -> rdf#Property].
+nao#serializationLanguage[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#serializationLanguage[rdfs#comment -> "States the serialization language for a named graph that is represented within a document"^^xsd#string].
+nao#serializationLanguage[rdfs#domain -> nrl#DocumentGraph].
+nao#serializationLanguage[rdfs#label -> "serialization language"^^xsd#string].
+nao#serializationLanguage[rdfs#range -> rdfs#Literal].
+
+nao#status[rdf#type -> rdf#Property].
+nao#status[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#status[rdfs#comment -> "Specifies the status of a graph, stable, unstable or testing"^^xsd#string].
+nao#status[rdfs#domain -> nrl#Data].
+nao#status[rdfs#label -> "status"^^xsd#string].
+nao#status[rdfs#range -> rdfs#Literal].
+nao#status[rdfs#subPropertyOf -> nao#annotation].
+
+nao#trustLevel[rdf#type -> rdf#Property].
+nao#trustLevel[rdfs#comment -> "A generalised trust level assigned to an agent, based on a combination of direct and network trust values it possesses. Allowed values range from 0 (no trust) to 1 (very high trust)."^^xsd#string].
+nao#trustLevel[rdfs#domain -> pimo#Agent].
+nao#trustLevel[rdfs#label -> "trust level"^^xsd#string].
+nao#trustLevel[rdfs#range -> xsd#double].
+nao#trustLevel[rdfs#subPropertyOf -> nao#annotation].
+
+nao#userVisible[rdf#type -> rdf#Property].
+nao#userVisible[nao#userVisible -> "false"^^xsd#boolean].
+nao#userVisible[nrl#maxCardinality -> "1"^^xsd#integer].
+nao#userVisible[rdfs#comment -> "Mark a property, class, or even resource as user visible or not. Non-user-visible entities should never be presented to the user. By default everything is user-visible."^^xsd#string].
+nao#userVisible[rdfs#domain -> rdfs#Resource].
+nao#userVisible[rdfs#label -> "user visible"^^xsd#string].
+nao#userVisible[rdfs#range -> xsd#boolean].
+
+nao#version[rdf#type -> rdf#Property].
+nao#version[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nao#version[rdfs#comment -> "Specifies the version of a graph, in numeric format"^^xsd#string].
+nao#version[rdfs#domain -> nrl#Data].
+nao#version[rdfs#label -> "version"^^xsd#string].
+nao#version[rdfs#range -> xsd#float].
+nao#version[rdfs#subPropertyOf -> nao#annotation].
+
+"http://www.semanticdesktop.org/ontologies/2007/08/15/nao/v1.2/"^^\iri[rdf#type -> owl#Ontology].

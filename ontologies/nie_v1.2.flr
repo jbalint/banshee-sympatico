@@ -1,0 +1,355 @@
+:- iriprefix{dc='http://purl.org/dc/elements/1.1/'}.
+:- iriprefix{dcterms='http://purl.org/dc/terms/'}.
+:- iriprefix{nao='http://www.semanticdesktop.org/ontologies/2007/08/15/nao#'}.
+:- iriprefix{nie='http://www.semanticdesktop.org/ontologies/2007/01/19/nie#'}.
+:- iriprefix{nrl='http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#'}.
+:- iriprefix{owl='http://www.w3.org/2002/07/owl#'}.
+:- iriprefix{rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'}.
+:- iriprefix{rdfs='http://www.w3.org/2000/01/rdf-schema#'}.
+:- iriprefix{xsd='http://www.w3.org/2001/XMLSchema#'}.
+
+nie#DataObject[rdf#type -> rdfs#Class].
+nie#DataObject[rdfs#comment -> "A unit of data that is created, annotated and processed on the user desktop. It represents a native structure the user works with. The usage of the term 'native' is important. It means that a DataObject can be directly mapped to a data structure maintained by a native application. This may be a file, a set of files or a part of a file. The granularity depends on the user. This class is not intended to be instantiated by itself. Use more specific subclasses."^^xsd#string].
+nie#DataObject[rdfs#label -> "DataObject"^^xsd#string].
+nie#DataObject[rdfs#subClassOf -> rdfs#Resource].
+
+nie#DataSource[rdf#type -> rdfs#Class].
+nie#DataSource[rdfs#comment -> "A superclass for all entities from which DataObjects can be extracted. Each entity represents a native application or some other system that manages information that may be of interest to the user of the Semantic Desktop. Subclasses may include FileSystems, Mailboxes, Calendars, websites etc. The exact choice of subclasses and their properties is considered application-specific. Each data extraction application is supposed to provide it's own DataSource ontology. Such an ontology should contain supported data source types coupled with properties necessary for the application to gain access to the data sources.  (paths, urls, passwords  etc...)"^^xsd#string].
+nie#DataSource[rdfs#label -> "DataSource"^^xsd#string].
+nie#DataSource[rdfs#subClassOf -> rdfs#Resource].
+
+nie#DataSourceGraph[rdf#type -> rdfs#Resource].
+nie#DataSourceGraph[rdfs#comment -> "Represents the sum of all information that has been obtained from a data source. Each data source has its own personal information graph. When a data source is deleted, the graph becomes redundant and should also be deleted. If two or more items in two or more data source graphs are determined to be equivalent, they are integrated at the PIMO level, and the integrated representation plus the links to the original items are stored in the pimo:PersonalInformationModel graph."^^xsd#string].
+nie#DataSourceGraph[rdfs#label -> "Data Source Graph"^^xsd#string].
+nie#DataSourceGraph[rdfs#subClassOf -> nrl#InstanceBase].
+
+nie#InformationElement[rdf#type -> rdfs#Class].
+nie#InformationElement[rdfs#comment -> "A unit of content the user works with. This is a superclass for all interpretations of a DataObject."^^xsd#string].
+nie#InformationElement[rdfs#label -> "InformationElement"^^xsd#string].
+nie#InformationElement[rdfs#subClassOf -> rdfs#Resource].
+
+nie#Mode[rdf#type -> rdfs#Class].
+nie#Mode[rdfs#comment -> "Representation for a standard set of device/application/service modes, corresponding to various sets of modes that are either inbuilt in a device (e.g. inbuilt phone modes such as silent, loud, general, vibrate, etc.) or available for applications and online services (e.g. IM system modes such as busy, available, invisible, etc.)"^^xsd#string].
+nie#Mode[rdfs#label -> "Mode"^^xsd#string].
+
+nie#byteSize[rdf#type -> rdf#Property].
+nie#byteSize[nrl#maxCardinality -> "1"^^xsd#string].
+nie#byteSize[rdfs#comment -> "The overall size of the data object in bytes. That means the space taken by the DataObject in its container, and not the size of the content that is of interest to the user. For cases where the content size is different (e.g. in compressed files the content is larger, in messages the content excludes headings and is smaller) use more specific properties, not necessarily subproperties of this one."^^xsd#string].
+nie#byteSize[rdfs#domain -> nie#DataObject].
+nie#byteSize[rdfs#label -> "byteSize"^^xsd#string].
+nie#byteSize[rdfs#range -> xsd#integer].
+
+nie#characterSet[rdf#type -> rdf#Property].
+nie#characterSet[nrl#maxCardinality -> "1"^^xsd#string].
+nie#characterSet[rdfs#comment -> "Characterset in which the content of the InformationElement was created. Example: ISO-8859-1, UTF-8. One of the registered character sets at http://www.iana.org/assignments/character-sets. This characterSet is used to interpret any textual parts of the content. If more than one characterSet is used within one data object, use more specific properties."^^xsd#string].
+nie#characterSet[rdfs#domain -> nie#InformationElement].
+nie#characterSet[rdfs#label -> "characterSet"^^xsd#string].
+nie#characterSet[rdfs#range -> xsd#string].
+
+nie#comment[rdf#type -> rdf#Property].
+nie#comment[rdfs#comment -> "A user comment about an InformationElement."^^xsd#string].
+nie#comment[rdfs#domain -> nie#InformationElement].
+nie#comment[rdfs#label -> "comment"^^xsd#string].
+nie#comment[rdfs#range -> xsd#string].
+
+nie#contentCreated[rdf#type -> rdf#Property].
+nie#contentCreated[nrl#maxCardinality -> "1"^^xsd#string].
+nie#contentCreated[rdfs#comment -> "The date of the content creation. This may not necessarily be equal to the date when the DataObject (i.e. the physical representation) itself was created. Compare with nie:created property."^^xsd#string].
+nie#contentCreated[rdfs#domain -> nie#InformationElement].
+nie#contentCreated[rdfs#label -> "contentCreated"^^xsd#string].
+nie#contentCreated[rdfs#range -> xsd#dateTime].
+nie#contentCreated[rdfs#subPropertyOf -> nie#contentModified].
+nie#contentCreated[rdfs#subPropertyOf -> nie#informationElementDate].
+nie#contentCreated[rdfs#subPropertyOf -> nao#created].
+
+nie#contentLastModified[rdf#type -> rdf#Property].
+nie#contentLastModified[nrl#maxCardinality -> "1"^^xsd#string].
+nie#contentLastModified[rdfs#comment -> "The date of the last modification of the original content (not its corresponding DataObject or local copy). Compare with nie:lastModified."^^xsd#string].
+nie#contentLastModified[rdfs#domain -> nie#InformationElement].
+nie#contentLastModified[rdfs#label -> "contentLastModified"^^xsd#string].
+nie#contentLastModified[rdfs#range -> xsd#dateTime].
+nie#contentLastModified[rdfs#subPropertyOf -> nie#contentModified].
+nie#contentLastModified[rdfs#subPropertyOf -> nie#informationElementDate].
+nie#contentLastModified[rdfs#subPropertyOf -> nao#lastModified].
+
+nie#contentModified[rdf#type -> rdf#Property].
+nie#contentModified[rdfs#comment -> "The date of a modification of the original content (not its corresponding DataObject or local copy). Compare with nie:modified."^^xsd#string].
+nie#contentModified[rdfs#domain -> nie#InformationElement].
+nie#contentModified[rdfs#label -> "modified"^^xsd#string].
+nie#contentModified[rdfs#range -> xsd#dateTime].
+
+nie#contentSize[rdf#type -> rdf#Property].
+nie#contentSize[nrl#maxCardinality -> "1"^^xsd#string].
+nie#contentSize[rdfs#comment -> "The size of the content. This property can be used whenever the size of the content of an InformationElement differs from the size of the DataObject. (e.g. because of compression, encoding, encryption or any other representation issues). The contentSize in expressed in bytes."^^xsd#string].
+nie#contentSize[rdfs#domain -> nie#InformationElement].
+nie#contentSize[rdfs#label -> "contentSize"^^xsd#string].
+nie#contentSize[rdfs#range -> xsd#integer].
+
+nie#copyright[rdf#type -> rdf#Property].
+nie#copyright[rdfs#comment -> "Content copyright"^^xsd#string].
+nie#copyright[rdfs#label -> "copyright"^^xsd#string].
+nie#copyright[rdfs#range -> xsd#string].
+nie#copyright[rdfs#subPropertyOf -> dcterms#accessRights].
+nie#copyright[rdfs#subPropertyOf -> nie#legal].
+
+nie#coreGraph[rdf#type -> rdf#Property].
+nie#coreGraph[nao#deprecated -> "true"^^xsd#boolean].
+nie#coreGraph[rdfs#comment -> "Connects the data object with the graph that contains information about it. Deprecated in favor of a more generic nao:isDataGraphFor."^^xsd#string].
+nie#coreGraph[rdfs#domain -> nie#DataObject].
+nie#coreGraph[rdfs#label -> "coreGraph"^^xsd#string].
+nie#coreGraph[rdfs#range -> nrl#InstanceBase].
+
+nie#created[rdf#type -> rdf#Property].
+nie#created[nrl#maxCardinality -> "1"^^xsd#string].
+nie#created[rdfs#comment -> "Date of creation of the DataObject. Note that this date refers to the creation of the DataObject itself (i.e. the physical representation). Compare with nie:contentCreated."^^xsd#string].
+nie#created[rdfs#domain -> nie#DataObject].
+nie#created[rdfs#label -> "created"^^xsd#string].
+nie#created[rdfs#range -> xsd#dateTime].
+nie#created[rdfs#subPropertyOf -> dcterms#created].
+nie#created[rdfs#subPropertyOf -> nie#modified].
+nie#created[rdfs#subPropertyOf -> nao#created].
+
+nie#dataSource[rdf#type -> rdf#Property].
+nie#dataSource[nrl#minCardinality -> "1"^^xsd#string].
+nie#dataSource[rdfs#comment -> "Marks the provenance of a DataObject, what source does a data object come from."^^xsd#string].
+nie#dataSource[rdfs#domain -> nie#DataObject].
+nie#dataSource[rdfs#label -> "dataSource"^^xsd#string].
+nie#dataSource[rdfs#range -> nie#DataSource].
+nie#dataSource[rdfs#subPropertyOf -> dc#source].
+
+nie#depends[rdf#type -> rdf#Property].
+nie#depends[rdfs#comment -> "Dependency relation. A piece of content depends on another piece of data in order to be properly understood/used/interpreted."^^xsd#string].
+nie#depends[rdfs#label -> "depends"^^xsd#string].
+nie#depends[rdfs#range -> nie#DataObject].
+nie#depends[rdfs#subPropertyOf -> nie#relatedTo].
+
+nie#description[rdf#type -> rdf#Property].
+nie#description[rdfs#comment -> "A textual description of the resource. This property may be used for any metadata fields that provide some meta-information or comment about a resource in the form of a passage of text. This property is not to be confused with nie:plainTextContent. Use more specific subproperties wherever possible."^^xsd#string].
+nie#description[rdfs#domain -> nie#InformationElement].
+nie#description[rdfs#label -> "description"^^xsd#string].
+nie#description[rdfs#range -> xsd#string].
+nie#description[rdfs#subPropertyOf -> dc#description].
+nie#description[rdfs#subPropertyOf -> nao#description].
+
+nie#disclaimer[rdf#type -> rdf#Property].
+nie#disclaimer[rdfs#comment -> "A disclaimer"^^xsd#string].
+nie#disclaimer[rdfs#label -> "disclaimer"^^xsd#string].
+nie#disclaimer[rdfs#range -> xsd#string].
+nie#disclaimer[rdfs#subPropertyOf -> nie#legal].
+
+nie#generator[rdf#type -> rdf#Property].
+nie#generator[rdfs#comment -> "Software used to \"generate\" the contents. E.g. a word processor name."^^xsd#string].
+nie#generator[rdfs#domain -> nie#InformationElement].
+nie#generator[rdfs#label -> "generator"^^xsd#string].
+nie#generator[rdfs#range -> xsd#string].
+
+nie#generatorOption[rdf#type -> rdf#Property].
+nie#generatorOption[rdfs#comment -> "A common superproperty for all settings used by the generating software. This may include compression settings, algorithms, autosave, interlaced/non-interlaced etc. Note that this property has no range specified and therefore should not be used directly. Always use more specific properties."^^xsd#string].
+nie#generatorOption[rdfs#domain -> nie#InformationElement].
+nie#generatorOption[rdfs#label -> "generatorOption"^^xsd#string].
+
+nie#hasLogicalPart[rdf#type -> rdf#Property].
+nie#hasLogicalPart[nrl#inverseProperty -> nie#isLogicalPartOf].
+nie#hasLogicalPart[rdfs#comment -> "Generic property used to express 'logical' containment relationships between InformationElements. NIE extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of InformationElement to use those specific subproperties. Note the difference between 'physical' containment (hasPart) and logical containment (hasLogicalPart)"^^xsd#string].
+nie#hasLogicalPart[rdfs#domain -> nie#InformationElement].
+nie#hasLogicalPart[rdfs#label -> "hasLogicalPart"^^xsd#string].
+nie#hasLogicalPart[rdfs#range -> nie#InformationElement].
+nie#hasLogicalPart[rdfs#subPropertyOf -> dcterms#hasPart].
+
+nie#hasPart[rdf#type -> nrl#InverseFunctionalProperty].
+nie#hasPart[rdf#type -> rdf#Property].
+nie#hasPart[nao#userVisible -> "false"^^xsd#boolean].
+nie#hasPart[nrl#inverseProperty -> nie#isPartOf].
+nie#hasPart[rdfs#comment -> "Generic property used to express 'physical' containment relationships between DataObjects. NIE extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of DataObjects to use those specific subproperties. Note to the developers: Please be aware of the distinction between containment relation and provenance. The hasPart relation models physical containment, an InformationElement (a nmo:Message) can have a 'physical' part (an nfo:Attachment).  Also, please note the difference between physical containment (hasPart) and logical containment (hasLogicalPart) the former has more strict meaning. They may occur independently of each other."^^xsd#string].
+nie#hasPart[rdfs#domain -> nie#InformationElement].
+nie#hasPart[rdfs#label -> "hasPart"^^xsd#string].
+nie#hasPart[rdfs#range -> nie#DataObject].
+nie#hasPart[rdfs#subPropertyOf -> dcterms#hasPart].
+nie#hasPart[rdfs#subPropertyOf -> nie#relatedTo].
+
+nie#htmlContent[rdf#type -> rdf#Property].
+nie#htmlContent[nrl#maxCardinality -> "1"^^xsd#string].
+nie#htmlContent[rdfs#comment -> "The HTML content of an information element. This property can be used to store text including formatting in a generic fashion."^^xsd#string].
+nie#htmlContent[rdfs#domain -> nie#InformationElement].
+nie#htmlContent[rdfs#label -> "html content"^^xsd#string].
+nie#htmlContent[rdfs#range -> xsd#string].
+
+nie#identifier[rdf#type -> rdf#Property].
+nie#identifier[rdfs#comment -> "An unambiguous reference to the InformationElement within a given context. Recommended best practice is to identify the resource by means of a string conforming to a formal identification system."^^xsd#string].
+nie#identifier[rdfs#domain -> nie#InformationElement].
+nie#identifier[rdfs#label -> "identifier"^^xsd#string].
+nie#identifier[rdfs#range -> xsd#string].
+nie#identifier[rdfs#subPropertyOf -> dc#identifier].
+nie#identifier[rdfs#subPropertyOf -> nao#identifier].
+
+nie#informationElementDate[rdf#type -> rdf#Property].
+nie#informationElementDate[rdfs#comment -> "A point or period of time associated with an event in the lifecycle of an Information Element. A common superproperty for all date-related properties of InformationElements in the NIE Framework."^^xsd#string].
+nie#informationElementDate[rdfs#domain -> nie#InformationElement].
+nie#informationElementDate[rdfs#label -> "informationElementDate"^^xsd#string].
+nie#informationElementDate[rdfs#range -> xsd#dateTime].
+nie#informationElementDate[rdfs#subPropertyOf -> dc#date].
+
+nie#interpretedAs[rdf#type -> rdf#Property].
+nie#interpretedAs[nrl#inverseProperty -> nie#isStoredAs].
+nie#interpretedAs[rdfs#comment -> "Links the DataObject with the InformationElement it is interpreted as."^^xsd#string].
+nie#interpretedAs[rdfs#domain -> nie#DataObject].
+nie#interpretedAs[rdfs#label -> "interpretedAs"^^xsd#string].
+nie#interpretedAs[rdfs#range -> nie#InformationElement].
+
+nie#isLogicalPartOf[rdf#type -> nrl#DefiningProperty].
+nie#isLogicalPartOf[rdf#type -> rdf#Property].
+nie#isLogicalPartOf[nrl#inverseProperty -> nie#hasLogicalPart].
+nie#isLogicalPartOf[rdfs#comment -> "Generic property used to express 'logical' containment relationships between DataObjects. NIE extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of InformationElement to use those specific subproperties. Note the difference between 'physical' containment (isPartOf) and logical containment (isLogicalPartOf)"^^xsd#string].
+nie#isLogicalPartOf[rdfs#domain -> nie#InformationElement].
+nie#isLogicalPartOf[rdfs#label -> "isLogicalPartOf"^^xsd#string].
+nie#isLogicalPartOf[rdfs#range -> nie#InformationElement].
+nie#isLogicalPartOf[rdfs#subPropertyOf -> dcterms#isPartOf].
+
+nie#isPartOf[rdf#type -> nrl#DefiningProperty].
+nie#isPartOf[rdf#type -> nrl#FunctionalProperty].
+nie#isPartOf[rdf#type -> rdf#Property].
+nie#isPartOf[nao#userVisible -> "false"^^xsd#boolean].
+nie#isPartOf[nrl#inverseProperty -> nie#hasPart].
+nie#isPartOf[rdfs#comment -> "Generic property used to express containment relationships between DataObjects. NIE extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of DataObjects to use those specific subproperties. Note to the developers: Please be aware of the distinction between containment relation and provenance. The isPartOf relation models physical containment, a nie:DataObject (e.g. an nfo:Attachment) is a 'physical' part of an nie:InformationElement (a nmo:Message). Also, please note the difference between physical containment (isPartOf) and logical containment (isLogicalPartOf) the former has more strict meaning. They may occur independently of each other."^^xsd#string].
+nie#isPartOf[rdfs#domain -> nie#DataObject].
+nie#isPartOf[rdfs#label -> "isPartOf"^^xsd#string].
+nie#isPartOf[rdfs#range -> nie#InformationElement].
+nie#isPartOf[rdfs#subPropertyOf -> dcterms#isPartOf].
+
+nie#isStoredAs[rdf#type -> rdf#Property].
+nie#isStoredAs[nrl#inverseProperty -> nie#interpretedAs].
+nie#isStoredAs[rdfs#comment -> "Links the information element with the DataObject it is stored in."^^xsd#string].
+nie#isStoredAs[rdfs#domain -> nie#InformationElement].
+nie#isStoredAs[rdfs#label -> "isStoredAs"^^xsd#string].
+nie#isStoredAs[rdfs#range -> nie#DataObject].
+
+nie#keyword[rdf#type -> rdf#Property].
+nie#keyword[rdfs#comment -> "Adapted DublinCore: The topic of the content of the resource, as keyword. No sentences here. Recommended best practice is to select a value from a controlled vocabulary or formal classification scheme. "^^xsd#string].
+nie#keyword[rdfs#domain -> nie#InformationElement].
+nie#keyword[rdfs#label -> "keyword"^^xsd#string].
+nie#keyword[rdfs#range -> xsd#string].
+
+nie#language[rdf#type -> rdf#Property].
+nie#language[nrl#maxCardinality -> "1"^^xsd#string].
+nie#language[rdfs#comment -> "Language the InformationElement is expressed in. This property applies to the data object in its entirety. If the data object is divisible into parts expressed in multiple languages - more specific properties should be used. Users are encouraged to use the two-letter code specified in the RFC 3066"^^xsd#string].
+nie#language[rdfs#domain -> nie#InformationElement].
+nie#language[rdfs#label -> "language"^^xsd#string].
+nie#language[rdfs#range -> xsd#string].
+nie#language[rdfs#subPropertyOf -> dc#language].
+
+nie#lastModified[rdf#type -> rdf#Property].
+nie#lastModified[nrl#maxCardinality -> "1"^^xsd#string].
+nie#lastModified[rdfs#comment -> "Last modification date of the DataObject. Note that this date refers to the modification of the DataObject itself (i.e. the physical representation). Compare with nie:contentLastModified."^^xsd#string].
+nie#lastModified[rdfs#domain -> nie#DataObject].
+nie#lastModified[rdfs#label -> "lastModified"^^xsd#string].
+nie#lastModified[rdfs#range -> xsd#dateTime].
+nie#lastModified[rdfs#subPropertyOf -> dc#date].
+nie#lastModified[rdfs#subPropertyOf -> nie#modified].
+nie#lastModified[rdfs#subPropertyOf -> nao#lastModified].
+
+nie#lastRefreshed[rdf#type -> rdf#Property].
+nie#lastRefreshed[nrl#maxCardinality -> "1"^^xsd#string].
+nie#lastRefreshed[rdfs#comment -> "Date when information about this data object was retrieved (for the first time) or last refreshed from the data source. This property is important for metadata extraction applications that don't receive any notifications of changes in the data source and have to poll it regularly. This may lead to information becoming out of date. In these cases this property may be used to determine the age of data, which is an important element of it's dependability. "^^xsd#string].
+nie#lastRefreshed[rdfs#domain -> nie#DataObject].
+nie#lastRefreshed[rdfs#label -> "lastRefreshed"^^xsd#string].
+nie#lastRefreshed[rdfs#range -> xsd#dateTime].
+nie#lastRefreshed[rdfs#subPropertyOf -> dc#date].
+
+nie#legal[rdf#type -> rdf#Property].
+nie#legal[rdfs#comment -> "A common superproperty for all properties that point at legal information about an Information Element"^^xsd#string].
+nie#legal[rdfs#domain -> nie#InformationElement].
+nie#legal[rdfs#label -> "legal"^^xsd#string].
+nie#legal[rdfs#range -> xsd#string].
+nie#legal[rdfs#subPropertyOf -> dc#rights].
+
+nie#license[rdf#type -> rdf#Property].
+nie#license[rdfs#comment -> "Terms and intellectual property rights licensing conditions."^^xsd#string].
+nie#license[rdfs#label -> "license"^^xsd#string].
+nie#license[rdfs#range -> xsd#string].
+nie#license[rdfs#subPropertyOf -> dcterms#license].
+nie#license[rdfs#subPropertyOf -> nie#legal].
+
+nie#licenseType[rdf#type -> rdf#Property].
+nie#licenseType[rdfs#comment -> "The type of the license. Possible values for this field may include \"GPL\", \"BSD\", \"Creative Commons\" etc."^^xsd#string].
+nie#licenseType[rdfs#label -> "licenseType"^^xsd#string].
+nie#licenseType[rdfs#range -> xsd#string].
+nie#licenseType[rdfs#subPropertyOf -> nie#legal].
+
+nie#links[rdf#type -> rdf#Property].
+nie#links[rdfs#comment -> "A linking relation. A piece of content links/mentions a piece of data"^^xsd#string].
+nie#links[rdfs#domain -> nie#InformationElement].
+nie#links[rdfs#label -> "links"^^xsd#string].
+nie#links[rdfs#range -> nie#DataObject].
+nie#links[rdfs#subPropertyOf -> nie#relatedTo].
+
+nie#mimeType[rdf#type -> rdf#Property].
+nie#mimeType[nrl#maxCardinality -> "1"^^xsd#string].
+nie#mimeType[rdfs#comment -> "The mime type of the resource, if available. Example: \"text/plain\". See http://www.iana.org/assignments/media-types/. This property applies to data objects that can be described with one mime type. In cases where the object as a whole has one mime type, while it's parts have other mime types, or there is no mime type that can be applied to the object as a whole, but some parts of the content have mime types - use more specific properties."^^xsd#string].
+nie#mimeType[rdfs#domain -> nie#InformationElement].
+nie#mimeType[rdfs#label -> "mimeType"^^xsd#string].
+nie#mimeType[rdfs#range -> xsd#string].
+
+nie#modified[rdf#type -> rdf#Property].
+nie#modified[rdfs#comment -> "Date the DataObject was changed in any way.  Note that this date refers to the modification of the DataObject itself (i.e. the physical representation). Compare with nie:contentModified."^^xsd#string].
+nie#modified[rdfs#domain -> nie#DataObject].
+nie#modified[rdfs#label -> "modified"^^xsd#string].
+nie#modified[rdfs#range -> xsd#dateTime].
+
+nie#plainTextContent[rdf#type -> rdf#Property].
+nie#plainTextContent[nrl#maxCardinality -> "1"^^xsd#string].
+nie#plainTextContent[rdfs#comment -> "Plain-text representation of the content of a InformationElement with all markup removed. The main purpose of this property is full-text indexing and search. Its exact content is considered application-specific. The user can make no assumptions about what is and what is not contained within. Applications should use more specific properties wherever possible."^^xsd#string].
+nie#plainTextContent[rdfs#domain -> nie#InformationElement].
+nie#plainTextContent[rdfs#label -> "plainTextContent"^^xsd#string].
+nie#plainTextContent[rdfs#range -> xsd#string].
+
+nie#relatedTo[rdf#type -> rdf#Property].
+nie#relatedTo[rdfs#comment -> "A common superproperty for all relations between a piece of content and other pieces of data (which may be interpreted as other pieces of content)."^^xsd#string].
+nie#relatedTo[rdfs#domain -> nie#InformationElement].
+nie#relatedTo[rdfs#label -> "relatedTo"^^xsd#string].
+nie#relatedTo[rdfs#range -> nie#DataObject].
+nie#relatedTo[rdfs#subPropertyOf -> dc#relation].
+
+nie#rootElementOf[rdf#type -> rdf#Property].
+nie#rootElementOf[rdfs#comment -> "DataObjects extracted from a single data source are organized into a containment tree. This property links the root of that tree with the datasource it has been extracted from"^^xsd#string].
+nie#rootElementOf[rdfs#domain -> nie#InformationElement].
+nie#rootElementOf[rdfs#label -> "rootElementOf"^^xsd#string].
+nie#rootElementOf[rdfs#range -> nie#DataSource].
+
+nie#sourceMode[rdf#type -> rdf#Property].
+nie#sourceMode[rdfs#comment -> "Represents a number of applicable modes for a data source."^^xsd#string].
+nie#sourceMode[rdfs#domain -> nie#DataSource].
+nie#sourceMode[rdfs#label -> "Data Source Mode"^^xsd#string].
+nie#sourceMode[rdfs#range -> nie#Mode].
+
+nie#subject[rdf#type -> rdf#Property].
+nie#subject[rdfs#comment -> "An overall topic of the content of a InformationElement"^^xsd#string].
+nie#subject[rdfs#domain -> nie#InformationElement].
+nie#subject[rdfs#label -> "subject"^^xsd#string].
+nie#subject[rdfs#range -> xsd#string].
+nie#subject[rdfs#subPropertyOf -> dc#subject].
+
+nie#title[rdf#type -> rdf#Property].
+nie#title[nrl#maxCardinality -> "1"^^xsd#string].
+nie#title[rdfs#comment -> "Name given to an InformationElement"^^xsd#string].
+nie#title[rdfs#domain -> nie#InformationElement].
+nie#title[rdfs#label -> "title"^^xsd#string].
+nie#title[rdfs#range -> xsd#string].
+nie#title[rdfs#subPropertyOf -> dc#title].
+nie#title[rdfs#subPropertyOf -> nao#prefLabel].
+
+nie#url[rdf#type -> nrl#DefiningProperty].
+nie#url[rdf#type -> rdf#Property].
+nie#url[nrl#maxCardinality -> "1"^^xsd#string].
+nie#url[rdfs#comment -> "URL of a DataObject. It points to the location of the object. A typial usage is FileDataObject. In cases where creating a simple file:// or http:// URL for a file is difficult (e.g. for files inside compressed archives) the applications are encouraged to use conventions defined by Apache Commons VFS Project at http://jakarta.apache.org/  commons/ vfs/ filesystems.html."^^xsd#string].
+nie#url[rdfs#domain -> nie#DataObject].
+nie#url[rdfs#label -> "url"^^xsd#string].
+nie#url[rdfs#range -> rdfs#Resource].
+
+nie#version[rdf#type -> rdf#Property].
+nie#version[rdfs#comment -> "The current version of the given data object. Exact semantics is unspecified at this level. Use more specific subproperties if needed."^^xsd#string].
+nie#version[rdfs#domain -> nie#InformationElement].
+nie#version[rdfs#label -> "version"^^xsd#string].
+nie#version[rdfs#range -> xsd#string].
+nie#version[rdfs#subPropertyOf -> dcterms#hasVersion].
+
+"http://www.semanticdesktop.org/ontologies/2007/01/19/nie/v1.2/"^^\iri[rdf#type -> owl#Ontology].
