@@ -1,0 +1,261 @@
+:- iriprefix{nrl='http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#'}.
+:- iriprefix{owl='http://www.w3.org/2002/07/owl#'}.
+:- iriprefix{rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'}.
+:- iriprefix{rdfg='http://www.w3.org/2004/03/trix/rdfg-1#'}.
+:- iriprefix{rdfs='http://www.w3.org/2000/01/rdf-schema#'}.
+:- iriprefix{xsd='http://www.w3.org/2001/XMLSchema#'}.
+
+nrl#AsymmetricProperty[rdf#type -> rdfs#Class].
+nrl#AsymmetricProperty[rdfs#comment -> "A marker class to identify asymmetric properties"^^xsd#string].
+nrl#AsymmetricProperty[rdfs#label -> "AsymmetricProperty"^^xsd#string].
+nrl#AsymmetricProperty[rdfs#subClassOf -> rdfs#Resource].
+
+nrl#Configuration[rdf#type -> rdfs#Class].
+nrl#Configuration[rdfs#comment -> "Represents a named graph containing configuration data"^^xsd#string].
+nrl#Configuration[rdfs#label -> "Configuration"^^xsd#string].
+nrl#Configuration[rdfs#subClassOf -> nrl#Data].
+
+nrl#Data[rdf#type -> rdfs#Class].
+nrl#Data[rdfs#comment -> "An abstract class representing all named graph roles"^^xsd#string].
+nrl#Data[rdfs#label -> "Data"^^xsd#string].
+nrl#Data[rdfs#subClassOf -> nrl#Graph].
+
+nrl#DefaultGraph[rdf#type -> nrl#Graph].
+nrl#DefaultGraph[rdfs#comment -> "Represents the default graph, the graph which contains any triple that does not belong to any other named graph"^^xsd#string].
+nrl#DefaultGraph[rdfs#label -> "DefaultGraph"^^xsd#string].
+
+nrl#DefiningProperty[rdf#type -> rdfs#Class].
+nrl#DefiningProperty[rdfs#comment -> "A defining property's value is part of what defines a resource, changing it means
+                          means chaning the identity of the resource. The set of values of all defining
+                          properties of a resource make up its identify.
+                          Whenever comparing resources or sharing them the value of this property should
+                          be taken into account. By default all properties with a literal range are to be
+                          treated as defining properties unless they are marked as nrl:NonDefiningProperty."^^xsd#string].
+nrl#DefiningProperty[rdfs#label -> "defining property"^^xsd#string].
+nrl#DefiningProperty[rdfs#subClassOf -> rdf#Property].
+
+nrl#DiscardableInstanceBase[rdf#type -> rdfs#Class].
+nrl#DiscardableInstanceBase[rdfs#comment -> "A named graph containing instance data that can be recreated by analyzing the original resources. Intended to be used by metadata extractors."^^xsd#string].
+nrl#DiscardableInstanceBase[rdfs#label -> "DiscardableInstanceBase"^^xsd#string].
+nrl#DiscardableInstanceBase[rdfs#subClassOf -> nrl#InstanceBase].
+
+nrl#DocumentGraph[rdf#type -> rdfs#Class].
+nrl#DocumentGraph[rdfs#comment -> "A marker class to identify named graphs that exist within a physical document"^^xsd#string].
+nrl#DocumentGraph[rdfs#label -> "DocumentGraph"^^xsd#string].
+nrl#DocumentGraph[rdfs#subClassOf -> nrl#Graph].
+
+nrl#ExternalViewSpecification[rdf#type -> rdfs#Class].
+nrl#ExternalViewSpecification[rdfs#comment -> "Represents an external view specification, this usually being a program which automatically generates the required view for an input graph"^^xsd#string].
+nrl#ExternalViewSpecification[rdfs#label -> "ExternalViewSpecification"^^xsd#string].
+nrl#ExternalViewSpecification[rdfs#subClassOf -> nrl#ViewSpecification].
+
+nrl#FunctionalProperty[rdf#type -> rdfs#Class].
+nrl#FunctionalProperty[rdfs#comment -> "A marker class to identify functional properties"^^xsd#string].
+nrl#FunctionalProperty[rdfs#label -> "FunctionalProperty"^^xsd#string].
+nrl#FunctionalProperty[rdfs#subClassOf -> rdfs#Resource].
+
+nrl#Graph[rdf#type -> rdfs#Class].
+nrl#Graph[rdfs#comment -> "Represents a named graph"^^xsd#string].
+nrl#Graph[rdfs#label -> "Graph"^^xsd#string].
+nrl#Graph[rdfs#subClassOf -> rdfg#Graph].
+
+nrl#GraphMetadata[rdf#type -> rdfs#Class].
+nrl#GraphMetadata[rdfs#comment -> "Represents a special named graph that contains metadata for another graph"^^xsd#string].
+nrl#GraphMetadata[rdfs#label -> "GraphMetadata"^^xsd#string].
+nrl#GraphMetadata[rdfs#subClassOf -> nrl#Data].
+
+nrl#GraphView[rdf#type -> rdfs#Class].
+nrl#GraphView[rdfs#comment -> "Identifies a graph which is itself a view of another named graph"^^xsd#string].
+nrl#GraphView[rdfs#label -> "GraphView"^^xsd#string].
+nrl#GraphView[rdfs#subClassOf -> nrl#Graph].
+
+nrl#InstanceBase[rdf#type -> rdfs#Class].
+nrl#InstanceBase[rdfs#comment -> "Represents a named graph containing instance data"^^xsd#string].
+nrl#InstanceBase[rdfs#label -> "InstanceBase"^^xsd#string].
+nrl#InstanceBase[rdfs#subClassOf -> nrl#Data].
+
+nrl#InverseFunctionalProperty[rdf#type -> rdfs#Class].
+nrl#InverseFunctionalProperty[rdfs#comment -> "A marker class to identify inverse functional properties"^^xsd#string].
+nrl#InverseFunctionalProperty[rdfs#label -> "InverseFunctionalProperty"^^xsd#string].
+nrl#InverseFunctionalProperty[rdfs#subClassOf -> rdfs#Resource].
+
+nrl#KnowledgeBase[rdf#type -> rdfs#Class].
+nrl#KnowledgeBase[rdfs#comment -> "Represents a named graph containing both schematic and instance data"^^xsd#string].
+nrl#KnowledgeBase[rdfs#label -> "KnowledgeBase"^^xsd#string].
+nrl#KnowledgeBase[rdfs#subClassOf -> nrl#InstanceBase].
+nrl#KnowledgeBase[rdfs#subClassOf -> nrl#Ontology].
+
+nrl#NonDefiningProperty[rdf#type -> rdfs#Class].
+nrl#NonDefiningProperty[rdfs#comment -> "A non-defining property's value is not part of what defines a resource, it rather
+                          is part of the resource's state or expresses an opinion about the resource. Whenever
+                          comparing resources or sharing them the value of this property should not be taken into
+                          account. By default all properties with a resource range are to be treated as
+                          non-defining properties unless they are marked as nrl:DefiningProperty."^^xsd#string].
+nrl#NonDefiningProperty[rdfs#label -> "non-defining property"^^xsd#string].
+nrl#NonDefiningProperty[rdfs#subClassOf -> rdf#Property].
+
+nrl#Ontology[rdf#type -> rdfs#Class].
+nrl#Ontology[rdfs#comment -> "Represents a named graph having the role of an Ontology"^^xsd#string].
+nrl#Ontology[rdfs#label -> "Ontology"^^xsd#string].
+nrl#Ontology[rdfs#subClassOf -> nrl#Schema].
+
+nrl#ReflexiveProperty[rdf#type -> rdfs#Class].
+nrl#ReflexiveProperty[rdfs#comment -> "A marker class to identify reflexive properties"^^xsd#string].
+nrl#ReflexiveProperty[rdfs#label -> "ReflexiveProperty"^^xsd#string].
+nrl#ReflexiveProperty[rdfs#subClassOf -> rdfs#Resource].
+
+nrl#RuleViewSpecification[rdf#type -> rdfs#Class].
+nrl#RuleViewSpecification[rdfs#comment -> "Represents a view specification that is composed of a set of rules which generate the required view from the input graph upon firing"^^xsd#string].
+nrl#RuleViewSpecification[rdfs#label -> "RuleViewSpecification"^^xsd#string].
+nrl#RuleViewSpecification[rdfs#subClassOf -> nrl#ViewSpecification].
+
+nrl#Schema[rdf#type -> rdfs#Class].
+nrl#Schema[rdfs#comment -> "Represents a named graph containing schematic data"^^xsd#string].
+nrl#Schema[rdfs#label -> "Schema"^^xsd#string].
+nrl#Schema[rdfs#subClassOf -> nrl#Data].
+
+nrl#Semantics[rdf#type -> rdfs#Class].
+nrl#Semantics[rdfs#comment -> "Represents some declarative semantics"^^xsd#string].
+nrl#Semantics[rdfs#label -> "Semantics"^^xsd#string].
+nrl#Semantics[rdfs#subClassOf -> rdfs#Resource].
+
+nrl#SymmetricProperty[rdf#type -> rdfs#Class].
+nrl#SymmetricProperty[rdfs#comment -> "A marker class to identify symmetric properties"^^xsd#string].
+nrl#SymmetricProperty[rdfs#label -> "SymmetricProperty"^^xsd#string].
+nrl#SymmetricProperty[rdfs#subClassOf -> rdfs#Resource].
+
+nrl#TransitiveProperty[rdf#type -> rdfs#Class].
+nrl#TransitiveProperty[rdfs#comment -> "A marker class to identify transitive properties"^^xsd#string].
+nrl#TransitiveProperty[rdfs#label -> "TransitiveProperty"^^xsd#string].
+nrl#TransitiveProperty[rdfs#subClassOf -> rdfs#Resource].
+
+nrl#ViewSpecification[rdf#type -> rdfs#Class].
+nrl#ViewSpecification[rdfs#comment -> "Represents a specification of the means to achieve a transformation of an input graph into the required graph view"^^xsd#string].
+nrl#ViewSpecification[rdfs#label -> "ViewSpecification"^^xsd#string].
+nrl#ViewSpecification[rdfs#subClassOf -> rdfs#Resource].
+
+nrl#cardinality[rdf#type -> rdf#Property].
+nrl#cardinality[rdfs#comment -> "Specifies the precise value cardinality for a specific property"^^xsd#string].
+nrl#cardinality[rdfs#domain -> rdf#Property].
+nrl#cardinality[rdfs#label -> "cardinality"^^xsd#string].
+nrl#cardinality[rdfs#range -> rdfs#Literal].
+
+nrl#coreGraphMetadataFor[rdf#type -> nrl#InverseFunctionalProperty].
+nrl#coreGraphMetadataFor[rdf#type -> rdf#Property].
+nrl#coreGraphMetadataFor[rdfs#comment -> "Links a metadata graph to the graph for which it specifies the core graph properties including the semantics and the graph namespace. A graph can have only one unique core metadata graph"^^xsd#string].
+nrl#coreGraphMetadataFor[rdfs#domain -> nrl#GraphMetadata].
+nrl#coreGraphMetadataFor[rdfs#label -> "coreGraphMetadataFor"^^xsd#string].
+nrl#coreGraphMetadataFor[rdfs#range -> nrl#Graph].
+nrl#coreGraphMetadataFor[rdfs#subPropertyOf -> nrl#graphMetadataFor].
+
+nrl#equivalentGraph[rdf#type -> nrl#SymmetricProperty].
+nrl#equivalentGraph[rdf#type -> rdf#Property].
+nrl#equivalentGraph[rdfs#comment -> "Links two equivalent named graphs. A symmetric property"^^xsd#string].
+nrl#equivalentGraph[rdfs#domain -> nrl#Graph].
+nrl#equivalentGraph[rdfs#label -> "equivalentGraph"^^xsd#string].
+nrl#equivalentGraph[rdfs#range -> nrl#Graph].
+nrl#equivalentGraph[rdfs#subPropertyOf -> rdfg#equivalentGraph].
+
+nrl#externalRealizer[rdf#type -> rdf#Property].
+nrl#externalRealizer[rdfs#comment -> "Points to the location of the realizer for the external view specification"^^xsd#string].
+nrl#externalRealizer[rdfs#domain -> nrl#ExternalViewSpecification].
+nrl#externalRealizer[rdfs#label -> "externalRealizer"^^xsd#string].
+nrl#externalRealizer[rdfs#range -> rdfs#Literal].
+
+nrl#graphMetadataFor[rdf#type -> rdf#Property].
+nrl#graphMetadataFor[nrl#minCardinality -> "1"^^xsd#nonNegativeInteger].
+nrl#graphMetadataFor[rdfs#comment -> "Links a metadata graph to the graph that is being described. A unique value is compulsory"^^xsd#string].
+nrl#graphMetadataFor[rdfs#domain -> nrl#GraphMetadata].
+nrl#graphMetadataFor[rdfs#label -> "graphMetadataFor"^^xsd#string].
+nrl#graphMetadataFor[rdfs#range -> nrl#Graph].
+
+nrl#hasSemantics[rdf#type -> rdf#Property].
+nrl#hasSemantics[rdfs#comment -> "Points to a representation of the declarative semantics for a graph role"^^xsd#string].
+nrl#hasSemantics[rdfs#domain -> nrl#Data].
+nrl#hasSemantics[rdfs#label -> "hasSemantics"^^xsd#string].
+nrl#hasSemantics[rdfs#range -> nrl#Semantics].
+
+nrl#hasSpecification[rdf#type -> rdf#Property].
+nrl#hasSpecification[rdfs#comment -> "Points to the representation of the view specification required to generate the graph view in question"^^xsd#string].
+nrl#hasSpecification[rdfs#domain -> nrl#GraphView].
+nrl#hasSpecification[rdfs#label -> "hasSpecification"^^xsd#string].
+nrl#hasSpecification[rdfs#range -> nrl#ViewSpecification].
+
+nrl#imports[rdf#type -> rdf#Property].
+nrl#imports[rdfs#comment -> "Models a subsumption relationship between two graphs, stating that the object graph is imported and included in the subject graph"^^xsd#string].
+nrl#imports[rdfs#domain -> nrl#Data].
+nrl#imports[rdfs#label -> "imports"^^xsd#string].
+nrl#imports[rdfs#range -> nrl#Data].
+nrl#imports[rdfs#subPropertyOf -> nrl#superGraphOf].
+
+nrl#inverseProperty[rdf#type -> rdf#Property].
+nrl#inverseProperty[rdfs#comment -> "Links two properties and specifies their inverse behaviour"^^xsd#string].
+nrl#inverseProperty[rdfs#domain -> rdf#Property].
+nrl#inverseProperty[rdfs#label -> "inverseProperty"^^xsd#string].
+nrl#inverseProperty[rdfs#range -> rdf#Property].
+
+nrl#maxCardinality[rdf#type -> rdf#Property].
+nrl#maxCardinality[rdfs#comment -> "Specifies a maximum value cardinality for a specific property"^^xsd#string].
+nrl#maxCardinality[rdfs#domain -> rdf#Property].
+nrl#maxCardinality[rdfs#label -> "maxCardinality"^^xsd#string].
+nrl#maxCardinality[rdfs#range -> rdfs#Literal].
+
+nrl#minCardinality[rdf#type -> rdf#Property].
+nrl#minCardinality[rdfs#comment -> "Specifies a minimum value cardinality for a specific property"^^xsd#string].
+nrl#minCardinality[rdfs#domain -> rdf#Property].
+nrl#minCardinality[rdfs#label -> "minCardinality"^^xsd#string].
+nrl#minCardinality[rdfs#range -> rdfs#Literal].
+
+nrl#realizes[rdf#type -> rdf#Property].
+nrl#realizes[rdfs#comment -> "Points to a representation of the declarative semantics that the view specification realizes"^^xsd#string].
+nrl#realizes[rdfs#domain -> nrl#ViewSpecification].
+nrl#realizes[rdfs#label -> "realizes"^^xsd#string].
+nrl#realizes[rdfs#range -> nrl#Semantics].
+
+nrl#rule[rdf#type -> rdf#Property].
+nrl#rule[rdfs#comment -> "Specifies rules for a view specification that is driven by rules"^^xsd#string].
+nrl#rule[rdfs#domain -> nrl#RuleViewSpecification].
+nrl#rule[rdfs#label -> "rule"^^xsd#string].
+nrl#rule[rdfs#range -> rdfs#Literal].
+
+nrl#ruleLanguage[rdf#type -> rdf#Property].
+nrl#ruleLanguage[rdfs#comment -> "Specifies the rule language for a view specification that is driven by rules"^^xsd#string].
+nrl#ruleLanguage[rdfs#domain -> nrl#RuleViewSpecification].
+nrl#ruleLanguage[rdfs#label -> "ruleLanguage"^^xsd#string].
+nrl#ruleLanguage[rdfs#range -> rdfs#Literal].
+
+nrl#semanticsDefinedBy[rdf#type -> rdf#Property].
+nrl#semanticsDefinedBy[rdfs#comment -> "Points to the human readable specifications for a representation of some declarative semantics"^^xsd#string].
+nrl#semanticsDefinedBy[rdfs#domain -> nrl#Semantics].
+nrl#semanticsDefinedBy[rdfs#label -> "semanticsDefinedBy"^^xsd#string].
+nrl#semanticsDefinedBy[rdfs#range -> rdfs#Resource].
+
+nrl#subGraphOf[rdf#type -> rdf#Property].
+nrl#subGraphOf[nrl#inverseProperty -> nrl#superGraphOf].
+nrl#subGraphOf[rdfs#comment -> "Specifies a containment relationship between two graphs, meaning that the subject graph is included in the object graph"^^xsd#string].
+nrl#subGraphOf[rdfs#domain -> nrl#Graph].
+nrl#subGraphOf[rdfs#label -> "subGraphOf"^^xsd#string].
+nrl#subGraphOf[rdfs#range -> nrl#Graph].
+nrl#subGraphOf[rdfs#subPropertyOf -> rdfg#subGraphOf].
+
+nrl#superGraphOf[rdf#type -> rdf#Property].
+nrl#superGraphOf[nrl#inverseProperty -> nrl#subGraphOf].
+nrl#superGraphOf[rdfs#comment -> "Specifies a subsumption relationship between two graphs, meaning that the object graph is included in the subject graph"^^xsd#string].
+nrl#superGraphOf[rdfs#domain -> nrl#Graph].
+nrl#superGraphOf[rdfs#label -> "superGraphOf"^^xsd#string].
+nrl#superGraphOf[rdfs#range -> nrl#Graph].
+
+nrl#updatable[rdf#type -> rdf#Property].
+nrl#updatable[nrl#maxCardinality -> "1"^^xsd#nonNegativeInteger].
+nrl#updatable[rdfs#comment -> "A core graph metadata property, this defines whether a graph can be freely updated '1' or otherwise '0'"^^xsd#string].
+nrl#updatable[rdfs#domain -> nrl#Graph].
+nrl#updatable[rdfs#label -> "updatable"^^xsd#string].
+nrl#updatable[rdfs#range -> xsd#boolean].
+
+nrl#viewOn[rdf#type -> rdf#Property].
+nrl#viewOn[rdfs#comment -> "Points to a graph view over the subject named graph"^^xsd#string].
+nrl#viewOn[rdfs#domain -> nrl#GraphView].
+nrl#viewOn[rdfs#label -> "viewOn"^^xsd#string].
+nrl#viewOn[rdfs#range -> nrl#Graph].
+
+"http://www.semanticdesktop.org/ontologies/2007/08/15/nrl/v1.2/"^^\iri[rdf#type -> owl#Ontology].
