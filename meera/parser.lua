@@ -9,6 +9,30 @@
 --  c is a constant.
 -- Prolog equivalent: p(f(c)).
 
+-- Parse tree is:
+-- {
+--   facts = {
+--     {
+--       functor = "p",
+--       args = {
+--         {
+--           functor = "f",
+--           args = {
+--             {
+--               value = "c",
+--               type = "constant"
+--             }
+--           },
+--           type = "functor"
+--         }
+--       },
+--       type = "fact"
+--     }
+--   },
+--   rules = {
+--   }
+-- }
+
 -----------------------------
 -- Parses rules of the form:
 -- (:RULE (g (X)) (p1 (Y)) (p2 (Z1) (Z2))).
@@ -16,6 +40,53 @@
 --  g is the goal clause,
 --  p1 and p2 are body predicates.
 -- Prolog equivalent: g(X) :- p1(Y), p2(Z1, Z2).
+
+-- Parse tree is:
+-- {
+--   facts = {
+--   },
+--   rules = {
+--     {
+--       body = {
+--         {
+--           functor = "p1",
+--           args = {
+--             {
+--               value = "Y",
+--               type = "variable"
+--             }
+--           },
+--           type = "functor"
+--         },
+--         {
+--           functor = "p2",
+--           args = {
+--             {
+--               value = "Z1",
+--               type = "variable"
+--             },
+--             {
+--               value = "Z2",
+--               type = "variable"
+--             }
+--           },
+--           type = "functor"
+--         }
+--       },
+--       predicate = {
+--         functor = "g",
+--         args = {
+--           {
+--             value = "X",
+--             type = "variable"
+--           }
+--         },
+--         type = "functor"
+--       },
+--       type = "rule"
+--     }
+--   }
+-- }
 
 local parser = {}
 
@@ -32,8 +103,19 @@ local C, Cc, Cf, Cg, Cs, Ct, Cmt = lpeg.C, lpeg.Cc, lpeg.Cf, lpeg.Cg, lpeg.Cs, l
 
 local parseContext = {}
 
+local Symbol = {} -- symbol class
+Symbol.__index = Symbol
+function Symbol.__eq(sym1, sym2)
+   return sym1.type and
+	  sym1.type == sym2.type and
+	  sym2.value and
+	  sym1.value == sym2.value
+end
+
 local function _newSymbol(type, value)
-   return {type=type, value=value}
+   local sym = {type=type, value=value}
+   setmetatable(sym, Symbol)
+   return sym
 end
 
 local function _newConstant(value)
@@ -44,13 +126,43 @@ local function _newVariable(value)
    return _newSymbol("variable", value)
 end
 
+local Functor = {} -- functor class
+Functor.__index = Functor
+function Functor.__eq(f1, f2)
+   return f1.type == "functor" and
+	  f1.type == f2.type and
+	  f1.functor == f2.functor and
+	  #f1.args == #f2.args and
+	  f1:_argsEqual(f2)
+end
+
+function Functor:_argsEqual(f)
+   for i, arg in ipairs(self.args) do
+	  if arg ~= f.args[i] then
+		 return false
+	  end
+   end
+   return true
+end
+
+function Functor:argsContains(f)
+   for i, arg in ipairs(self.args) do
+	  if arg == f then
+		 return true
+	  end
+   end
+   return false
+end
+
 local function _newCompoundTerm(functor, args)
    assert(functor.type == "constant" or functor.type == "variable")
    -- don't create a compound term unless necessary
    if #args == 0 then
 	  return functor
    else
-	  return {type="functor", functor=functor.value, args=args}
+	  local f = {type="functor", functor=functor.value, args=args}
+	  setmetatable(f, Functor)
+	  return f
    end
 end
 
