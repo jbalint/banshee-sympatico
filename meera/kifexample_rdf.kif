@@ -1,0 +1,26 @@
+;; example of KIF format of RDFS
+
+;; order is not significant
+
+(rdf:type eg:NaturalProduct owl:Class)
+(rdfs:subClassOf1 eg:NaturalProduct owl:Thing)
+(rdf:type eg:TreeProduct owl:Class)
+(rdfs:subClassOf1 eg:TreeProduct eg:NaturalProduct)
+(rdfs:subClassOf1 eg:Paper eg:TreeProduct)
+(rdfs:subClassOf1 eg:Sap eg:TreeProduct)
+(rdf:type eg:Paper eg:somePaper)
+(rdfs:comment eg:somePaper "\bsSome instance of eg:Paper")
+
+;; we have to stratify this manually to deal with left-recursion in
+;; the transitivity predicate
+(=>
+ (rdfs:subClassOf ?Super ?Sub)
+ (rdfs:subClassOf1 ?Super ?Sub))
+
+;; transitivity for inheritance
+(=>
+ ;; consequent
+ (rdfs:subClassOf ?Super ?Sub)
+ ;; antecedants
+ (rdfs:subClassOf1 ?Super ?_Sub1)
+ (rdfs:subClassOf ?_Sub1 ?Sub))
