@@ -7,11 +7,16 @@ import java.io.Reader;
 import java.util.HashSet;
 import java.util.Set;
 
+import jade.content.Concept;
+import jade.content.lang.Codec;
+import jade.content.onto.OntologyException;
 import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import bs.jade.MessageReceiverFacade;
 import bs.wmii.v1.ontology.ClientEvent;
 import bs.wmii.v1.ontology.TagEvent;
 import bs.wmii.v1.ontology.WmiiOntology;
@@ -20,8 +25,9 @@ public class WmiiAgent extends jade.core.Agent {
 	private Logger log;
 
 	private SubscriptionManager submgr;
+	private ClientInfoHandler clientInfoHandler;
 
-	private jade.content.lang.Codec codec = new jade.content.lang.sl.SLCodec();
+	private Codec codec = new jade.content.lang.sl.SLCodec();
 
 	private Process wmiiProcess;
 
@@ -34,6 +40,7 @@ public class WmiiAgent extends jade.core.Agent {
 
 	public WmiiAgent() {
 		submgr = new SubscriptionManager(this);
+		clientInfoHandler = new ClientInfoHandler();
 	}
 
 	private void startEventRelayThread() {
@@ -60,11 +67,13 @@ public class WmiiAgent extends jade.core.Agent {
 		getContentManager().registerLanguage(codec);
 		getContentManager().registerOntology(WmiiOntology.getInstance());
 		addBehaviour(submgr);
+		// addBehaviour(new MessageReceiverFacade(this, clientInfoHandler,
+		// 									   clientInfoHandler.getMessageTemplate()));
 
 		startEventRelayThread();
 	}
 
-	private Object parseEvent(String l) {
+	private Concept parseEvent(String l) {
 		String parts[] = l.split(" ");
 		String eventName = parts[0];
 		if ("ClientFocus".equals(eventName)) {
@@ -95,15 +104,24 @@ public class WmiiAgent extends jade.core.Agent {
 		}
 	}
 
+	private void broadcastEvent(Concept event) throws Codec.CodecException, OntologyException {
+		ACLMessage m = new ACLMessage(ACLMessage.INFORM);
+		m.setLanguage(codec.getName());
+		m.setOntology(WmiiOntology.ONTOLOGY_NAME);
+		getContentManager().fillContent(m, new jade.content.onto.basic.Done(event));
+		submgr.addReceivers(m);
+		send(m);
+	}
+
 	private void readAndRelayWmiiEvents(BufferedReader r) {
 		String l = "";
 		while (true) {
 			try {
 				l = r.readLine();
-				Object event = parseEvent(l);
+				Concept event = parseEvent(l);
 				if (event == null)
 					continue;
-				System.out.println(event);
+				broadcastEvent(event);
 			} catch(Exception ex) {
 				log.error("Error during wmii event relay", ex);
 				try {

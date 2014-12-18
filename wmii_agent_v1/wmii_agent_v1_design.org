@@ -18,8 +18,20 @@ wmii Agent v1
 ** Ontology design
 *** DONE Events
 	 CLOSED: [2013-10-24 Thu 13:03]
-*** TODO State read req/resp
-*** TODO State write req/confirm
+*** TODO Client info read req/resp
+*** TODO Tag info read req/resp
+*** TODO Client state write req/confirm
+	+ tags
+	+ label
+	+ focus
+	+ urgent
+	+ fullscreen
+	+ kill
+*** TODO Tag write req/confirm
+	+ select (???)
+	+ send (???)
+	+ swap/grow/nudge
+*** TODO Global state read/write
 ** Events
 *** TODO Urgent events
 *** DONE read from wmiir /event stream
@@ -36,3 +48,4 @@ wmii Agent v1
 ** Look at subscription options in JADE
    + =SubscriptionInitiator=, etc
 ** Do ontologies in a language-independent way (Protege?)
+** rbar/lbar messages
