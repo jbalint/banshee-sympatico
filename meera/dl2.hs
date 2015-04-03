@@ -1,13 +1,10 @@
 -- v2 (cleanup) of DL reasoner
 
-
 import Prelude
 import Test.Hspec
 import qualified Data.Map as Map
 import Data.List (nub, find)
---import Control.Monad.Writer hiding (All)
 import Data.Maybe (fromMaybe, isJust)
-import qualified Data.Monoid as Monoid
 
 import GHC.Exts hiding (Any)
 
@@ -94,7 +91,6 @@ normalize c _ = c -- covers exists and fills
 
 normalize2 :: Concept -> AtomicDefMap -> Concept
 normalize2 c@(And _) defs = normalize c defs
---normalize2 c = And . ([] :: Concept -> [Concept]) $ normalize c
 normalize2 c defs = And [normalize c defs]
 
 normalizationTests :: Spec
@@ -162,15 +158,22 @@ normalizationTests =
 -- e = subsuming concept
 -- d = set to search for subsumed concept
 findSubsumed :: Concept -> [Concept] -> Maybe Concept
-findSubsumed e@(Atomic _) d = find (== e) d
-findSubsumed e@(Fills _ _) d = find (== e) d
-findSubsumed (Exists 1 r) d = find (\x -> case x of Fills r2 _ | r == r2 -> True
-                                                    Exists n r2 | r == r2 && n >= 1 -> True
+findSubsumed e@(Atomic cn) d = find (\x -> case x of Atomic cn2 | cn == cn2 -> True
+                                                     And cs -> isJust $ findSubsumed e cs
+                                                     _ -> False) d
+findSubsumed e@(Fills rn c) d = find (\x -> case x of Fills rn2 c2 | rn == rn2 && c == c2 -> True
+                                                      And cs -> isJust $ findSubsumed e cs
+                                                      _ -> False) d
+findSubsumed e@(Exists 1 r) d = find (\x -> case x of Fills r2 _ | r == r2 -> True
+                                                      Exists n r2 | r == r2 && n >= 1 -> True
+                                                      And cs -> isJust $ findSubsumed e cs
+                                                      _ -> False) d
+findSubsumed e@(Exists n r) d = find (\x -> case x of Exists n2 r2 | r == r2 && n2 >= n -> True
+                                                      And cs -> isJust $ findSubsumed e cs
+                                                      _ -> False) d
+findSubsumed e@(All rn c) d = find (\x -> case x of All rn2 c2 | rn == rn2 && isJust (findSubsumed c [c2]) -> True
+                                                    And cs -> isJust $ findSubsumed e cs
                                                     _ -> False) d
-findSubsumed (Exists n r) d = find (\x -> case x of Exists n2 r2 | r == r2 && n2 >= n -> True
-                                                    _ -> False) d
-findSubsumed (All rn c) d = find (\x -> case x of All rn2 c2 | rn == rn2 && isJust (findSubsumed c [c2]) -> True
-                                                  _ -> False) d
 -- given: AND_1 = {c_1, ..., c_i}, AND_2 = {d_1, ..., d_j}
 -- AND_1 \sqsubseteq AND_2 iff \forall d_n \in AND_2 \exists c_m \in AND_1 s.t. c_m \sqsubseteq d_n
 findSubsumed (And cs) d =
@@ -203,6 +206,22 @@ subsumptionTests =
           subsumer = And [Atomic "B", Exists 2 "SomeRole"]
       in (findSubsumed subsumer [subsumed], subsumedBy subsumed subsumer)
          `shouldBe` (Just (And [Atomic "B",Exists 3 "SomeRole", Atomic "C"]), True)
+    it "should work with an example" $
+      let subsumer = And [All "Manager" (Atomic "B-SchoolGrad"),
+                          Exists 1 "Exchange"]
+          subsumed = And [Atomic "Company",
+                          All "Manager" (And [Atomic "B-SchoolGrad",
+                                              Exists 2 "TechnicalDegree"]),
+                          Fills "Exchange" $ C "nasdaq"]
+      in subsumedBy subsumed subsumer `shouldBe` True
+    it "should find specific `All' concepts inside AND" $
+      findSubsumed (All "m" (Atomic "n")) [And [Atomic "A",
+                                                Exists 1 "x",
+                                                All "m" (Atomic "n")]]
+      `shouldBe` Just (And [Atomic "A",Exists 1 "x",All "m" (Atomic "n")])
+    it "should find specific `Exists' concepts inside AND" $
+      let subsumed = And [Atomic "A", Exists 3 "x"]
+      in findSubsumed (Exists 1 "x") [subsumed] `shouldBe` Just subsumed
 
 main :: IO ()
 main = do
