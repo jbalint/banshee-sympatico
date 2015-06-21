@@ -14,21 +14,27 @@ import Control.Monad
 import System.IO
 
 import Data.List
+import Data.Maybe
 import qualified Data.Map as Map
 
 --import Debug.Trace (trace)
 
-data Term = Atom String | Var String | Func String [Term] | Int Integer
+type VarName = String
+
+data Term = Atom String | Var VarName | Func String [Term] | Int Integer
           deriving (Show, Eq)
 
-data Pred = Pred String [Term]
+data Pred = Pred String [Term] | NegPred String [Term]
           deriving (Show, Eq)
 
 data Rule = Rule Pred [Pred]
           deriving (Show, Eq)
 
+-- do we need a completely separate representation of logical formulas?
+type Clause = [Pred]
+
 -- substitution Var -> Term
-type Sub = Map.Map String Term
+type Sub = Map.Map VarName Term
 
 -- ====== --
 -- Parser --
@@ -94,8 +100,11 @@ disagreement (Func f1 args1 : _) (Func f2 args2 : _)
   -- decomposition of functors, agreeing functors handled above
   | f1 == f2 = disagreement args1 args2
 -- make sure the variable comes first if there is one
-disagreement (x:_) (y:_) = Just $ case x of Var _ -> (x, y)
-                                            _ -> (y, x)
+-- disagreement (x:_) (y:_) = Just $ case x of Var _ -> (x, y)
+--                                             _ -> (y, x)
+-- clearer than preceding?
+disagreement (x@(Var _):_) (y:_) = Just (x, y)
+disagreement (x:_) (y:_) = Just (y, x)
 
 applySub :: [Term] -> Sub -> [Term]
 applySub [] _ = []
@@ -106,21 +115,25 @@ applySub (t@(Var v):ts) sub = newT : applySub ts sub
 applySub (Func f args : ts) sub = Func f (applySub args sub) : applySub ts sub
 applySub (t:ts) sub = t : applySub ts sub
 
+applySubPred :: Pred -> Sub -> Pred
+applySubPred (Pred name args) s = Pred name (applySub args s)
+applySubPred (NegPred name args) s = NegPred name (applySub args s)
+
 occursCheck :: Term -> String -> Bool
 occursCheck (Atom _) _ = False
 occursCheck (Func _ args) vname = Var vname `elem` args
 occursCheck _ _ = False
 
 unify :: [Term] -> [Term] -> Maybe Sub
-unify = let unifyInternal s t1 t2 =
-              let d = disagreement t1 t2 in
-               case d of
-                Nothing -> Just s
-                Just (Var vname, t) | not $ occursCheck t vname -> unifyInternal s' t1' t2'
-                  where s' = Map.insert vname t s
-                        t1' = applySub t1 s'
-                        t2' = applySub t2 s'
-                _ -> Nothing
+unify = let applyAndContinue s t1 t2 = unifyInternal s t1' t2'
+              where t1' = applySub t1 s
+                    t2' = applySub t2 s
+            unifyInternal s t1 t2 = case disagreement t1 t2 of
+                                     Nothing -> Just s
+                                     Just (Var vname, t)
+                                       | not $ occursCheck t vname ->
+                                           applyAndContinue (Map.insert vname t s) t1 t2
+                                     _ -> Nothing
         in unifyInternal Map.empty
 
 -- unify [Func "vertical" [Func "line" [Func "point" [Var "X", Var "Y"], Func "point" [Var "X", Var "Z"]]]] [Func "vertical" [Func "line" [Func "point" [Var "X", Var "Y"], Func "point" [Var "X", Var "Z"]]]]
@@ -132,6 +145,98 @@ Just (fromList [("X",Int 1),("Y",Int 1),("Z",Int 3)])
 *Main> unify [Func "vertical" [Func "line" [Func "point" [Var "X", Var "Y"], Func "point" [Var "X", Var "Z"]]]] [Func "vertical" [Func "line" [Func "point" [Int 1, Int 1], Func "point" [Int 3, Int 2]]]]
 Nothing
 --}
+
+-- ========== --
+-- Resolution --
+-- ========== --
+
+-- KB is (ultimately) a conjunction of clauses
+testKb1 :: [Clause]
+testKb1 = [[Pred "rdf:type" [Atom "bsbase:ABriefHistoryOfEverything",
+                             Atom "bibo:Book"]],
+           [Pred "bsbase:subject" [Atom "bsbase:ABriefHistoryOfEverything",
+                                   Atom "bsbase:IntegralTheory"]],
+           -- thinksItsCool(X, Y) :- thinksItsCool(jess, Y).
+           -- If Jess thinks it's cool, everyone thinks it's cool.
+           [Pred "thinksItsCool" [Var "X", Var "Y"],
+            NegPred "thinksItsCool" [Atom "jess", Var "Y"]],
+           [Pred "thinksItsCool" [Atom "jess", Atom "PhilCollins"]],
+           [Pred "f" [Atom "a"]], [Pred "f" [Atom "b"]],
+           [Pred "g" [Atom "a"]], [Pred "g" [Atom "b"]],
+           [Pred "h" [Atom "b"]],
+           [Pred "k" [Var "X"], NegPred "f" [Var "X"], NegPred "g" [Var "X"], NegPred "h" [Var "X"]]]
+
+predArgs :: Pred -> [Term]
+predArgs (Pred _ a) = a
+predArgs (NegPred _ a) = a
+
+predVarNames :: Pred -> [VarName]
+predVarNames =
+  let foldIt names term = case term of (Var name) -> name:names; _ -> names
+  in nub . foldl foldIt [] . predArgs
+
+-- find a way to rewrite this?
+findClashingPred :: Clause -> Pred -> Maybe (Pred, Clause)
+findClashingPred c (Pred predName _) = case partition (\x -> case x of NegPred predName' _ | predName' == predName -> True
+                                                                       _ -> False) c
+                                       of ([p], rest) -> Just (p, rest)
+                                          _ -> Nothing
+findClashingPred c (NegPred predName _) = case partition (\x -> case x of Pred predName' _ | predName' == predName -> True
+                                                                          _ -> False) c
+                                          of ([p], rest) -> Just (p, rest)
+                                             _ -> Nothing
+
+findClashingClauses :: [Clause] -> Pred -> [(Sub, Clause)]
+findClashingClauses clauses pred =
+  let clausesMatchingPred :: [(Pred, Clause)]
+      clausesMatchingPred = mapMaybe (`findClashingPred` pred) clauses
+      args :: [Term]
+      args = predArgs pred
+      maybeUnifyAndReturnBoth :: (Pred, Clause) -> Maybe (Sub, Clause)
+      --maybeUnifyAndReturnBoth (p, c) = (unify args $ predArgs p) >>= (\sub -> return (p, map (`applySubPred` sub) c))
+      maybeUnifyAndReturnBoth (p, c) = do
+        sub <- unify args $ predArgs p
+        return (sub, map (`applySubPred` sub) c)
+      -- clausesUnifying :: [Sub]
+      -- clausesUnifying = mapMaybe ((unify args) . (predArgs . fst)) clausesMatchingPred
+      -- c0 = head clausesMatchingPred
+      -- c0args = (predArgs . fst) c0
+      -- c0sub = fromJust $ unify args c0args
+      -- c0resolvents = map (`applySubPred` c0sub) $ snd c0
+      --dealWithPred possibleClash = 
+  in --[c0resolvents]
+   mapMaybe maybeUnifyAndReturnBoth clausesMatchingPred
+
+-- TODO allow multiple clauses instead of a single predicate
+solve1 :: Pred -> [Clause] -> [Sub]
+solve1 pred kb =
+  let clashes0 :: (Sub, Clause)
+      clashes0 = head $ findClashingClauses kb pred
+      --vars = predVars pred
+  in []
+
+solve01 :: [Clause] -> [Term] -> Sub -> Maybe Sub
+-- nothing left to resolve, return sub
+solve01 [] _ s = Just s
+solve01 clauses vars s =
+  let kb :: [Clause]
+      kb = testKb1
+      sub :: Sub
+      sub = fst . head $ findClashingClauses kb $ (head . head) clauses
+  in Nothing
+
+-- resolve :: Pred -> Disj -> Disj
+-- resolve _ [] = []
+-- resolve goal ps = -- @(Pred pname args) ps =
+--   -- let x a b = (a, b)
+--   -- in snd $ mapAccumL x "" []
+--   let (negGoal, gname, gargs) = case goal of
+--                  NegPred gname gargs -> (Pred gname gargs, gname, gargs)
+--                  Pred gname gargs    -> (NegPred gname gargs, gname, gargs)
+--      xXX (sub, newList) (Pred pname args:ps)
+--         | pname == gname and s@(unify args gargs) = (s
+--   foldl xXX (Map.empty, []) ps
+
 -- ========================== --
 -- repl stuff copied from:
 -- ========================== --
@@ -164,9 +269,10 @@ runRepl = until_ (== "quit") (readPrompt "?- ") evalAndPrint
 -- ===============================
 main :: IO ()
 main = do
-  putStrLn "==============="
-  putStrLn "Prolog Engine 1"
-  putStrLn "==============="
+  putStrLn "================="
+  putStrLn " Prolog Engine 1"
+  putStrLn "================="
+
   hspec . describe ">>> Parser tests" $ do
     it "should parse basic predicates" $
       case parse (predP <* eof) "" "pred(a, B)"
@@ -196,6 +302,7 @@ main = do
       case parse (termP <* eof) "" ".(1, .(2, .(3, .())))"
       of Right x -> x `shouldBe`
                     Func "." [Int 1,Func "." [Int 2,Func "." [Int 3,Func "." []]]]
+
   hspec . describe ">>> Unification tests" $ do
     it "should calculate disagreement sets properly" $
       let dset = disagreement
@@ -240,8 +347,13 @@ main = do
       [Func "loves" [Atom "marcellus", Atom "mia"]]
       `shouldBe` Nothing
   -- hspec . describe ">>> Resolution tests" $ do
-  --   it "should parse basic predicates" $ True
-  --   it "should parse basic predicates" $ True
+  --   it "should find clashing predicates in clauses" $
+  --     findClashingClauses testKb1 (NegPred "rdf:type" [])
+  --     `shouldBe`
+  --     [(Pred "rdf:type" [Atom "bsbase:ABriefHistoryOfEverything",Atom "bibo:Book"],[])]
+  --   it "should not find clashing predicates sometimes" $
+  --     findClashingClauses testKb1 (Pred "rdf:type" [])
+  --     `shouldBe` []
   putStrLn "Welcome to Prolog Engine 1"
-  runRepl
+  --runRepl
   return ()

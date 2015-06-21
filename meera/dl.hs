@@ -5,7 +5,7 @@ import Test.Hspec
 import qualified Data.Map as Map
 import Data.List
 import Control.Monad.Writer hiding (All)
-import Data.Maybe (isJust)
+import Data.Maybe (isJust, fromMaybe)
 
 import GHC.Exts hiding (Any)
 
@@ -113,8 +113,9 @@ splitEquivDecls :: [Equivalence] -> ([Equivalence], [Equivalence])
 splitEquivDecls = partition isEquivDecl
 
 -- expand an atomic concept that's defined in terms of a complex concept
-expandDefinition :: ConceptName -> Map.Map ConceptName Concept -> Maybe Concept
-expandDefinition = Map.lookup
+expandDefinition :: Concept -> Map.Map ConceptName Concept -> Concept
+expandDefinition c@(Atomic cname) defs = fromMaybe c (Map.lookup cname defs)
+expandDefinition c defs = c
 
 -- take the contents of an AND and collapse the internal AND composites
 flatten :: [Concept] -> [Concept]
@@ -124,9 +125,25 @@ flatten (x:xs) = x : flatten xs
 flatten [] = []
 
 -- we don't need to go deeper due to iterative normalization
+-- flattenW :: [Concept] -> Writer Any [Concept]
+-- flattenW (And concepts:xs) = tell (Any True) >> flattenW (concepts ++ xs)
+-- flattenW (x:xs) = do
+--   x' <- case x of (All rn (And cs)) -> All rn (And $ flattenW cs)
+--                   _ -> return [x]
+--   newXs <- flattenW xs
+--   return (x:newXs)
+-- flattenW [] = return []
+
 flattenW :: [Concept] -> Writer Any [Concept]
 flattenW (And concepts:xs) = tell (Any True) >> flattenW (concepts ++ xs)
-flattenW (x:xs) = do { newXs <- flattenW xs; return (x:newXs) }
+flattenW (All rn (And cs):xs) =
+  do
+    cs' <- flattenW cs
+    xs' <- flattenW xs
+    return $ All rn (And cs'):xs'
+flattenW (x:xs) = do
+  xs' <- flattenW xs
+  return (x:xs')
 flattenW [] = return []
 
 -- partition the alls by role, first element is non-ALL concepts
@@ -159,12 +176,67 @@ combineExistsW concepts = let (nonExists:exists) = partitionExists concepts
                               combine cs@(Exists _ r : _) = tell (Any True) >> return (Exists ((foldl . flip) (max . getN) 0 cs) r)
                           in do { newExists <- mapM combine exists; return $ nonExists ++ newExists }
 
+normalize :: Concept -> Map.Map ConceptName Concept -> Concept
+normalize c@(Atomic _) defs = And [expandDefinition c defs]
+normalize (All rn c) defs = And [All rn $ normalize c defs]
+normalize c@(Exists _ _) defs = And [c]
+normalize c@(Fills _ _) defs = And [c]
+normalize (And cs) defs =
+  let normSteps = flattenW >=> combineAllW >=> combineExistsW in
+  case runWriter $ normSteps cs of
+   (cs', Any True) -> normalize (And $ nub cs') defs
+   (cs', Any False) -> And $ nub cs'
+
+flatten' :: [Concept] -> [Concept]
+flatten' (And concepts:xs) = flatten concepts ++ flatten xs
+--flatten' (All rn (And cs):xs) = All rn (And $ flatten cs) : flatten xs
+flatten' (x:xs) = x : flatten xs
+flatten' [] = []
+
+combineAll :: [Concept] -> [Concept]
+combineAll concepts =
+  let (nonAlls:alls) = partitionAlls concepts
+      getConcept (All _ c) = c
+      combine [c] = c -- single elem, no combination possible
+      combine cs@(All r _ : _) = All r . And $ map getConcept cs
+  in nonAlls ++ map combine alls
+
+combineExists :: [Concept] -> [Concept]
+combineExists concepts =
+  let (nonExists:exists) = partitionExists concepts
+      getN :: Concept -> Int
+      getN (Exists n _) = n
+      combine [c] = c
+      combine cs@(Exists _ r : _) = Exists ((foldl . flip) (max . getN) 0 cs) r
+  in nonExists ++ map combine exists
+
+normalize' :: Concept -> Map.Map ConceptName Concept -> Concept
+normalize' c@(Atomic _) defs = expandDefinition c defs
+normalize' (All rn c) defs = All rn $ normalize' c defs
+normalize' c@(Exists _ _) defs = c
+normalize' c@(Fills _ _) defs = c
+normalize' (And cs) defs =
+  let normCs = map (`normalize'` defs) cs
+      flatCs = flatten' normCs
+      allCombCs = combineAll flatCs
+      existsCombCs = combineExists allCombCs in
+  And $ nub $ map (flip normalize' defs) existsCombCs
+
 -- getN2 :: Concept -> Int
 -- getN2 (Exists n _) = n
 
 -- TODO fix Thing
--- TODO remove redundancy
 
+-- new way that findSubsumer can be rewritten
+newFindSub :: Concept -> [Concept] -> Maybe Concept
+newFindSub e =
+  let pred = case e of
+              Atomic _ -> (== e)
+              Exists 1 r -> (\x -> case x of Fills r2 _ | r == r2 -> True)
+  in find pred
+
+-- e = subsumer
+-- d = subsumed
 findSubsumer :: Concept -> [Concept] -> Maybe Concept
 findSubsumer e@(Atomic _) d = find (== e) d
 findSubsumer e@(Fills _ _) d = find (== e) d
@@ -175,6 +247,14 @@ findSubsumer (Exists n r) d = find (\x -> case x of Exists n2 r2 | r == r2 && n2
                                                     _ -> False) d
 findSubsumer (All rn c) d = find (\x -> case x of All rn2 c2 | rn == rn2 && isJust (findSubsumer c [c2]) -> True
                                                   _ -> False) d
+findSubsumer (And cs) d = find (\x -> case x of
+                                       And d_cs -> map (flip findSubsumer $ ) cs
+
+-- what I need:
+-- for EACH concept in the And construct of e:
+--    find a single AND in d where:
+--        
+
 
 subsumedBy :: Concept -> Concept -> Bool
 subsumedBy (And cs1) (And cs2) = (foldl .flip) ((&&) . isJust) True $ map (`findSubsumer` cs2) cs1
@@ -201,11 +281,21 @@ parseKbDef (KbDef subs equivs members) =
      atomicDefs = atomicDefs2,
      memberAssertions = members,
      subsumptionAssertions = [],
+     -- todo is this necessary? should be able to keep all equivs as definitions
+     -- rewrite the equiv structure to handle this: Def ConceptName [non-atomic-]Concept
      equivalenceAssertions = nonAtomics
      }
 
 testKb :: Kb
 testKb = parseKbDef testKbDef
+
+testSubsumption1 :: Expectation
+testSubsumption1 =
+  let d = And [Atomic "Company",
+               All "Manager" (Atomic "B-SchoolGrad"),
+               Exists 1 "Exchange"]
+      d' = case (wellRoundedCoDecl, highTechCoDecl) of (Equiv _ a, Equiv _ b) -> normalize' (And [a,b]) $ atomicDefs testKb
+  in d' `subsumedBy` d `shouldBe` True
 
 main :: IO ()
 main = do

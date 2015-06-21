@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, DeriveGeneric, DefaultSignatures, DeriveAnyClass #-}
+{-# LANGUAGE OverloadedStrings, DeriveGeneric, DefaultSignatures #-}
 
 {--
     * References:
@@ -14,7 +14,7 @@ A reference property is a tuple: NS:ID
 
 A value is one of the following:
   - id : object reference
-  - scalar : string, int, double, (TODO: date, list, etc)
+  - scalar : string, int, double, date, list, etc
 
 An Object is a composite:
 {id : id,
@@ -24,7 +24,7 @@ An Object is a composite:
 --}
 
 module Objectspace (Id(Id), Fields, Obj(Obj),
-                    Scalar(SId, SString, SInt, SRat, SBool, SAtom, SDate, SMethod),
+                    Scalar(SId, SString, SInt, SRat, SBool, SAtom, SDate, SMethod, SList),
                     writeObject, readObject) where
 
 import Data.ByteString
@@ -52,6 +52,7 @@ data Scalar = SId Id | -- object reference
               SBool Bool |
               SAtom String |
               SDate Day |
+              SList [Scalar] |
               SMethod [Scalar] Scalar
             deriving (Show, Eq, Generic)
 

@@ -1,17 +1,19 @@
 -- v2 (cleanup) of DL reasoner
+{-# LANGUAGE DeriveGeneric, DefaultSignatures #-}
 
 import Prelude
 import Test.Hspec
 import qualified Data.Map as Map
 import Data.List (nub, find)
 import Data.Maybe (fromMaybe, isJust)
-
+import Data.Serialize
 import GHC.Exts hiding (Any)
+import GHC.Generics (Generic)
 
 -- a constant represents an individual in the kb
 data Constant = C String
-              deriving (Show, Eq)
-
+              deriving (Show, Eq, Generic)
+instance Serialize Constant
 type ConceptName = String
 type RoleName = String
 -- map of atomic concept definitions
@@ -22,7 +24,8 @@ data Concept = Atomic ConceptName
              | Exists Int RoleName
              | Fills RoleName Constant
              | And [Concept]
-             deriving (Show, Eq)
+             deriving (Show, Eq, Generic)
+instance Serialize Concept
 
 data Role = Role Constant Constant
           deriving (Show, Eq)
@@ -230,3 +233,4 @@ main = do
   hspec subsumptionTests
   return ()
 
+-- let enc :: Data.ByteString.Internal.ByteString ; enc = encode $ And [Atomic "Jess", Atomic "Andy"]; dec :: Either String Concept ; dec = decode enc in dec

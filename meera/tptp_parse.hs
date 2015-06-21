@@ -1,3 +1,5 @@
+import Test.Hspec
+
 import Text.ParserCombinators.Parsec
 
 import Control.Applicative hiding ((<|>))
@@ -112,7 +114,7 @@ resolveAgainst :: Term -> Disjunction -> Maybe [Term]
 resolveAgainst _ [] = Nothing
 resolveAgainst t dis | not $ containsNegTerm dis t = Nothing
 resolveAgainst t dis = let negTerm t t' = t == NegTerm t' || t' == NegTerm t in
-  Just $ filter (negTerm t) dis
+  Just $ filter (not . negTerm t) dis
 
 -- whether term is true in the theory
 -- query should be in negated form
@@ -124,8 +126,13 @@ asd = "1"
 
 main :: IO ()
 main = do
-  putStr $ show theory
-  putStr $ show asd
-  putStr . show $ resolution (PropVar "t") []
-  putStr "This program does nothing"
+  print theory
+  print asd
+  print $ resolution (PropVar "t") []
+  putStrLn "This program does nothing"
+  hspec . describe "first hspec test" $
+    it "should do something" True
+  hspec . describe "resolveAgainst" .
+    it "should make a direct resolution" $
+    resolveAgainst 
   return ()
