@@ -34,16 +34,18 @@ import Data.Maybe
 import qualified Data.Map as Map
 import qualified Data.Serialize as Ser
 import Data.Time.Calendar
+import Data.Time.Clock
+import Data.Time.Format
 import Database.LevelDB
 
 import GHC.Generics (Generic)
 
-type NsKey = String
+type NsKey = Maybe String
 type ObjKey = String
-type PropKey = String
+type PropKey = Id
 
 data Id = Id NsKey ObjKey
-        deriving (Show, Eq, Generic)
+        deriving (Show, Eq, Generic, Ord)
 
 data Scalar = SId Id | -- object reference
               SString String |
@@ -52,20 +54,24 @@ data Scalar = SId Id | -- object reference
               SBool Bool |
               SAtom String |
               SDate Day |
+              STimestamp UTCTime |
               SList [Scalar] |
               SMethod [Scalar] Scalar
-            deriving (Show, Eq, Generic)
+            deriving (Show, Eq, Generic, Ord)
 
 type Fields = Map.Map PropKey Scalar
 
 data Obj = Obj Id Fields
          deriving (Show, Eq, Generic)
 
--- the Data.Time.Calendar.Day type is not serializable
 instance Ser.Serialize Day where
   put = Ser.put . toGregorian
   get = do (y, m, d) <- Ser.get
            return $ fromGregorian y m d
+
+instance Ser.Serialize UTCTime where
+  put = Ser.put . (formatTime defaultTimeLocale "%s")
+  get = Ser.get >>= return . (parseTimeOrError True defaultTimeLocale "%s")
 
 instance Ser.Serialize Id
 instance Ser.Serialize Scalar
@@ -77,7 +83,7 @@ writeObject obj =
       keyBytes = Data.ByteString.UTF8.fromString k
       objBytes = Ser.encode obj
   in runResourceT $ do
-    db <- open (ns ++ ".ospace") defaultOptions
+    db <- open ((fromJust ns) ++ ".ospace") defaultOptions
     put db def keyBytes objBytes
     return ()
 
@@ -86,24 +92,26 @@ readObject (Id ns k) = return Nothing
 
 writeSomeDbObjects :: IO ()
 writeSomeDbObjects =  do
+  curTime <- getCurrentTime
   runResourceT $ open "test.ospace" defaultOptions {createIfMissing = True}
   writeObject .
-    Obj (Id "test" "jess") $
-    Map.fromList [("age", SInt 33),
-                  ("likes_musician", SString "Philip Glass"),
-                  ("knows", SId $ Id "test" "andy"),
-                  ("has_siblings_probability", SMethod [SRat 0.9] $ SBool True)]
+    Obj (Id (Just "test") "jess") $
+    Map.fromList [(Id Nothing "age", SInt 33),
+                  (Id Nothing "likes_musician", SString "Philip Glass"),
+                  (Id Nothing "knows", SId $ Id (Just "test") "andy"),
+                  (Id Nothing "has_siblings_probability", SMethod [SRat 0.9] $ SBool True),
+                  (Id Nothing "created", STimestamp curTime)]
   writeObject .
-    Obj (Id "test" "andy") $
-    Map.fromList [("age", SString "<unknown>"),
-                  ("likes_music_style", SString "Irish"),
-                  -- this is like: andy:age_between(test:AndyFather, test:Jess) => True
-                  ("age_between", SMethod [SId $ Id "test" "AndyFather", SId $ Id "test" "Jess"] $ SBool True)]
+    Obj (Id (Just "test") "andy") $
+    Map.fromList [(Id Nothing "age", SString "<unknown>"),
+                  (Id Nothing "likes_music_style", SString "Irish"),
+                  -- this is like: andy:age_between(test:Knuth, test:Jess) => True
+                  (Id Nothing "age_between", SMethod [SId $ Id (Just "test") "Knuth", SId $ Id (Just "test") "Jess"] $ SBool True)]
   -- from WordNet
   -- s(100002137,1,'abstraction',n,6,0).
   -- s(100002137,2,'abstract entity',n,1,0).
   writeObject .
-    Obj (Id "test" "100002137") $
+    Obj (Id (Just "test") "100002137") $
     Map.fromList [] -- TODO
   return ()
 
@@ -120,7 +128,7 @@ printDbObjects =
         return $ (k, v) : rest
   in do
   objs2 <- runResourceT $ do
-    db <- open "test.ospace"
+    db <- open "bibo.ospace"
           defaultOptions
     withIterator db def (\i -> do
                             _ <- iterFirst i
