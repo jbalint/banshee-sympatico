@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, DeriveGeneric, DefaultSignatures, FlexibleInstances #-}
+{-# LANGUAGE OverloadedStrings #-}
 import System.IO
 
 import qualified Data.Map as Map
@@ -11,8 +11,10 @@ import Data.SCargot.Repr
 import qualified Data.Text as T
 
 import Objectspace
+import Syntax
 
 import Control.Applicative ((<*), (*>), (<*>), (<$>))
+import qualified Data.ByteString.UTF8 as B
 import Data.Char (isAlpha, isDigit, isAlphaNum)
 import Data.Maybe (fromJust)
 import           Text.Parsec ( (<|>)
@@ -41,12 +43,12 @@ nonEscape = noneOf "\\\"\0\n\r\v\t\b\f"
 character :: Parser String
 character = fmap return nonEscape <|> escape
 
-parseString :: Parser String
+parseString :: Parser B.ByteString
 parseString = do
     char '"'
     strings <- many character
     char '"'
-    return $ concat strings
+    return . B.fromString $ concat strings
 
 parseId :: Parser (NsKey, ObjKey)
 parseId  = do
@@ -56,42 +58,42 @@ parseId  = do
             Nothing -> (Nothing, first)
             _ -> (Just first, fromJust second)
 
-pAtom :: Parser Scalar
-pAtom = (SInt . read) <$> many1 digit
-        <|> SString <$> parseString
-        <|> SId . uncurry Id <$> parseId
+pAtom :: Parser Term
+pAtom = (TInt . read) <$> many1 digit
+        <|> TString <$> parseString
+        <|> TId . uncurry Id <$> parseId
 
-sAtom :: Scalar -> String
+sAtom :: Term -> String
 -- TODO: escaping
-sAtom (SString str) = "\"" ++ str ++ "\""
-sAtom (SId (Id Nothing x)) = x
-sAtom (SId (Id (Just ns) k)) = ns ++ ":" ++ k
-sAtom (SInt int) = show int
+sAtom (TString str) = "\"" ++ B.toString str ++ "\""
+sAtom (TId (Id Nothing x)) = x
+sAtom (TId (Id (Just ns) k)) = ns ++ ":" ++ k
+sAtom (TInt int) = show int
 
-mySpec :: SExprSpec Scalar (RichSExpr Scalar)
+mySpec :: SExprSpec Term (RichSExpr Term)
 mySpec = (asRich (mkSpec pAtom (T.pack . sAtom)))
 
-addField :: Fields -> RichSExpr Scalar -> Fields
+addField :: Fields -> RichSExpr Term -> Fields
 addField f sexpr =
-  let (key, value) = case sexpr of RSDotted [RSAtom (SId key)] value -> (key, value)
+  let (key, value) = case sexpr of RSDotted [RSAtom (TId key)] value -> (key, value)
   in Map.insert key value f
 
-richSexprToObj :: RichSExpr Scalar -> Obj
+richSexprToObj :: RichSExpr Term -> Obj
 richSexprToObj sexpr =
   let exprs = case sexpr of RSList x -> x
-      objKey = case head exprs of RSAtom (SId id) -> id
+      objKey = case head exprs of RSAtom (TId id) -> id
       fields = foldl addField Map.empty (tail exprs)
   in
   Obj objKey fields
 
-fieldToSexpr :: PropKey -> Scalar -> RichSExpr Scalar
-fieldToSexpr k v = RSDotted [RSAtom (SId k)] v
+fieldToSexpr :: PropKey -> Term -> RichSExpr Term
+fieldToSexpr k v = RSDotted [RSAtom (TId k)] v
 
-objToRichSexpr :: Obj -> RichSExpr Scalar
+objToRichSexpr :: Obj -> RichSExpr Term
 objToRichSexpr (Obj id@(Id ns k) fields) =
-  let idAtom = RSAtom (SId id)
-      fieldToSexpr :: PropKey -> Scalar -> RichSExpr Scalar
-      fieldToSexpr k v = RSDotted [RSAtom (SId k)] v
+  let idAtom = RSAtom (TId id)
+      fieldToSexpr :: PropKey -> Term -> RichSExpr Term
+      fieldToSexpr k v = RSDotted [RSAtom (TId k)] v
   in RSList (idAtom : (Map.foldWithKey (\k v l -> fieldToSexpr k v : l ) [] fields))
 
 test1 = decode mySpec $ "(test:jess (rdf:label . \"Jess\"))"

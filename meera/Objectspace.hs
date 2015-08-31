@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, DeriveGeneric, DefaultSignatures, FlexibleInstances #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 {-|
 Module : Objectspace
@@ -19,97 +19,28 @@ the model for all stored objects.
   + https://hackage.haskell.org/package/leveldb-haskell-0.6.2/docs/Data-Stream-Monadic.html
 --}
 
-module Objectspace (Id(Id), NsKey, ObjKey, PropKey, Fields, Obj(Obj),
-                    Scalar(SId, SString, SInt, SRat, SBool, SAtom, SDate, SMethod, SList),
-                    writeObject, readObject,
+module Objectspace (writeObject, readObject,
                     printDbObjects -- exported temporarily for debugging
                     ) where
 
-import Data.ByteString
-import Data.ByteString.UTF8
+import qualified Data.ByteString.UTF8 as B (ByteString, fromString)
 import Data.Default
-import Data.Maybe
 import qualified Data.Map as Map
-import qualified Data.Serialize as Ser
-import Data.Time.Calendar
+import Data.Maybe
+import Data.Serialize as Ser hiding (put, get)
 import Data.Time.Clock
-import Data.Time.Format
 import Database.LevelDB
 import Database.LevelDB.MonadResource (get)
-
 import GHC.Generics (Generic)
 
--- | A namespace is an optional string.
-type NsKey = Maybe String
-
--- | A object key is a string that uniquely identifies an object in a
--- give namespace/context.
-type ObjKey = String
-
--- | A property key identifies a slot of an object. It may or may not
--- specify a namespace key.
-type PropKey = Id
-
-{-|
-An @Id@ is an identifier of an object. It consists of two string parts:
-* An optional namespace key (via Maybe)
-* An object key
-
-@Id@s are used universally to identify objects globally. The namespace
-key provides a context on how to resolve an object
-reference. References are not enforced and there may name objects for
-which no reference can be resolved because there is no mapping for the
-context corresponding to the namespace key.
--}
-data Id = Id NsKey ObjKey
-        deriving (Show, Eq, Generic, Ord)
-
--- | A @Scalar@ is a value that can be stored as in slot of an object.
-data Scalar = SId Id | -- object reference
-              SString String |
-              SInt Integer | -- Integer is arbitrary precision
-              SRat Rational | -- Rational is arbitrary precision
-              SBool Bool |
-              SAtom String |
-              SDate Day |
-              STimestamp UTCTime |
-              SList [Scalar] |
-              SMethod [Scalar] Scalar
-            deriving (Show, Eq, Generic, Ord)
-
--- | Hi Fields!
-type Fields = Map.Map PropKey Scalar
-
-{-|
-An Object is a composite:
- // TODO: need reserved space for object-level annotations
--}
-data Obj = Obj Id Fields
-         deriving (Show, Eq, Generic)
-
-instance Ser.Serialize Day where
-  put = Ser.put . toGregorian
-  get = do (y, m, d) <- Ser.get
-           return $ fromGregorian y m d
-
-instance Ser.Serialize UTCTime where
-  put = Ser.put . (formatTime defaultTimeLocale "%s")
-  get = Ser.get >>= return . (parseTimeOrError True defaultTimeLocale "%s")
-
-instance Ser.Serialize Fields where
-  put = Ser.put . Map.toList
-  get = Ser.get >>= return . Map.fromList
-
-instance Ser.Serialize Id
-instance Ser.Serialize Scalar
-instance Ser.Serialize Obj
+import Syntax
 
 {-|
 Write an object.
 -}
 writeObject :: FilePath -> Obj -> IO ()
 writeObject file obj@(Obj (Id (Just _) k) _) =
-  let keyBytes = Data.ByteString.UTF8.fromString k
+  let keyBytes = B.fromString k
       objBytes = Ser.encode obj
   in runResourceT $ do
     db <- open file defaultOptions {createIfMissing = True}
@@ -122,7 +53,7 @@ Read an object.
 readObject :: FilePath -> Id -> IO (Maybe Obj)
 readObject file (Id Nothing _) = error "namespace must be supplied"
 readObject file (Id (Just ns) k) =
-  let encK = Data.ByteString.UTF8.fromString k
+  let encK = B.fromString k
   in runResourceT $ do -- TODO: (optional) namespace validation?
     db <- open file defaultOptions
     obj <- get db defaultReadOptions encK
@@ -134,17 +65,17 @@ writeSomeDbObjects =  do
   runResourceT $ open "test.ospace" defaultOptions {createIfMissing = True}
   writeObject "test.ospace" .
     Obj (Id (Just "test") "jess") $
-    Map.fromList [(Id Nothing "age", SInt 33),
-                  (Id Nothing "likes_musician", SString "Philip Glass"),
-                  (Id Nothing "knows", SId $ Id (Just "test") "andy"),
-                  (Id Nothing "has_siblings_probability", SMethod [SRat 0.9] $ SBool True),
-                  (Id Nothing "created", STimestamp curTime)]
+    Map.fromList [(Id Nothing "age", TInt 33),
+                  (Id Nothing "likes_musician", TString "Philip Glass"),
+                  (Id Nothing "knows", TId $ Id (Just "test") "andy"),
+                  (Id Nothing "has_siblings_probability", TMethod [TRat 0.9] $ TBool True),
+                  (Id Nothing "created", TTimestamp curTime)]
   writeObject "test.ospace" .
     Obj (Id (Just "test") "andy") $
-    Map.fromList [(Id Nothing "age", SString "<unknown>"),
-                  (Id Nothing "likes_music_style", SString "Irish"),
+    Map.fromList [(Id Nothing "age", TString "<unknown>"),
+                  (Id Nothing "likes_music_style", TString "Irish"),
                   -- this is like: andy:age_between(test:Knuth, test:Jess) => True
-                  (Id Nothing "age_between", SMethod [SId $ Id (Just "test") "Knuth", SId $ Id (Just "test") "Jess"] $ SBool True)]
+                  (Id Nothing "age_between", TMethod [TId $ Id (Just "test") "Knuth", TId $ Id (Just "test") "Jess"] $ TBool True)]
   -- from WordNet
   -- s(100002137,1,'abstraction',n,6,0).
   -- s(100002137,2,'abstract entity',n,1,0).
@@ -155,7 +86,7 @@ writeSomeDbObjects =  do
 
 printDbObjects :: String -> IO ()
 printDbObjects namespace =
-  let getObjsFromIter :: MonadResource m => Iterator -> Bool -> m [(Maybe ByteString, Maybe ByteString)]
+  let getObjsFromIter :: MonadResource m => Iterator -> Bool -> m [(Maybe B.ByteString, Maybe B.ByteString)]
       getObjsFromIter i False = return []
       getObjsFromIter i True = do
         k <- iterKey i
