@@ -42,12 +42,14 @@ library
   -- Other library packages from which modules are imported.
   -- build-depends:       base >=4.7 && <4.8
 
-  build-depends: base
+  build-depends: array >= 0.5.1.0
+               , base
                , bytestring
                , cereal
                , containers
                , data-default
                , leveldb-haskell
+               , logict >= 0.6.0.2
                , parsec >= 3.1.9
                , s-cargot >= 0.1.0.0
                , text >= 1.2.0.4
@@ -70,12 +72,14 @@ executable ospace_lisp
   -- Other library packages from which modules are imported.
   -- build-depends:       base >=4.7 && <4.8
 
-  build-depends: base
+  build-depends: array >= 0.5.1.0
+               , base
                , bytestring
                , cereal
                , containers
                , data-default
                , leveldb-haskell
+               , logict >= 0.6.0.2
                , parsec >= 3.1.9
                , s-cargot >= 0.1.0.0
                , text >= 1.2.0.4
