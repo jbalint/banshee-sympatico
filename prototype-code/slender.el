@@ -45,7 +45,8 @@
 							 (lambda (pl) (org-element-property :deadline pl)))))
 		 (scheduled-ts (car (org-element-map tree 'planning
 							  (lambda (pl) (org-element-property :scheduled pl)))))
-		 (desc (mapconcat 'identity (org-element-map extree 'paragraph
+		 ;;(desc (mapconcat 'identity (org-element-map extree 'paragraph
+		 (desc (mapconcat (lambda (a) (concat "- " a)) (org-element-map extree 'paragraph
 									  (lambda (p) (car (org-element-contents (org-element-normalize-contents p))))) "\n"))
 		 (deadline-str (if deadline-ts (format "%04d\\-%02d\\-%02d"
 											   (org-element-property :year-start deadline-ts)
