@@ -1,6 +1,9 @@
 #!/bin/bash
 # Script to query the wiki pages name for Helm completion source
 # swivt:wikiPageModificationDate swivt:wikiPageSortKey
+
+# TODO: error handling is bad
+
 #set -x
 QUERY=$(cat<<EOF
 select *
