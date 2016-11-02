@@ -18,9 +18,9 @@ EOF
 )
 #echo "$QUERY"
 echo "(" ; \
-    curl -u admin:admin  -H "Accept: application/sparql-results+json" -G http://tagore:5820/semantic-mediawiki/query \
+    curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/semantic-mediawiki/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
-        | jq -r '.results.bindings[] | @text "(\"\(.title.value)\" . \"\(.url.value)\")"' \
+        | jq -r '.results.bindings[] | @text "(\"WIKI: \(.title.value)\" . \"\(.url.value)\")"' \
     ; echo ")"
 
 # Output is something like

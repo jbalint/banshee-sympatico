@@ -1,1 +1,0 @@
-../percy/percy-helm-wiki-pages.sh
