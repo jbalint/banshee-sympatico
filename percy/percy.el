@@ -32,15 +32,16 @@
 (setq percy--wiki-pages-helm-source
       (helm-build-sync-source "Wiki Pages"
         :candidates 'percy--wiki-pages-candidates
+        :update 'percy--refresh-wiki-pages-candidates
         :action (lambda (c) (start-process "" nil "xdg-open" c))
         :nomark t
         :multimatch percy-helm-multimatch
-        :update (lambda () (message "UPDATING"))
         :fuzzy-match percy-helm-fuzzy-match))
 ;; 2 - template
 (setq percy--jira-issues-helm-source
       (helm-build-sync-source "Jira Issues"
         :candidates 'percy--jira-issues-candidates
+        :update 'percy--refresh-jira-issues-candidates
         :action (lambda (c) (start-process "" nil "xdg-open" c))
         :nomark t
         :multimatch percy-helm-multimatch
@@ -56,28 +57,42 @@
 ;; 1 - template / how to generalize this over sources?
 (defun percy--refresh-wiki-pages-candidates ()
   "Refresh the set of wiki pages for helm completion"
+  (setq percy--wiki-pages-candidates (percy--get-wiki-pages-candidates)))
+;; 1 - template / how to generalize this over sources?
+;; DIFFERENCE: using an eval after reading the string to get the `xml-unescape-string' to be invoked
+(defun percy--refresh-jira-issues-candidates ()
+  "Refresh the set of Jira issues for helm completion"
+  (setq percy--jira-issues-candidates (percy--get-jira-issues-candidates)))
+;; TODO temp
+(defun percy--refresh-jira-search-candidates ()
+  "Refresh the set of wiki pages for helm completion"
+  (setq percy--jira-search-candidates (percy--get-jira-search-candidates)))
+
+;; 3 - template / how to generalize this over sources?
+(defun percy--get-wiki-pages-candidates ()
+  "Get the set of wiki pages for helm completion"
   (if (get-buffer percy-temp-output-buffer-name)
       (kill-buffer percy-temp-output-buffer-name))
   (call-process (concat (getenv "BS_HOME") "/bin/percy-wiki-pages.sh") nil percy-temp-output-buffer-name)
   (with-current-buffer percy-temp-output-buffer-name
-    (setq percy--wiki-pages-candidates (car (read-from-string (buffer-string))))))
-;; 1 - template / how to generalize this over sources?
+    (car (read-from-string (buffer-string)))))
+;; 3 - template / how to generalize this over sources?
 ;; DIFFERENCE: using an eval after reading the string to get the `xml-unescape-string' to be invoked
-(defun percy--refresh-jira-issues-candidates ()
+(defun percy--get-jira-issues-candidates ()
   "Refresh the set of Jira issues for helm completion"
   (if (get-buffer percy-temp-output-buffer-name)
       (kill-buffer percy-temp-output-buffer-name))
   (call-process (concat (getenv "BS_HOME") "/bin/percy-jira-issues.sh") nil percy-temp-output-buffer-name)
   (with-current-buffer percy-temp-output-buffer-name
-    (setq percy--jira-issues-candidates (eval (car (read-from-string (buffer-string)))))))
+    (eval (car (read-from-string (buffer-string))))))
 ;; TODO temp
-(defun percy--refresh-jira-search-candidates ()
-  "Refresh the set of wiki pages for helm completion"
+(defun percy--get-jira-search-candidates ()
+  "Get the set of wiki pages for helm completion"
   (if (get-buffer percy-temp-output-buffer-name)
       (kill-buffer percy-temp-output-buffer-name))
   (call-process (concat (getenv "BS_HOME") "/bin/percy-jira-search.sh") nil percy-temp-output-buffer-name)
   (with-current-buffer percy-temp-output-buffer-name
-    (setq percy--jira-search-candidates (eval (car (read-from-string (buffer-string)))))))
+    (eval (car (read-from-string (buffer-string))))))
 
 (defun percy--close-if-client ()
   "Close the frame if it's an Emacs client"
