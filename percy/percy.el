@@ -1,4 +1,5 @@
 ;; Percy - the UI stuff
+(require 'cl-lib)
 
 ;; copied from xml.el's `xml-escape-string'
 (defun xml-unescape-string (string)
@@ -26,73 +27,54 @@
 (defvar percy-helm-fuzzy-match nil)
 (defvar percy-helm-multimatch t)
 
-;; helm source for wiki pages (requires percy--wiki-pages-candidates to be initialized)
-;; check helm-source.el for details (describe-function 'helm-build-sync-source)
-;; 2 - template
-(setq percy--wiki-pages-helm-source
-      (helm-build-sync-source "Wiki Pages"
-        :candidates 'percy--wiki-pages-candidates
-        :update 'percy--refresh-wiki-pages-candidates
-        :action (lambda (c) (start-process "" nil "xdg-open" c))
-        :nomark t
-        :multimatch percy-helm-multimatch
-        :fuzzy-match percy-helm-fuzzy-match))
-;; 2 - template
-(setq percy--jira-issues-helm-source
-      (helm-build-sync-source "Jira Issues"
-        :candidates 'percy--jira-issues-candidates
-        :update 'percy--refresh-jira-issues-candidates
-        :action (lambda (c) (start-process "" nil "xdg-open" c))
-        :nomark t
-        :multimatch percy-helm-multimatch
-        :fuzzy-match percy-helm-fuzzy-match))
-(setq percy--jira-search-helm-source
-      (helm-build-sync-source "Jira Search"
-        :candidates 'percy--jira-search-candidates
-        :action (lambda (c) (start-process "" nil "xdg-open" c))
-        :nomark t
-        :multimatch percy-helm-multimatch
-        :fuzzy-match percy-helm-fuzzy-match))
+(defun percy--xdg-open (c)
+  "Helm action to open a candidate with `xdg-open'"
+  (start-process "" nil "xdg-open" c))
 
-;; 1 - template / how to generalize this over sources?
-(defun percy--refresh-wiki-pages-candidates ()
-  "Refresh the set of wiki pages for helm completion"
-  (setq percy--wiki-pages-candidates (percy--get-wiki-pages-candidates)))
-;; 1 - template / how to generalize this over sources?
-;; DIFFERENCE: using an eval after reading the string to get the `xml-unescape-string' to be invoked
-(defun percy--refresh-jira-issues-candidates ()
-  "Refresh the set of Jira issues for helm completion"
-  (setq percy--jira-issues-candidates (percy--get-jira-issues-candidates)))
-;; TODO temp
-(defun percy--refresh-jira-search-candidates ()
-  "Refresh the set of wiki pages for helm completion"
-  (setq percy--jira-search-candidates (percy--get-jira-search-candidates)))
-
-;; 3 - template / how to generalize this over sources?
-(defun percy--get-wiki-pages-candidates ()
-  "Get the set of wiki pages for helm completion"
+(defun percy--generate-source-candidates (desc)
+  "Run the script to generate the candidates for the source"
   (if (get-buffer percy-temp-output-buffer-name)
       (kill-buffer percy-temp-output-buffer-name))
-  (call-process (concat (getenv "BS_HOME") "/bin/percy-wiki-pages.sh") nil percy-temp-output-buffer-name)
-  (with-current-buffer percy-temp-output-buffer-name
-    (car (read-from-string (buffer-string)))))
-;; 3 - template / how to generalize this over sources?
-;; DIFFERENCE: using an eval after reading the string to get the `xml-unescape-string' to be invoked
-(defun percy--get-jira-issues-candidates ()
-  "Refresh the set of Jira issues for helm completion"
-  (if (get-buffer percy-temp-output-buffer-name)
-      (kill-buffer percy-temp-output-buffer-name))
-  (call-process (concat (getenv "BS_HOME") "/bin/percy-jira-issues.sh") nil percy-temp-output-buffer-name)
+  (call-process (plist-get desc :script) nil percy-temp-output-buffer-name)
   (with-current-buffer percy-temp-output-buffer-name
     (eval (car (read-from-string (buffer-string))))))
-;; TODO temp
-(defun percy--get-jira-search-candidates ()
-  "Get the set of wiki pages for helm completion"
-  (if (get-buffer percy-temp-output-buffer-name)
-      (kill-buffer percy-temp-output-buffer-name))
-  (call-process (concat (getenv "BS_HOME") "/bin/percy-jira-search.sh") nil percy-temp-output-buffer-name)
-  (with-current-buffer percy-temp-output-buffer-name
-    (eval (car (read-from-string (buffer-string))))))
+
+(defun percy--update-source (desc candidates-symbol)
+  "Update a source's list of candidates"
+  (set candidates-symbol (percy--generate-source-candidates desc)))
+
+(defun percy--build-source (desc-arg)
+  "Build a Helm source from a Percy source descriptor"
+  ;; use `lexical-let' to build the close for the `update-fn'
+  (lexical-let* ((desc desc-arg)
+                 (name (plist-get desc :name))
+                 (candidates-symbol (intern (concat "percy--candidates-"
+                                                    (replace-regexp-in-string "\s" "-" name))))
+                 (update-fn (lambda () (percy--update-source desc candidates-symbol))))
+    ;; eagerly load the candidates (could use :init but this is slightly clearer)
+    (percy--update-source desc candidates-symbol)
+    (helm-build-sync-source name
+      :candidates candidates-symbol
+      :update update-fn
+      :action (plist-get desc :action)
+      :nomark t
+      :multimatch percy-helm-multimatch
+      :fuzzy-match percy-helm-fuzzy-match)))
+
+(setq percy--source-descriptors
+      `((:name "Wiki Pages"
+               :script ,(concat (getenv "BS_HOME") "/bin/percy-wiki-pages.sh")
+               :action percy--xdg-open)
+        ;; TODO - this has to be a different type of source to pass the query string to the script
+        ;; (:name "Jira Search"
+        ;;        :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-search.sh")
+        ;;        :action percy--xdg-open)
+        (:name "Jira Issues"
+               :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-issues.sh")
+               :action percy--xdg-open)))
+
+;; Build the sources when the file is loaded
+(setq percy--sources (cl-mapcar 'percy--build-source percy--source-descriptors))
 
 (defun percy--close-if-client ()
   "Close the frame if it's an Emacs client"
@@ -108,21 +90,8 @@
   (helm :sources '(percy--wiki-pages-helm-source test-other-source))
   (percy--close-if-client))
 
-;; TODO - need a way to manually force a refresh and a timer to do it periodically
 (defun percy-anything ()
   (interactive)
   "Use Percy to open ANYTHING!"
-  (unless (boundp 'percy--wiki-pages-candidates)
-    (percy--refresh-wiki-pages-candidates))
-  (unless (boundp 'percy--jira-issues-candidates)
-    (percy--refresh-jira-issues-candidates))
-  (helm :sources '(percy--wiki-pages-helm-source
-                   percy--jira-issues-helm-source
-                   ;percy--jira-search-helm-source
-                   ))
+  (helm :sources percy--sources)
   (percy--close-if-client))
-
-(defun percy-reset ()
-  "Clear cached candidates"
-  (makunbound 'percy--wiki-pages-candidates)
-  (makunbound 'percy--jira-issues-candidates))
