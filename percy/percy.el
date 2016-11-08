@@ -45,7 +45,8 @@
 
 (defun percy--build-source (desc-arg)
   "Build a Helm source from a Percy source descriptor"
-  ;; use `lexical-let' to build the close for the `update-fn'
+  ;; use `lexical-let' to build the closure (capturing `desc' and
+  ;; `candidates-symbol') for `update-fn'
   (lexical-let* ((desc desc-arg)
                  (name (plist-get desc :name))
                  (candidates-symbol (intern (concat "percy--candidates-"
@@ -71,6 +72,9 @@
         ;;        :action percy--xdg-open)
         (:name "Jira Issues"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-issues.sh")
+               :action percy--xdg-open)
+        (:name "Bookstore"
+               :script ,(concat (getenv "BS_HOME") "/bin/percy-bookstore.sh")
                :action percy--xdg-open)))
 
 ;; Build the sources when the file is loaded
