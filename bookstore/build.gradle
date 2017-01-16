@@ -1,0 +1,23 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "1.2.4"
+}
+
+version = '0.1'
+
+apply plugin: "java"
+apply plugin: "idea"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url "http://maven.stardog.com"
+    }
+}
+
+dependencies {
+    compile "com.google.guava:guava:18.0"
+    // TODO : don't need the entire server here, just client and some RDF utils
+    compile "com.complexible.stardog:server:4.2.2"
+    testCompile "junit:junit:4.12"
+}
