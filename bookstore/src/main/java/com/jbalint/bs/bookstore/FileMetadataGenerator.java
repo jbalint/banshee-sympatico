@@ -1,6 +1,8 @@
 package com.jbalint.bs.bookstore;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -73,10 +75,12 @@ public class FileMetadataGenerator {
 
 	private IRI getIRI(final Path p) {
 		try {
-			Path parent = root.relativize(p).getParent();
-			return VF.createIRI("https://localhost/bookstore/" + (parent == null ? "" : parent + "/"),
-			                    URLEncoder.encode(p.getFileName().toString(),
-			                                      StandardCharsets.UTF_8.displayName()));
+			// URL escaping, per http://stackoverflow.com/a/25735202/1090617
+			// was using URLEncoder.encode() but that's form HTTP query parameters (i.e. uses "+" for space instead of "%20")
+			String urlStr = "https://localhost/bookstore/" + root.relativize(p).toString();
+			URL url= new URL(urlStr);
+			URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+			return VF.createIRI(uri.toASCIIString());
 		}
 		catch (Exception theE) {
 			throw new RuntimeException(theE);
