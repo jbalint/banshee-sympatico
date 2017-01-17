@@ -18,6 +18,14 @@ repositories {
 dependencies {
     compile "com.google.guava:guava:18.0"
     // TODO : don't need the entire server here, just client and some RDF utils
-    compile "com.complexible.stardog:server:4.2.2"
+    compile "com.complexible.stardog:client-http:4.2.2"
     testCompile "junit:junit:4.12"
+}
+
+apply plugin: "application"
+
+mainClassName = "com.jbalint.bs.bookstore.FileMetadataGenerator"
+
+run {
+    args "$db", "$root", "$graph"
 }
