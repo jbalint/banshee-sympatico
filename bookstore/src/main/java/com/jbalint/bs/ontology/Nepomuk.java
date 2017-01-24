@@ -3,6 +3,11 @@ package com.jbalint.bs.ontology;
 import com.complexible.common.openrdf.vocabulary.Vocabulary;
 import org.openrdf.model.IRI;
 
+/**
+ * Nepomuk vocabularies
+ *
+ * http://www.semanticdesktop.org/ontologies/
+ */
 public class Nepomuk {
 
 	/**
@@ -371,5 +376,191 @@ public class Nepomuk {
 		public static final IRI containsPlacemark = INSTANCE.term("containsPlacemark"); // Containment relation between placemark containers (files) and placemarks within."
 
 		public static final IRI Placemark = INSTANCE.term("Placemark"); // One placemark within a placemark container/file. Use nie:title for the name/label, nao:creator for defining the creator."
+	}
+
+	/**
+	 * Digital.Me Context Ontology. c.f. http://www.semanticdesktop.org/ontologies/2011/10/05/dcon/
+	 */
+	public static class DCON extends Vocabulary {
+
+		private static final DCON INSTANCE = new DCON();
+
+		public DCON() {
+			super("http://www.semanticdesktop.org/ontologies/2011/10/05/dcon#");
+		}
+
+		public static final IRI Context = INSTANCE.term("Context"); // This RDF Graph contains information that can be used to characterise the state of an entity, where an entity can be a user's device or the user themselves. Although this abstract class is not intended for direct use, there are two main distinguishible subclasses. dcon:LiveContext represents uninterpreted states for a user's (multiple) devices, whereas dcon:Situation represents interpreted user states. There are three levels of representation for context: Aspects at the highest level, a set of Elements for each aspect, and a number of Attributes for each element."
+
+		public static final IRI Aspect = INSTANCE.term("Aspect"); // At the highlest level, context information is classified under a number of context Aspects. These are provided as subclasses of this abstract class, which is not intended for direct use."
+
+		public static final IRI Element = INSTANCE.term("Element"); // Each context Aspect has a number of specific elements. These are linked to each aspect through the generic dcon:hasContextElement property. As this is an abstract class, it is not intended for direct use. Instead, element instances are typically inferred through the use of dcon:hasContextElement (and its subproperties) and dcon:hasObservation. Elements can have multiple observations (e.g. from a different source or device), linked through dcon:hasObservation."
+
+		public static final IRI Observation = INSTANCE.term("Observation"); // Each context Element can have one or more observations, e.g. from different source or device. These are linked to each element through the dcon:hasObservation property. In order to inherit the context attributes relevant for the element's type, observations need to be multi-typed. For example, each observation of a nie:InformationElement must also be defined as a nie:InformationElement instance, so that it can inherit all context attributes having the element's type in their domain specification. However, this does not mean that an observation is also an element, but merely that it must have the same type. Other defining properties of an observation are the data source (dcon:recordedBy) and the observation time (dcon:recordedAt). A validity property (dcon:validity) is also provided, and is intended to regulate the time frame during which an observation is considered valid."
+
+		public static final IRI LiveContext = INSTANCE.term("LiveContext"); // This class represents the uninterpreted state of the users as sensed through their devices. Instances of this class should be limited, since they are meant to represent realtime, 'live' raw context information as sensed through a variety of a user's devices, their applications and sensors. Although one unique instance should represent the dynamically changing live context, additional instances can be used to contain live context information for the recent past."
+
+		public static final IRI Situation = INSTANCE.term("Situation"); // This class represents one or more interpreted user states. A user situation refers to a generalised context graph that is derived from the merging of a number of positive and negative previous live context instances. These instances are linked though dcon:positiveInstance and dcon:negativeInstance. Unlike live context, situations are independent of time and have the possibility to recur. As opposed to live context, situations are also independent of devices and are instead user-centric."
+
+		public static final IRI Schedule = INSTANCE.term("Schedule"); // The schedule aspect covers context elements relating to personal scheduling. Typically this includes elements managed by calendaring or task management tools."
+
+		public static final IRI Peers = INSTANCE.term("Peers"); // The peers aspect covers context elements relating to individuals or groups surrounding the user."
+
+		public static final IRI Environment = INSTANCE.term("Environment"); // The environment aspect covers context elements relating to current or forecasted environmental conditions, as experienced directly by the user, or by sensors in their surroundings."
+
+		public static final IRI Attention = INSTANCE.term("Attention"); // The attention aspect covers context elements relating to the users' activities on their digital devices."
+
+		public static final IRI SpaTem = INSTANCE.term("SpaTem"); // The spatio-temporal aspect covers context elements relating to the current user's physical locations, movement and time."
+
+		public static final IRI Connectivity = INSTANCE.term("Connectivity"); // The connectivity aspect covers context elements relating to the digital networks that are in range of the users' devices."
+
+		public static final IRI State = INSTANCE.term("State"); // The state aspect covers context elements relating to the state of either the user or their devices."
+
+		public static final IRI hasLiveContext = INSTANCE.term("hasLiveContext"); // Links the special live context representation instance to the user. Past live contexts are logged through the use of the DUHO ontology."
+
+		public static final IRI hasSituation = INSTANCE.term("hasSituation"); // Links one or more active/current situations to the user. Situations are stored permanently, whether currently active or otherwise."
+
+		public static final IRI positiveInstance = INSTANCE.term("positiveInstance"); // Situations are characterised through a series of past live context instances, required for its training. This property points to one or more positive instances, i.e., past actual live contexts snapshots during which it was determined that the abstract situation was active."
+
+		public static final IRI negativeInstance = INSTANCE.term("negativeInstance"); // Situations are characterised through a series of past live context instances, required for its training. This property points to one or more negative instances, i.e., past actual live contexts snapshots during which it was determined that the abstract situation was not active."
+
+		public static final IRI hasObservation = INSTANCE.term("hasObservation"); // As context Elements can have one or more observations, this property links each of them to the respective element."
+
+		public static final IRI hasContextElement = INSTANCE.term("hasContextElement"); // Context aspects categorise elements relating to the same category of context information. Individual context elements are linked to each aspect through this generic property, which is not intended for direct use. Instead, specific subproperties for each supported element is provided."
+
+		public static final IRI hasContextAttribute = INSTANCE.term("hasContextAttribute"); // Amongst other static attributes, context elements (or rather, their observations) have various context-related attributes, i.e. attributes which are bound to a particular time and context. This generic property links this type of attributes to the elements' observations, and is not intended for direct use. Instead, specific subproperties are provided for each supported element type. In order for observations to inherit these subproperties, each needs to be typed according to the element's type (see note in dcon:Observation comment)."
+
+		public static final IRI isRequired = INSTANCE.term("isRequired"); // This property marks those context elements which are necessary for a situation to occurr. If a required element is not active, then the correspoding situation is excluded from candidate active situations."
+
+		public static final IRI isExcluder = INSTANCE.term("isExcluder"); // This property marks those context elements whose presence excludes a situation from occurring. If such an element is active, then the correspoding situation is excluded from candidate active situations."
+
+		public static final IRI validity = INSTANCE.term("validity"); // Live context element observations have different validity periods, which mean they remain active only for a specified time interval after they have been sensed or otherwise detected. The value for this property denotes the time when the element observation's relevance expires."
+
+		public static final IRI weight = INSTANCE.term("weight"); // This property assigns different weights to specific context aspects and/or elements, in order to better characterise a situation. As weights can be attached to both dcon:Element and dcon:Aspect instances, the domain of this property is generalised to dcon:Observation. However, the attachment of weights to other instances is not considered correct application of the DCON vocabulary. Expected weight values range from 0 (no impact on situation), to 1 (high impact on a situation). In addition, the dcon:isRequired property defines a necessity relationship between a context element and a situation, whereas the dcon:isExcluder property defines the inverse."
+
+		public static final IRI recordedBy = INSTANCE.term("recordedBy"); // This property ties each element's observation to the data source that recorded it, specifically data sources of type account (dao:Account subclass) or device (ddo:Device subclass)."
+
+		public static final IRI recordedAt = INSTANCE.term("recordedAt"); // This property stores the time at which each element's observation has been generated, or last updated. Whereas for situations only the time of first occurrence is recorded, live context instances always carry the actual time."
+
+		public static final IRI currentMode = INSTANCE.term("currentMode"); // Refers to the mode of the data source from which a context element has been retrieved, at retrieval time. A data source can consist of a service, an account, an application, or a device.  "
+
+		public static final IRI lastActive = INSTANCE.term("lastActive"); // The last date and time for which user activity was detected on a device. This could consist of the last movement detected from the cursor/keyboard/touch screen and other device input mechanisms, as well as the last call recorded for voice communication-enabled devices."
+
+		public static final IRI lastMovementRegistered = INSTANCE.term("lastMovementRegistered"); // The last date and time for which a portable device was detected to be moving. This information relies on embedded accelerometers and other motion sensors."
+
+		public static final IRI currentEvent = INSTANCE.term("currentEvent"); // Refers to an ongoing event characterising a context instance."
+
+		public static final IRI upcomingEvent = INSTANCE.term("upcomingEvent"); // Refers to an upcoming event characterising a context instance."
+
+		public static final IRI upcomingTask = INSTANCE.term("upcomingTask"); // Refers to an upcoming task characterising a context instance."
+
+		public static final IRI currentTask = INSTANCE.term("currentTask"); // Refers to an ongoing task characterising a context instance."
+
+		public static final IRI nearbyPerson = INSTANCE.term("nearbyPerson"); // Refers to individuals characterising a context instance."
+
+		public static final IRI nearbyGroup = INSTANCE.term("nearbyGroup"); // Refers to a group of individuals characterising a context instance. Includes both user-defined groups, and ad-hoc groups recognised by the system."
+
+		public static final IRI currentBrightness = INSTANCE.term("currentBrightness"); // Refers to a pre-defined environmental brightness level characterising a context instance."
+
+		public static final IRI currentNoise = INSTANCE.term("currentNoise"); // Refers to a pre-defined environmental noise level characterising a context instance."
+
+		public static final IRI currentWeather = INSTANCE.term("currentWeather"); // Refers to a pre-defined weather condition characterising a context instance."
+
+		public static final IRI forecastWeather = INSTANCE.term("forecastWeather"); // Refers to a forecast, pre-defined weather condition characterising a context instance."
+
+		public static final IRI currentTemperature = INSTANCE.term("currentTemperature"); // Refers to a pre-defined environmental temperature range characterising a context instance."
+
+		public static final IRI activeApplication = INSTANCE.term("activeApplication"); // Refers to active applications (running on a device) characterising a context instance."
+
+		public static final IRI activeFile = INSTANCE.term("activeFile"); // Refers to active files (running on a device) characterising a context instance."
+
+		public static final IRI nearbyEvent = INSTANCE.term("nearbyEvent"); // Refers to nearby events that characterise a context instance."
+
+		public static final IRI nearbyPlace = INSTANCE.term("nearbyPlace"); // Refers to a nearby place type or specific location that characterises a context instance."
+
+		public static final IRI currentPlace = INSTANCE.term("currentPlace"); // Refers to a place type or specific location that characterises a context instance."
+
+		public static final IRI currentTime = INSTANCE.term("currentTime"); // Refers to a pre-defined time period that characterises a context instance."
+
+		public static final IRI averageSpeed = INSTANCE.term("averageSpeed"); // Refers to a pre-defined speed range characterising a context instance."
+
+		public static final IRI averageDirection = INSTANCE.term("averageDirection"); // Refers to a pre-defined traveling direction characterising a context instance."
+
+		public static final IRI currentAltitude = INSTANCE.term("currentAltitude"); // States the current altitude (metres above sea level)"
+
+		public static final IRI currentAbsoluteAltitude = INSTANCE.term("currentAbsoluteAltitude"); // States the current absolute altitude (metres above ground level)"
+
+		public static final IRI connection = INSTANCE.term("connection"); // Refers to a pre-defined traveling direction characterising a context instance."
+
+		public static final IRI currentActivity = INSTANCE.term("currentActivity"); // Refers to a pre-defined activity category characterising a context instance."
+
+		public static final IRI currentAvailability = INSTANCE.term("currentAvailability"); // Refers to a pre-defined personal availability characterising a context instance."
+
+		public static final IRI uvindex = INSTANCE.term("uvindex"); // Registers an actual UV index value element attribute to an active weather condition in the current context."
+
+		public static final IRI humidity = INSTANCE.term("humidity"); // Registers an actual humidity level value element attribute to an active weather condition in the current context."
+
+		public static final IRI precipitation = INSTANCE.term("precipitation"); // Registers an actual precipitation value element attribute to an active weather condition in the current context."
+
+		public static final IRI cloudcover = INSTANCE.term("cloudcover"); // Registers an actual cloud cover percentage value element attribute to an active weather condition in the current context."
+
+		public static final IRI snowfalldegree = INSTANCE.term("snowfalldegree"); // Registers an actual snowfall degree value element attribute to an active weather condition in the current context."
+
+		public static final IRI stormdegree = INSTANCE.term("stormdegree"); // Registers an actual storm degree value element attribute to an active weather condition in the current context."
+
+		public static final IRI fogfactor = INSTANCE.term("fogfactor"); // Registers an actual fog factor value element attribute to an active weather condition in the current context."
+
+		public static final IRI windscale = INSTANCE.term("windscale"); // Registers an actual wind scale value element attribute to an active weather condition in the current context."
+
+		public static final IRI temperature = INSTANCE.term("temperature"); // Registers an actual temperature value element attribute to an active weather condition or temperature range in the current context. As this context attribute applies to instances of both dpo:Temperature and dpo:WeatherConditions in the DPO Presence Ontology, the domain has been generalised to the first common DPO superclass. However, the attachment of this attribute to other instances is not considered correct application of the DCON vocabulary."
+
+		public static final IRI brightnessLevel = INSTANCE.term("brightnessLevel"); // Registers an actual environmental brightness value element attribute to an active brightness level range in the current context."
+
+		public static final IRI noiseLevel = INSTANCE.term("noiseLevel"); // Registers an actual environmental noise level value element attribute to an active noise level range in the current context."
+
+		public static final IRI musicDetected = INSTANCE.term("musicDetected"); // Registers whether music has been detected in the active environmental noise range in the current context."
+
+		public static final IRI voicesDetected = INSTANCE.term("voicesDetected"); // Registers how many voices have been detected in the active environmental noise range in the current context."
+
+		public static final IRI inForeground = INSTANCE.term("inForeground"); // Specifies whether an active file(running on a device) is in the foreground (true) or background (false) in the current context."
+
+		public static final IRI writeable = INSTANCE.term("writeable"); // Specifies whether an active file (running on a device) is in read-and-write (true) or read-only mode (false) in the current context."
+
+		public static final IRI inEditMode = INSTANCE.term("inEditMode"); // Specifies whether a writeable active file (running on a device) is being edited/written to, in the current context."
+
+		public static final IRI dateTime = INSTANCE.term("dateTime"); // States the exact date and time value for a pre-defined time period in the current context."
+
+		public static final IRI minutes = INSTANCE.term("minutes"); // Derived from the dateTime, this property stores the exact amount of minutes elapsed since the start of the current day. Implicitly also stores the number of elapsed hours. Thus, a value of 0 means that the current day has just started whereas a value of 1439 indicates the end of a day."
+
+		public static final IRI dayMonth = INSTANCE.term("dayMonth"); // Derived from the dateTime, this property stores the number of days elapsed for the current month, where 1 indicates the first day of the month, up to a maximum value of 31."
+
+		public static final IRI dayWeek = INSTANCE.term("dayWeek"); // Derived from the dateTime, this property stores the number of days elapsed for the current week, where 1 indicates a Monday, and 7 a Sunday."
+
+		public static final IRI month = INSTANCE.term("month"); // Derived from the dateTime, this property stores the number of months elapsed for the current year, where 1 indicates January, and 12 December."
+
+		public static final IRI direction = INSTANCE.term("direction"); // States the actual direction value for a pre-defined direction range in the current context."
+
+		public static final IRI speed = INSTANCE.term("speed"); // States the actual speed value for a pre-defined user movemement range in the current context."
+
+		public static final IRI altitude = INSTANCE.term("altitude"); // States the current altitude (metres above sea level)"
+
+		public static final IRI absoluteAltitude = INSTANCE.term("absoluteAltitude"); // States the current absolute altitude (metres above ground level)"
+
+		public static final IRI distance = INSTANCE.term("distance"); // Records the approximate distance between a device (as a proxy for the user) and an item. Not to be confused with dcon:distanceCovered. As this context attribute can be attached to instances of ncal:Event, pimo:Location, dpo:Place and pimo:Person, the domain of this property is generalised to dcon:Observation. However, the attachment of this attribute to other instances is not considered correct application of the DCON vocabulary."
+
+		public static final IRI latitude = INSTANCE.term("latitude"); // Records the exact latitude of the approximated location"
+
+		public static final IRI longitude = INSTANCE.term("longitude"); // Records the exact longitude of the approximated location"
+
+		public static final IRI connected = INSTANCE.term("connected"); // Specifies whether a network in range of the user's device(s) is connected (true) or otherwise (false) in the current context."
+
+		public static final IRI signal = INSTANCE.term("signal"); // States the actual signal strength value for a network connection in the current context."
+
+		public static final IRI networkSpeed = INSTANCE.term("networkSpeed"); // States the actual speed value for a network connection in the current context."
+
+		public static final IRI caloriesExpended = INSTANCE.term("caloriesExpended"); // Specifies the amount of calories burnt while performing the activity."
+
+		public static final IRI distanceCovered = INSTANCE.term("distanceCovered"); // Specifies the distance travelled while performing the activity."
+
+		public static final IRI duration = INSTANCE.term("duration"); // Specifies the duration since the start of the activity."
 	}
 }
