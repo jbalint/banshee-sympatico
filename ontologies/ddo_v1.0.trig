@@ -1,0 +1,223 @@
+#
+# Copyright (c) 2012 di.me Consortium
+# 
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix pimo:    <http://www.semanticdesktop.org/ontologies/2007/11/01/pimo#> .
+@prefix ddo:	<http://www.semanticdesktop.org/ontologies/2011/10/05/ddo#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nrl:    <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix nie:     <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#> .
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/ddo> {
+	# Classes
+	ddo:Device
+		a		rdfs:Class ;
+		rdfs:subClassOf nie:DataSource ;
+		rdfs:comment "A computerised device or gadget containing digital information, e.g. desktops, laptops, tablets and smart phones. Subclass of nie:DataSource, as a source of personal information." ;
+		rdfs:label "Device" .
+
+	ddo:Network
+		a		rdfs:Class ;
+		rdfs:comment "A telecommunications network, connecting a collection of terminals, links and nodes which connect together to enable telecommunication between terminal users. Includes wired and wireless computer networks and cellular networks." ;
+		rdfs:label "Network" .
+		
+	ddo:CellularNetwork
+		a		rdfs:Class ;
+		rdfs:comment "A cell-based radio network that enables mobile telephony." ;
+		rdfs:label "CellularNetwork" ;
+		rdfs:subClassOf ddo:Network .
+	
+	ddo:ComputerNetwork
+		a		rdfs:Class ;
+		rdfs:comment "A communication channel that enables the interconnection and sharing of resources and information between a collection of hardware components and computers." ;
+		rdfs:label "ComputerNetwork" ;
+		rdfs:subClassOf ddo:Network .
+	
+	ddo:LocalAreaNetwork
+		a		rdfs:Class ;
+		rdfs:comment "A Local Area Network (LAN) is a private computer network that enables communication among computerised devices in a limited area.";
+		rdfs:label "LocalAreaNetwork" ;
+		rdfs:subClassOf ddo:ComputerNetwork .
+
+	ddo:PersonalAreaNetwork
+		a		rdfs:Class ;
+		rdfs:comment "A Personal Area Network (PAN) is a computer network that enables intrapersonal communication amongst personal computerised devices. PANs can also be used to connect to a higher level network (including the Internet)." ;
+		rdfs:label "PersonalAreaNetwork" ;
+		rdfs:subClassOf ddo:ComputerNetwork .
+	
+	ddo:Bluetooth
+		a		rdfs:Class ;
+		rdfs:comment "Bluetooth networks refer to personal area networks created between computerised devices in order to exchange data over short distances." ;
+		rdfs:label "Bluetooth" ;
+		rdfs:subClassOf ddo:PersonalAreaNetwork .
+		
+	ddo:WiFi
+		a		rdfs:Class ;
+		rdfs:comment "A wireless local area network that allows computerised devices to exchange data wirelessly. Devices can connect to a wireless network via a wireless network access point. " ;
+		rdfs:label "WiFi" ;
+		rdfs:subClassOf ddo:LocalAreaNetwork .
+	
+	ddo:Ethernet
+		a		rdfs:Class ;
+		rdfs:comment "A wired local area network enabling computerised devices to exchange streams of data." ;
+		rdfs:label "Ethernet" ;
+		rdfs:subClassOf ddo:LocalAreaNetwork .
+	
+	ddo:GSM
+		a		rdfs:Class ;
+		rdfs:comment "Global System for Mobile Communications (GSM) is a second generation (2G) of standards for digital cellular networks." ;
+		rdfs:label "GSM" ;
+		rdfs:subClassOf ddo:CellularNetwork .
+	
+	<http://www.semanticdesktop.org/ontologies/2011/10/05/ddo#3G>
+		a		rdfs:Class ;
+		rdfs:comment "3rd generation mobile telecommunications (3G) is a third generation of standards for digital cellular networks." ;
+		rdfs:label "3G" ;
+		rdfs:subClassOf ddo:CellularNetwork .
+		
+	# Properties
+    ddo:owns
+          a       rdf:Property ;
+          rdfs:comment "Defines an ownership relationship between a person and a computerised device." ;
+          rdfs:domain 	pimo:Person ;
+          rdfs:label "owns" ;
+          rdfs:range ddo:Device .
+		  
+    ddo:deviceName
+          a       rdf:Property ;
+          rdfs:comment "Represents a person-defined name for a device." ;
+          rdfs:domain 	ddo:Device ;
+          rdfs:label "deviceName" ;
+          rdfs:range xsd:string ;
+		  rdfs:subPropertyOf nao:personalIdentifier .
+		  
+	
+	ddo:deviceIdentifier
+          a       rdf:Property ;
+          rdfs:comment "Represents the internal identifier for a device." ;
+          rdfs:domain 	ddo:Device ;
+          rdfs:label "deviceIdentifier" ;
+          rdfs:range xsd:string ;
+		  rdfs:subPropertyOf nao:identifier .
+	
+	ddo:knownNetwork
+          a       rdf:Property ;
+          rdfs:comment "Establishes a relationship between networks that have at some point in time (past or present) been either connected or in range of a device." ;
+          rdfs:domain 	ddo:Device ;
+          rdfs:label "knownNetwork" ;
+          rdfs:range ddo:Network .
+			  
+    	  
+    ddo:networkID
+          a       rdf:Property ;
+          rdfs:comment "Attaches a name to a network. Use ddo:accessPointID and ddo:cellID for more specific identification." ;
+          rdfs:domain 	ddo:Network;
+          rdfs:label "networkID" ;
+          rdfs:range xsd:string .		 		 		  				
+
+	ddo:sourceDevice
+          a       rdf:Property ;
+          rdfs:comment "Identifies the device that is, or has, enabled a specific Bluetooth network." ;
+          rdfs:domain 	ddo:Bluetooth ;
+          rdfs:label "Source Device" ;
+          rdfs:range ddo:Device .
+	
+	ddo:accessPointID
+          a       rdf:Property ;
+          rdfs:comment "Attaches a human-readable name to a computer network." ;
+          rdfs:domain 	ddo:ComputerNetwork ;
+          rdfs:label "accessPointID" ;
+          rdfs:subPropertyOf ddo:networkID .
+		  
+    ddo:ipAddress
+          a       rdf:Property ;
+          rdfs:comment "Defines the known IP address for a computer network." ;
+          rdfs:domain 	ddo:ComputerNetwork ;
+          rdfs:label "ipAddress" ;
+          rdfs:range xsd:string .
+		  
+    ddo:macAddress
+          a       rdf:Property ;
+          rdfs:comment "Defines the known mac address for a computer network." ;
+          rdfs:domain 	ddo:ComputerNetwork ;
+          rdfs:label "macAddress" ;
+          rdfs:range xsd:string .
+		  
+    
+    ddo:cellID
+          a       rdf:Property ;
+          rdfs:comment "Identifies the known cells (tower) that is, or has, enabled a specific cellular network." ;
+          rdfs:domain 	ddo:CellularNetwork;
+          rdfs:subPropertyOf ddo:networkID ;
+		  rdfs:label "cellID" .		 		 		  				
+		  
+	ddo:carrierID
+          a       rdf:Property ;
+          rdfs:comment "Attaches a human-readable name to a cellular network." ;
+          rdfs:domain 	ddo:CellularNetwork;
+          rdfs:label "cellID" ;
+          rdfs:range xsd:string .		 		 	
+
+	ddo:isSecure
+          a       rdf:Property ;
+          rdfs:comment "States whether the network is secure (requires some form of authentication) or otherwise." ;
+          rdfs:domain 	ddo:Network;
+          rdfs:label "is secure" ;
+          rdfs:range xsd:boolean .		 		 	
+}
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/ddo/metadata> {
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/ddo/metadata>
+          a       nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor <http://www.semanticdesktop.org/ontologies/2011/10/05/ddo> .
+
+
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/ddo>
+          a       nrl:Ontology , nrl:DocumentGraph ;
+          nao:hasDefaultNamespace "http://www.semanticdesktop.org/ontologies/2011/10/05/ddo#" ;
+          nao:hasDefaultNamespaceAbbreviation "ddo" ;
+          nao:lastModified "2012-10-25T00:00:00Z" ;
+          nao:serializationLanguage "TriG" ;
+          nao:status "Testing" ;
+          nrl:updatable "0" ;
+		  nao:creator <http://www.deri.ie/about/team/member/simon_scerri> ;
+          nao:contributor <http://www.deri.ie/users/ismael-rivera> ;
+		  nao:version "1.0" ;
+          nao:prefLabel "digital.me Device Ontology" ;
+          nao:description "The DDO provides vocabulary for the representation of personal devices, including personal computers, smartphones, gadgets; and their identifiers and characteristics, including network connections." .
+}

@@ -1,0 +1,767 @@
+#
+# Copyright (c) 2013 di.me Consortium
+# 
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+@prefix nrl:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ncal:    <http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#> .
+@prefix pimo:    <http://www.semanticdesktop.org/ontologies/2007/11/01/pimo#> .
+@prefix nie:     <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#> .
+@prefix nfo:     <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#> .
+@prefix geo:     <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix ddo:     <http://www.semanticdesktop.org/ontologies/2011/10/05/ddo#> .
+@prefix duho:     <http://www.semanticdesktop.org/ontologies/2011/10/05/duho#> .
+@prefix dcon:     <http://www.semanticdesktop.org/ontologies/2011/10/05/dcon#> .
+@prefix dlpo:	<http://www.semanticdesktop.org/ontologies/2011/10/05/dlpo#> .
+@prefix dpo:	<http://www.semanticdesktop.org/ontologies/2011/10/05/dpo#> .
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/dcon> {
+	
+	# Classes
+	dcon:Context
+		a		rdfs:Class ;
+		rdfs:subClassOf nrl:InstanceBase ;
+		rdfs:comment "This RDF Graph contains information that can be used to characterise the state of an entity, where an entity can be a user's device or the user themselves. Although this abstract class is not intended for direct use, there are two main distinguishible subclasses. dcon:LiveContext represents uninterpreted states for a user's (multiple) devices, whereas dcon:Situation represents interpreted user states. There are three levels of representation for context: Aspects at the highest level, a set of Elements for each aspect, and a number of Attributes for each element." ;
+		rdfs:label "Context" .
+		
+	dcon:Aspect
+		a		rdfs:Class ;
+		rdfs:comment "At the highlest level, context information is classified under a number of context Aspects. These are provided as subclasses of this abstract class, which is not intended for direct use." ;
+		rdfs:label "Aspect" .
+		
+    dcon:Element
+		a		rdfs:Class ;
+		rdfs:comment "Each context Aspect has a number of specific elements. These are linked to each aspect through the generic dcon:hasContextElement property. As this is an abstract class, it is not intended for direct use. Instead, element instances are typically inferred through the use of dcon:hasContextElement (and its subproperties) and dcon:hasObservation. Elements can have multiple observations (e.g. from a different source or device), linked through dcon:hasObservation." ;
+		rdfs:label "Element" .
+		
+	dcon:Observation
+		a		rdfs:Class ;
+		rdfs:comment "Each context Element can have one or more observations, e.g. from different source or device. These are linked to each element through the dcon:hasObservation property. In order to inherit the context attributes relevant for the element's type, observations need to be multi-typed. For example, each observation of a nie:InformationElement must also be defined as a nie:InformationElement instance, so that it can inherit all context attributes having the element's type in their domain specification. However, this does not mean that an observation is also an element, but merely that it must have the same type. Other defining properties of an observation are the data source (dcon:recordedBy) and the observation time (dcon:recordedAt). A validity property (dcon:validity) is also provided, and is intended to regulate the time frame during which an observation is considered valid." ;
+		rdfs:label "Observation" .		
+
+	dcon:LiveContext
+		a		rdfs:Class ;
+		rdfs:comment "This class represents the uninterpreted state of the users as sensed through their devices. Instances of this class should be limited, since they are meant to represent realtime, 'live' raw context information as sensed through a variety of a user's devices, their applications and sensors. Although one unique instance should represent the dynamically changing live context, additional instances can be used to contain live context information for the recent past." ;
+		rdfs:label "LiveContext" ;
+		rdfs:subClassOf dcon:Context .
+	
+	dcon:Situation
+		a		rdfs:Class ;
+		rdfs:comment "This class represents one or more interpreted user states. A user situation refers to a generalised context graph that is derived from the merging of a number of positive and negative previous live context instances. These instances are linked though dcon:positiveInstance and dcon:negativeInstance. Unlike live context, situations are independent of time and have the possibility to recur. As opposed to live context, situations are also independent of devices and are instead user-centric." ;
+		rdfs:label "Situation" ;
+		rdfs:subClassOf dcon:Context .
+		
+	dcon:Schedule
+		a		rdfs:Class ;
+		rdfs:comment "The schedule aspect covers context elements relating to personal scheduling. Typically this includes elements managed by calendaring or task management tools." ;
+		rdfs:subClassOf dcon:Aspect ;
+		rdfs:label "Schedule" .
+
+	dcon:Peers
+		a		rdfs:Class ;
+		rdfs:comment "The peers aspect covers context elements relating to individuals or groups surrounding the user." ;
+		rdfs:subClassOf dcon:Aspect ;
+		rdfs:label "Peers" .		
+
+	dcon:Environment
+		a		rdfs:Class ;
+		rdfs:comment "The environment aspect covers context elements relating to current or forecasted environmental conditions, as experienced directly by the user, or by sensors in their surroundings." ;
+		rdfs:subClassOf dcon:Aspect ;
+		rdfs:label "Environment" .	
+		
+	dcon:Attention
+		a		rdfs:Class ;
+		rdfs:comment "The attention aspect covers context elements relating to the users' activities on their digital devices." ;
+		rdfs:subClassOf dcon:Aspect ;
+		rdfs:label "Attention" .		
+		
+	dcon:SpaTem
+		a		rdfs:Class ;
+		rdfs:comment "The spatio-temporal aspect covers context elements relating to the current user's physical locations, movement and time." ;
+		rdfs:subClassOf dcon:Aspect ;
+		rdfs:label "SpaTem" .		
+			
+	dcon:Connectivity
+		a		rdfs:Class ;
+		rdfs:comment "The connectivity aspect covers context elements relating to the digital networks that are in range of the users' devices." ;
+		rdfs:subClassOf dcon:Aspect ;
+		rdfs:label "Connectivity" .		
+			
+	dcon:State
+		a		rdfs:Class ;
+		rdfs:comment "The state aspect covers context elements relating to the state of either the user or their devices." ;
+		rdfs:subClassOf dcon:Aspect ;
+		rdfs:label "State" .		
+	
+	# Properties
+    
+	# Generic Properties
+	
+	dcon:hasLiveContext
+          a       rdf:Property ;
+          rdfs:comment "Links the special live context representation instance to the user. Past live contexts are logged through the use of the DUHO ontology." ;
+          rdfs:domain 	pimo:Agent ;
+          rdfs:label "has Live Context" ;
+          rdfs:range dcon:LiveContext .	
+    	  
+    dcon:hasSituation
+          a       rdf:Property ;
+          rdfs:comment "Links one or more active/current situations to the user. Situations are stored permanently, whether currently active or otherwise." ;
+          rdfs:domain 	pimo:Agent ;
+          rdfs:label "has Situation" ;
+          rdfs:range dcon:Situation .
+		  
+	dcon:positiveInstance
+		  a       rdf:Property ;
+		  rdfs:comment "Situations are characterised through a series of past live context instances, required for its training. This property points to one or more positive instances, i.e., past actual live contexts snapshots during which it was determined that the abstract situation was active." ;
+          rdfs:domain 	dcon:Situation ;
+          rdfs:label "Positive Instance" ;
+          rdfs:range duho:ContextLog .
+		  
+	dcon:negativeInstance
+		  a       rdf:Property ;
+		  rdfs:comment "Situations are characterised through a series of past live context instances, required for its training. This property points to one or more negative instances, i.e., past actual live contexts snapshots during which it was determined that the abstract situation was not active." ;
+          rdfs:domain 	dcon:Situation ;
+          rdfs:label "Negative Instance" ;
+          rdfs:range duho:ContextLog .
+		  
+	dcon:hasObservation
+  		  a       rdf:Property ;
+		  rdfs:comment "As context Elements can have one or more observations, this property links each of them to the respective element." ;
+		  rdfs:label "has Observation" ;
+          rdfs:domain dcon:Element ;
+          rdfs:range dcon:Observation .
+		  
+    # Abstract Properties
+	
+	dcon:hasContextElement
+          a       rdf:Property ;
+          rdfs:comment "Context aspects categorise elements relating to the same category of context information. Individual context elements are linked to each aspect through this generic property, which is not intended for direct use. Instead, specific subproperties for each supported element is provided.";
+          rdfs:domain 	dcon:Aspect ;
+          rdfs:label "Has Context Element" ;
+          rdfs:range dcon:Element .
+	
+	dcon:hasContextAttribute
+          a       rdf:Property ;
+          rdfs:comment "Amongst other static attributes, context elements (or rather, their observations) have various context-related attributes, i.e. attributes which are bound to a particular time and context. This generic property links this type of attributes to the elements' observations, and is not intended for direct use. Instead, specific subproperties are provided for each supported element type. In order for observations to inherit these subproperties, each needs to be typed according to the element's type (see note in dcon:Observation comment)." ;
+          rdfs:domain 	dcon:Observation ;
+          rdfs:label "has Context Attribute" .
+	
+	# Element attributes
+	
+	dcon:isRequired
+          a       rdf:Property ;
+          rdfs:comment "This property marks those context elements which are necessary for a situation to occurr. If a required element is not active, then the correspoding situation is excluded from candidate active situations." ;
+		  rdfs:domain dcon:Element ;
+          rdfs:label "is Required" ;
+          rdfs:range xsd:boolean .
+	
+	dcon:isExcluder
+          a       rdf:Property ;
+          rdfs:comment "This property marks those context elements whose presence excludes a situation from occurring. If such an element is active, then the correspoding situation is excluded from candidate active situations." ;
+		  rdfs:domain dcon:Element ;
+          rdfs:label "is Required" ;
+          rdfs:range xsd:boolean .
+	
+	dcon:validity
+          a       rdf:Property ;
+          rdfs:domain 	dcon:Observation ;
+          rdfs:comment "Live context element observations have different validity periods, which mean they remain active only for a specified time interval after they have been sensed or otherwise detected. The value for this property denotes the time when the element observation's relevance expires." ;
+		  rdfs:subPropertyOf dcon:hasContextAttribute ;
+          rdfs:label "Validity Period" ;
+          rdfs:range xsd:dateTime .  
+		  
+    dcon:weight
+          a       rdf:Property ;
+          rdfs:domain 	dcon:Observation ;
+          rdfs:comment "This property assigns different weights to specific context aspects and/or elements, in order to better characterise a situation. As weights can be attached to both dcon:Element and dcon:Aspect instances, the domain of this property is generalised to dcon:Observation. However, the attachment of weights to other instances is not considered correct application of the DCON vocabulary. Expected weight values range from 0 (no impact on situation), to 1 (high impact on a situation). In addition, the dcon:isRequired property defines a necessity relationship between a context element and a situation, whereas the dcon:isExcluder property defines the inverse." ;
+          rdfs:label "Item Weight" ;
+          rdfs:range xsd:float .  
+		  
+	# Observation attributes
+		  
+    dcon:recordedBy
+          a       rdf:Property ;
+          rdfs:comment "This property ties each element's observation to the data source that recorded it, specifically data sources of type account (dao:Account subclass) or device (ddo:Device subclass)." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dcon:Observation ;
+          rdfs:label "Recorded By" ;
+          rdfs:range nie:DataSource .	
+	
+	dcon:recordedAt
+          a       rdf:Property ;
+          rdfs:comment "This property stores the time at which each element's observation has been generated, or last updated. Whereas for situations only the time of first occurrence is recorded, live context instances always carry the actual time." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute , nao:lastModified ;
+		  rdfs:domain 	dcon:Observation ;
+          rdfs:label "Recorded At" ;
+          rdfs:range xsd:dateTime .	
+		  
+	dcon:currentMode
+          a       rdf:Property ;
+		  rdfs:comment "Refers to the mode of the data source from which a context element has been retrieved, at retrieval time. A data source can consist of a service, an account, an application, or a device.  " ;
+          rdfs:domain nie:DataSource ;
+          rdfs:label "Current Mode" ;
+          rdfs:range nie:Mode .
+		  
+	dcon:lastActive
+          a       rdf:Property ;
+          rdfs:comment "The last date and time for which user activity was detected on a device. This could consist of the last movement detected from the cursor/keyboard/touch screen and other device input mechanisms, as well as the last call recorded for voice communication-enabled devices." ;
+          rdfs:domain nie:DataSource ;
+          rdfs:label "Last Active" ;
+          rdfs:range xsd:dateTime .	
+		  
+	dcon:lastMovementRegistered
+          a       rdf:Property ;
+          rdfs:comment "The last date and time for which a portable device was detected to be moving. This information relies on embedded accelerometers and other motion sensors." ;
+          rdfs:domain nie:DataSource ;
+          rdfs:label "Last Movement Registered" ;
+          rdfs:range xsd:dateTime .	
+			
+	# Element Properties
+	# Schedule aspect elements
+	
+	dcon:currentEvent
+          a       rdf:Property ;
+          rdfs:subPropertyOf dcon:hasContextElement ;
+		  rdfs:comment "Refers to an ongoing event characterising a context instance." ;
+          rdfs:domain 	dcon:Schedule ;
+          rdfs:label "Current Event" ;
+          rdfs:range ncal:Event .
+		  
+    dcon:upcomingEvent
+          a       rdf:Property ;
+          rdfs:subPropertyOf dcon:hasContextElement ;
+		  rdfs:comment "Refers to an upcoming event characterising a context instance." ;
+          rdfs:domain 	dcon:Schedule ;
+          rdfs:label "Upcoming Event" ;
+          rdfs:range ncal:Event .
+		  
+    dcon:upcomingTask
+          a       rdf:Property ;
+          rdfs:subPropertyOf dcon:hasContextElement ;
+		  rdfs:comment "Refers to an upcoming task characterising a context instance." ;
+          rdfs:domain 	dcon:Schedule ;
+          rdfs:label "Upcoming Task" ;
+          rdfs:range ncal:Todo .
+		  
+    dcon:currentTask
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+		  rdfs:comment "Refers to an ongoing task characterising a context instance." ;
+          rdfs:domain 	dcon:Schedule ;
+          rdfs:label "Current Task" ;
+          rdfs:range ncal:Todo .
+	
+	# Peers aspect elements
+	
+	dcon:nearbyPerson
+	     a       rdf:Property ;
+          rdfs:subPropertyOf dcon:hasContextElement ;
+		  rdfs:comment "Refers to individuals characterising a context instance." ;
+          rdfs:domain dcon:Peers ;
+          rdfs:label "Nearby Person" ;
+          rdfs:range pimo:Person .
+	
+	dcon:nearbyGroup
+          a       rdf:Property ;
+          rdfs:subPropertyOf dcon:hasContextElement ;
+		  rdfs:comment "Refers to a group of individuals characterising a context instance. Includes both user-defined groups, and ad-hoc groups recognised by the system." ;
+          rdfs:domain dcon:Peers ;
+          rdfs:label "Nearby Group" ;
+          rdfs:range pimo:PersonGroup .
+
+	# Environment aspect elements		  
+	
+	dcon:currentBrightness
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined environmental brightness level characterising a context instance." ;
+          rdfs:domain dcon:Environment ;
+          rdfs:label "Current Brightness" ;
+          rdfs:range dpo:Brightness .
+	
+	dcon:currentNoise
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined environmental noise level characterising a context instance." ;
+          rdfs:domain dcon:Environment ;
+          rdfs:label "Current Noise" ;
+          rdfs:range dpo:Noise .
+	
+	dcon:currentWeather
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined weather condition characterising a context instance." ;
+          rdfs:domain dcon:Environment ;
+          rdfs:label "Current Weather" ;
+          rdfs:range dpo:WeatherConditions .
+		  
+    dcon:forecastWeather
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a forecast, pre-defined weather condition characterising a context instance." ;
+          rdfs:domain dcon:Environment ;
+          rdfs:label "Forecast Weather" ;
+          rdfs:range dpo:WeatherConditions .
+	
+	dcon:currentTemperature
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined environmental temperature range characterising a context instance." ;
+          rdfs:domain dcon:Environment ;
+          rdfs:label "Current Temperature" ;
+          rdfs:range dpo:Temperature .
+
+	# Attention aspect elements		  
+	
+	dcon:activeApplication
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to active applications (running on a device) characterising a context instance." ;
+          rdfs:domain 	dcon:Attention ;
+          rdfs:label "Active Application" ;
+          rdfs:range nfo:Application .
+		  
+    dcon:activeFile
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to active files (running on a device) characterising a context instance." ;
+          rdfs:domain 	dcon:Attention ;
+          rdfs:label "Active File" ;
+          rdfs:range nie:InformationElement .
+	
+	# SpaTem aspect elements		  
+	
+	dcon:nearbyEvent
+          a       rdf:Property ;
+    	  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to nearby events that characterise a context instance." ;
+          rdfs:domain 	dcon:SpaTem ;
+          rdfs:label "Nearby Event" ;
+          rdfs:range ncal:Event .
+	
+	dcon:nearbyPlace
+          a       rdf:Property ;
+    	  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a nearby place type or specific location that characterises a context instance." ;
+          rdfs:domain 	dcon:SpaTem ;
+          rdfs:label "Nearby Place" ;
+          rdfs:range dpo:Place, pimo:Location .
+		  
+	dcon:currentPlace
+          a       rdf:Property ;
+    	  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a place type or specific location that characterises a context instance." ;
+          rdfs:domain 	dcon:SpaTem ;
+          rdfs:label "Current Place" ;
+          rdfs:range dpo:Place, pimo:Location .
+		  
+	dcon:currentTime
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined time period that characterises a context instance." ;
+          rdfs:domain 	dcon:SpaTem ;
+          rdfs:label "Current Time" ;
+          rdfs:range dpo:TimePeriod .		
+		  
+	dcon:averageSpeed
+          a       rdf:Property ;
+    	  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined speed range characterising a context instance." ;
+          rdfs:domain 	dcon:SpaTem ;
+          rdfs:label "Average Speed" ;
+          rdfs:range dpo:Movement .
+		  
+    dcon:averageDirection
+          a       rdf:Property ;
+    	  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined traveling direction characterising a context instance." ;
+          rdfs:domain 	dcon:SpaTem ;
+          rdfs:label "Average Direction" ;
+          rdfs:range dpo:Direction .		
+	
+	dcon:currentAltitude
+          a       rdf:Property ;
+    	  rdfs:subPropertyOf dcon:hasContextElement ;		  
+          rdfs:comment "States the current altitude (metres above sea level)" ; 
+          rdfs:domain 	dcon:SpaTem ;
+          rdfs:label "Current Altitude" ;
+          rdfs:range dpo:Altitude.	
+
+	dcon:currentAbsoluteAltitude
+          a       rdf:Property ;
+    	  rdfs:subPropertyOf dcon:hasContextElement ;		  
+          rdfs:comment "States the current absolute altitude (metres above ground level)" ; 
+          rdfs:domain 	dcon:SpaTem ;
+          rdfs:label "Current Absolute Altitude" ;
+	      rdfs:range dpo:Altitude.		
+	
+	
+	# Connectivity aspect elements		  
+	
+	dcon:connection
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined traveling direction characterising a context instance." ;
+          rdfs:domain 	dcon:Connectivity ;
+          rdfs:label "connection" ;
+          rdfs:range ddo:Network .	
+	
+	# State aspect elements		  
+	
+	dcon:currentActivity
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined activity category characterising a context instance." ;
+          rdfs:domain 	dcon:State ;
+          rdfs:label "Current Activity" ;
+          rdfs:range dpo:Activity .
+		  
+	dcon:currentAvailability
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dcon:hasContextElement ;
+          rdfs:comment "Refers to a pre-defined personal availability characterising a context instance." ;
+          rdfs:domain dcon:State ;
+          rdfs:label "Current Availability" ;
+          rdfs:range dpo:Availability .
+
+    # Observation Attributes (Values)
+	
+	# Environment Related
+	dcon:uvindex
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual UV index value element attribute to an active weather condition in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "UV Index Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+		  
+    dcon:humidity
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual humidity level value element attribute to an active weather condition in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "Humidity Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+		  
+    dcon:precipitation
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual precipitation value element attribute to an active weather condition in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "Precipitation Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+		  
+    dcon:cloudcover
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual cloud cover percentage value element attribute to an active weather condition in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "Cloud Cover Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+	
+	dcon:snowfalldegree
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual snowfall degree value element attribute to an active weather condition in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "Snowfall Degree Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+			  
+    dcon:stormdegree
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual storm degree value element attribute to an active weather condition in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "Storm Degree Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+	
+	dcon:fogfactor
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual fog factor value element attribute to an active weather condition in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "Fog Factor Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+	
+	dcon:windscale
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual wind scale value element attribute to an active weather condition in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "Wind Scale Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+	
+    dcon:temperature
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual temperature value element attribute to an active weather condition or temperature range in the current context. As this context attribute applies to instances of both dpo:Temperature and dpo:WeatherConditions in the DPO Presence Ontology, the domain has been generalised to the first common DPO superclass. However, the attachment of this attribute to other instances is not considered correct application of the DCON vocabulary." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:QuantifiableComponent ;
+          rdfs:label "Temperature Value" ;
+          rdfs:range xsd:float .
+	
+	dcon:brightnessLevel
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual environmental brightness value element attribute to an active brightness level range in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:Brightness ;
+          rdfs:label "Brightness Level Value" ;
+          rdfs:range xsd:float .
+			  
+	dcon:noiseLevel
+          a       rdf:Property ;
+          rdfs:comment "Registers an actual environmental noise level value element attribute to an active noise level range in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:Noise ;
+          rdfs:label "Noise Level Value" ;
+          rdfs:range xsd:float .
+    
+	dcon:musicDetected
+          a       rdf:Property ;
+          rdfs:comment "Registers whether music has been detected in the active environmental noise range in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:Noise ;
+          rdfs:label "Music Detected" ;
+          rdfs:range xsd:boolean .
+	
+	dcon:voicesDetected
+          a       rdf:Property ;
+          rdfs:comment "Registers how many voices have been detected in the active environmental noise range in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain dpo:Noise ;
+          rdfs:label "Voices Detected" ;
+          rdfs:range xsd:nonNegativeInteger .
+	
+	# Attention-related
+	
+	dcon:inForeground
+          a       rdf:Property ;
+          rdfs:comment "Specifies whether an active file(running on a device) is in the foreground (true) or background (false) in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain nie:InformationElement ;
+          rdfs:label "is in the Foreground" ;
+          rdfs:range xsd:boolean .
+    	  
+    dcon:writeable
+          a       rdf:Property ;
+          rdfs:comment "Specifies whether an active file (running on a device) is in read-and-write (true) or read-only mode (false) in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	nie:InformationElement ;
+          rdfs:label "is Writeable" ;
+          rdfs:range xsd:boolean .
+	
+	dcon:inEditMode
+          a       rdf:Property ;
+          rdfs:comment "Specifies whether a writeable active file (running on a device) is being edited/written to, in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	nie:InformationElement ;
+          rdfs:label "in Edit mode" ;
+          rdfs:range xsd:boolean .
+	
+	# Spatem and peer-related
+	
+	dcon:dateTime
+          a       rdf:Property ;
+          rdfs:comment "States the exact date and time value for a pre-defined time period in the current context." ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:TimePeriod ;
+          rdfs:label "Date and Time Value" ;
+          rdfs:range xsd:dateTime.	
+		  
+	dcon:minutes
+          a       rdf:Property ;
+          rdfs:comment "Derived from the dateTime, this property stores the exact amount of minutes elapsed since the start of the current day. Implicitly also stores the number of elapsed hours. Thus, a value of 0 means that the current day has just started whereas a value of 1439 indicates the end of a day." ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:TimePeriod ;
+          rdfs:label "Hours and Minutes elapsed" ;
+          rdfs:range xsd:nonNegativeInteger .
+	
+	dcon:dayMonth
+          a       rdf:Property ;
+          rdfs:comment "Derived from the dateTime, this property stores the number of days elapsed for the current month, where 1 indicates the first day of the month, up to a maximum value of 31." ; 
+		  rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:TimePeriod ;
+          rdfs:label "Day of the Month" ;
+          rdfs:range xsd:nonNegativeInteger .
+
+	dcon:dayWeek
+          a       rdf:Property ;
+          rdfs:comment "Derived from the dateTime, this property stores the number of days elapsed for the current week, where 1 indicates a Monday, and 7 a Sunday." ; 
+		  rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:TimePeriod ;
+          rdfs:label "Day of the Week" ;
+          rdfs:range xsd:nonNegativeInteger .
+
+	dcon:month
+          a       rdf:Property ;
+          rdfs:comment "Derived from the dateTime, this property stores the number of months elapsed for the current year, where 1 indicates January, and 12 December." ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:TimePeriod ;
+          rdfs:label "Month" ;
+          rdfs:range xsd:nonNegativeInteger . 
+		 
+	dcon:direction
+          a       rdf:Property ;
+          rdfs:comment "States the actual direction value for a pre-defined direction range in the current context." ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:Direction ;
+          rdfs:label "Direction Value" ;
+          rdfs:range xsd:string .	
+    
+	dcon:speed
+          a       rdf:Property ;
+          rdfs:comment "States the actual speed value for a pre-defined user movemement range in the current context." ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:Movement ; 
+          rdfs:label "Speed Value" ;
+          rdfs:range xsd:float .
+	
+	dcon:altitude
+          a       rdf:Property ;
+          rdfs:comment "States the current altitude (metres above sea level)" ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:Altitude ;
+          rdfs:label "Altitude Value" ;
+		  rdfs:range xsd:float .	
+
+	dcon:absoluteAltitude
+          a       rdf:Property ;
+          rdfs:comment "States the current absolute altitude (metres above ground level)" ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:Altitude ;
+          rdfs:label "Absolute Altitude Value" ;
+	      rdfs:range xsd:float .
+		  
+	dcon:distance
+          a       rdf:Property ;
+          rdfs:comment "Records the approximate distance between a device (as a proxy for the user) and an item. Not to be confused with dcon:distanceCovered. As this context attribute can be attached to instances of ncal:Event, pimo:Location, dpo:Place and pimo:Person, the domain of this property is generalised to dcon:Observation. However, the attachment of this attribute to other instances is not considered correct application of the DCON vocabulary." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain  dcon:Observation;
+          rdfs:label "Distance Value" ;
+          rdfs:range xsd:nonNegativeInteger .
+	
+	dcon:latitude
+          a       rdf:Property ;
+          rdfs:comment "Records the exact latitude of the approximated location" ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain pimo:Location ;
+          rdfs:label "GPS Latitude" ;
+          rdfs:range xsd:float .
+		  
+	dcon:longitude
+          a       rdf:Property ;
+          rdfs:comment "Records the exact longitude of the approximated location" ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain pimo:Location ;
+          rdfs:label "GPS Longitude" ;
+          rdfs:range xsd:float .
+		  
+	# Connectivity-related
+	
+	dcon:connected
+          a       rdf:Property ;
+          rdfs:comment "Specifies whether a network in range of the user's device(s) is connected (true) or otherwise (false) in the current context." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	ddo:Network ;
+          rdfs:range xsd:boolean ;
+		  rdfs:label "Connected" .
+    	  
+    dcon:signal
+          a       rdf:Property ;
+          rdfs:comment "States the actual signal strength value for a network connection in the current context." ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	ddo:Network ;
+          rdfs:label "Signal value" ;
+          rdfs:range xsd:float .
+	
+	dcon:networkSpeed
+          a       rdf:Property ;
+          rdfs:comment "States the actual speed value for a network connection in the current context." ; 
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	ddo:Network ; 
+          rdfs:label "Network Speed Value" ;
+          rdfs:range xsd:float .
+		  
+	# State-related
+	
+	dcon:caloriesExpended
+          a       rdf:Property ;
+          rdfs:comment "Specifies the amount of calories burnt while performing the activity." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:Activity ;
+          rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:label "Calories Expended" .
+	
+	dcon:distanceCovered
+          a       rdf:Property ;
+          rdfs:comment "Specifies the distance travelled while performing the activity." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:Activity ;
+          rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:label "Distance Covered" .
+		  
+	dcon:duration
+          a       rdf:Property ;
+          rdfs:comment "Specifies the duration since the start of the activity." ;
+          rdfs:subPropertyOf dcon:hasContextAttribute ;
+		  rdfs:domain 	dpo:Activity ;
+          rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:label "Duration" .
+	
+}
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/dcon/metadata> {
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/dcon/metadata>
+          a       nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor <http://www.semanticdesktop.org/ontologies/2011/10/05/dcon> .
+
+
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/dcon>
+          a       nrl:Ontology , nrl:DocumentGraph ;
+          nao:hasDefaultNamespace "http://www.semanticdesktop.org/ontologies/2011/10/05/dcon#" ;
+		  nao:creator <http://www.deri.ie/about/team/member/simon_scerri> ;
+          nao:hasDefaultNamespaceAbbreviation "dcon" ;
+          nao:lastModified "2013-09-23T00:00:00Z" ;
+          nao:serializationLanguage "TriG" ;
+          nao:status "Recommendation" ;
+          nrl:updatable "0" ;
+		  nao:creator <http://www.deri.ie/about/team/member/simon_scerri> ;
+          nao:version "1.0" ;
+          nao:prefLabel "Digital.me Context Ontology" ;
+          nao:description "The DCON provides comprehensive representation of directly retrievable, or interpretable, context information characterising an agent’s situation." .
+}

@@ -1,0 +1,226 @@
+#
+# Copyright (c) 2013 di.me Consortium
+#
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix drmo:	 <http://www.semanticdesktop.org/ontologies/2012/03/06/drmo#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix nrl:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix rdfg:	 <http://www.w3.org/2004/03/trix/rdfg-1#> .
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+
+<http://www.semanticdesktop.org/ontologies/2012/03/06/drmo> {
+	#Classes
+	drmo:Rule
+		a	rdfs:Class ;
+		rdfs:comment	"Defines a declarative rule. A rule instance joins (drmo:isComposedOf) a number of antecedents (condition instances) with a number of consequent (actions)" ;
+		rdfs:label	"Rule" .
+		
+	drmo:Condition
+		a	rdfs:Class ;
+		rdfs:comment	"Defines condition blocks for rules on which queries and logic tests are performed. Each condition can have constraints (also instances of drmo:Condition) recursively. Multiple conditions in a rule are combined together using a number of logical and event operators. This class can be extended to allow the representation of condition templates, specific to the system's needs.";
+		rdfs:label	"Condition" .
+		
+	drmo:Action
+		a	rdfs:Class ;
+		rdfs:comment	"Defines the action(s) to be executed if a rule's conditions are satisfied. The Action class specifies an action instance (e.g. 'Notify'), whose semantics are understood by the system and result in specific actions being extracted. This corresponds to the consequent part of a production rule." ;
+		rdfs:label	"Action" .
+			
+	drmo:ResourceDeleted
+		a	rdfs:Class ;
+		rdfs:comment	"Describes a condition which is triggered by a deletion of a PIM resource." ;
+		rdfs:label	"Resource Deleted" ;
+		rdfs:subClassOf	drmo:Condition .
+		
+	drmo:ResourceModified
+		a	rdfs:Class ;
+		rdfs:comment	"Describes a condition which is triggered by a modification to a PIM resource." ;
+		rdfs:label	"Resource Modified" ;
+		rdfs:subClassOf	drmo:Condition .
+		
+	drmo:SituationActivated
+		a	rdfs:Class ;
+		rdfs:comment	"Describes a condition which is activated by a change in the user's situation." ;
+		rdfs:label	"Internal System Action" ;
+		rdfs:subClassOf drmo:ResourceModified .
+		
+	drmo:ResourceCreated
+		a	rdfs:Class ;
+		rdfs:comment	"Describes a condition which is triggered by a newly created resource in the PIM." ;
+		rdfs:label	"ResourceCreated" ;
+		rdfs:subClassOf	drmo:Condition .
+		
+	#Properties
+	drmo:isComposedOf
+	    a	rdf:Property ;
+        rdfs:label	"is composed of" ;
+        rdfs:comment	"The isComposedOf property defines the condition blocks of a Rule" ;
+        rdfs:domain	drmo:Rule ;
+		rdfs:range	drmo:Condition .
+	
+	drmo:hasNegation
+		a	rdf:Property ;
+        rdfs:label	"has negation" ;
+        rdfs:comment	"A condition block can be negated with this property." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	xsd:boolean ;
+		nrl:maxCardinality "1"^^xsd:nonNegativeInteger .
+	
+	drmo:and
+		a	rdf:Property ;
+        rdfs:label	"and" ;
+        rdfs:comment	"Combine TWO condition blocks together with the AND operator. Both conditions have to occur independent of time and order for the actions to trigger." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	drmo:Condition .	
+	
+	drmo:or
+		a	rdf:Property ;
+        rdfs:label	"or" ;
+        rdfs:comment	"Combine TWO condition blocks together with the OR operator. For the rule to trigger its actions, only one of the conditions have to be true at any given time." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	drmo:Condition .	
+	
+	drmo:precededBy
+		a	rdf:Property, nrl:TransitiveProperty ;
+        rdfs:label	"preceeded by" ;
+        rdfs:comment	"TWO conditions (A and B) may be composed together using the precededBy Property. If Condition B is preceded by Condition A, the actions are only triggered if Condition A happens at any time before Condition B. This is the inverse property of drmo:succeededBy." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	drmo:Condition ;
+		nrl:inverseProperty drmo:succeededBy .
+	
+	drmo:succeededBy
+		a	rdf:Property, nrl:TransitiveProperty ;
+        rdfs:label	"succeeded by" ;
+        rdfs:comment	"TWO conditions (A and B) may be composed together using the succeededBy Property. If Condition A is succeeded by Condition B, the actions are only triggered if Condition B happens at any time after Condition A. This is the inverse property of drmo:precededBy." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	drmo:Condition ;
+		nrl:inverseProperty drmo:precededBy .
+		
+	drmo:hasConstraint
+	    a	rdf:Property ;
+        rdfs:label	"has constraints" ;
+        rdfs:comment	"Defines the constraints (which are of type drmo:Condition) which make up a rule's condition. This property is a subproperty of drmo:hasConstraintOnSubject, such that its range is restricted to a drmo:Condition. What this `restriction' really means is that a drmo:Condition is expected both as the domain and the range for this property. This has the effect of creating nested constraints whereby the referred condition (range defined for this property) is itself another condition. Therefore, the condition at the range of this property needs to be resolved first, before being able to apply this constraint on the condition defined in the domain. Thus the difference between this property and its superproperty is that whereas the latter will look for triples (subject, predicate, object) having one specific item (which is simply the range of drmo:hasConstraintOnSubject) as its subject, this property might result in multiple queries each of which match a different item to its subject. The pattern  to retrieve these item(s) is defined by the condition that is in the range of this property, i.e., it is defined by another set of drmo:hasConstraintOnSubject or drmo:hasConstraintOnObject and a corresponding drmo:hasConstraintOnProperty." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	drmo:Condition ;
+		rdfs:subProperty drmo:hasConstraintOnSubject .
+
+	drmo:hasConstraintOnProperty
+		a	rdf:Property ;
+        rdfs:label	"has constraint on property" ;
+        rdfs:comment	"Places a constraint on a condition (i.e., the domain defined for this property), such that the referred property (i.e., the range defined for this property) must have a specific value. The restricted value is defined by the use of either drmo:hasConstraintOnSubject or drmo:hasConstraintOnObject, which therefore must always be used in conjunction with this property. The constrained property in combination with the constrained subject/object are then used to query triples matching this pattern." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	rdf:Property .		
+	
+	drmo:hasConstraintOnObject
+		a	rdf:Property ;
+        rdfs:label	"Constraint on Object" ;
+        rdfs:comment	"Places a constraint on a condition (i.e., the domain defined for this property), such that a query can be constructed to look for an RDF triple having: i) the condition itself (i.e., the domain defined for this property) as its subject, ii) the associated constrained property (defined by drmo:hasConstraintOnProperty) as its property, iii) and the referred item (i.e. the range defined for this property) as its object. This property cannot coincide with the property hasConstraintOnSubject." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	rdfs:Resource .		
+		
+	drmo:hasConstraintOnSubject
+		a	rdf:Property ;
+        rdfs:label	"Constraint on Subject" ;
+        rdfs:comment	" Places a constraint on a condition (i.e., the domain defined for this property), such that a query can be constructed to look for an RDF triple having: i) the referred item (i.e., range defined for this property) as its subject, ii) the associated constrained property (defined by drmo:hasConstraintOnProperty) as its property, iii) and the condition (i.e., domain defined for this property) as its object. This property cannot coincide with the property hasConstraintOnObject." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	rdfs:Resource .	
+			
+	drmo:hasConstraintOnGraph
+		a	rdf:Property ;
+        rdfs:label	"Constraint on Graph" ;
+        rdfs:comment	"This property allow a condition test to be conducted on a specified Graph." ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	rdfg:Graph .		
+	
+	drmo:hasPropertyOperator
+		a	rdf:Property ;
+        rdfs:label	"has property operator" ;
+        rdfs:comment	"Defines the relational operator for the condition value" ;
+        rdfs:domain	drmo:Condition ;
+		rdfs:range	xsd:string ;
+		nrl:maxCardinality "1"^^xsd:nonNegativeInteger .	
+	
+	drmo:triggers
+		a	rdf:Property ;
+        rdfs:label	"triggers" ;
+        rdfs:comment	"The triggers property defines the action instances which will be triggered if rule's conditions are satisfied." ;
+        rdfs:domain	drmo:Rule ;
+		rdfs:range	drmo:Action ;
+		nrl:minCardinality "1"^^xsd:nonNegativeInteger .
+		
+	drmo:hasSubject
+		a	rdf:Property ;
+        rdfs:label	"has Subject" ;
+        rdfs:comment	"Specifies the received of the action." ;
+        rdfs:domain	drmo:Action ;
+		rdfs:range	rdfs:Resource .
+		
+	drmo:hasObject
+		a	rdf:Property ;
+        rdfs:label	"has Object" ;
+        rdfs:comment	"Specifies the parameters needed to be passed to the executed actions." ;
+        rdfs:domain	drmo:Action ;
+		rdfs:range	rdfs:Resource .	
+		
+	drmo:hasResourceType 	
+		a	rdf:Property ;
+        rdfs:label	"has Resource Type" ;
+        rdfs:comment	"This property allows the user to define the resource type of the condition blocks. This is the RDF type that the triples look for when attempting to match conditions. For example, a rule triggered when a person is nearby, will have a condition of type pimo:Person." ;
+        rdfs:domain	drmo:Action ;
+		rdfs:range	rdfs:Resource .		
+}
+
+<http://www.semanticdesktop.org/ontologies/2012/03/06/drmo/metadata> {
+    <http://www.semanticdesktop.org/ontologies/2012/03/06/drmo/metadata>
+          a       nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor <http://www.semanticdesktop.org/ontologies/2012/03/06/drmo> .
+
+
+    <http://www.semanticdesktop.org/ontologies/2012/03/06/drmo>
+          a       nrl:Ontology , nrl:DocumentGraph ;
+          nao:hasDefaultNamespace "http://www.semanticdesktop.org/ontologies/2012/03/06/drmo#" ;
+          nao:hasDefaultNamespaceAbbreviation "drmo" ;
+          nao:lastModified "2013-04-08T00:00:00Z" ;
+          nao:serializationLanguage "TriG" ;
+          nao:status "Recommmendation" ;
+          nrl:updatable "0" ;
+		  nao:creator <http://www.deri.ie/about/team/member/jeremy_debattista> ;
+		  nao:contributor <http://www.deri.ie/about/team/member/simon_scerri> ;
+		  nao:contributor <http://www.deri.ie/users/ismael-rivera> ;
+          nao:version "1.0" ;
+          nao:prefLabel "digital.me Rule Management Ontology" ;
+          nao:description "The DRMO enables representation of user-defined rules as a pattern of system or user events (conditions and their constraints), and one or more corresponding desired actions. Within the context of the personal information sphere, events are based on changes to PIM data, including information elements, as well as detected context, presence information, etc." .
+}

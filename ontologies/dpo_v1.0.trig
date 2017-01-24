@@ -1,0 +1,585 @@
+#
+# Copyright (c) 2013 di.me Consortium
+# 
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix pimo:    <http://www.semanticdesktop.org/ontologies/2007/11/01/pimo#> .
+@prefix dpo:	<http://www.semanticdesktop.org/ontologies/2011/10/05/dpo#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geo:     <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix nrl:    <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/dpo> {
+	# Classes
+	dpo:PresenceComponent
+		a		rdfs:Class ;
+		rdfs:comment "Represents a wide variety of components relating to a user's presence, which is an ensemble of physical and virtual context properties relating to an agent's circumstances and activities. User context properties obtained from different kinds of sensors can be interpreted, resolved or mapped to loosely-defined or fuzzy presence component counterparts. A characteristic of these components is that they are independent of time, i.e., each component can characterise an agent's presence in multiple and different times. Presence components are subclasses of pimo:Thing, and have two main subclasses: quantifiable and non-quantifiable presence components." ;
+		rdfs:subClassOf pimo:Thing ;
+		rdfs:label "Presence Component" .
+
+	dpo:QuantifiableComponent
+		a		rdfs:Class ;
+		rdfs:comment "A presence component that can be quantified. In this case, discrete user context properties obtained from sensors can be mapped to their loosely-defined fuzzy counterparts. Thus for example, the actual and dynamic temperature of an agent's environment can be mapped to an existing category that is saved as an instance of a presence component. Each of these categories has a number of attributes that define its valid actual data range, e.g., a presence component representing 'hot' weather conditions around an agent will be enabled (i.e., it becomes part of the agent's presence) only if the actual sensed temperature lies within the ranges defined by the value limits. As most quantifiable presence components posses this restrictions, tree generic properties are applicable: dpo:value, dpo:minValue, dpo:maxValue." ;
+		rdfs:subClassOf dpo:PresenceComponent ;
+		rdfs:label "Quantifiable Component" .	
+		
+	dpo:NonQuantifiableComponent
+		a		rdfs:Class ;
+		rdfs:comment "Non-qauntifiable presence components refer to interpreted context properties that can be resolved to a more abstract representations that have the ability to recur. For example, a location in which an agent finds itself in can be resolved to a known place that is known, or saved. Although the location is a temporal property bound to the agent's context (i.e., it is always changing), the place is independent of time (i.e., the agent can return to that place repeatedly)." ;
+		rdfs:subClassOf dpo:PresenceComponent ;
+		rdfs:label "Non Quantifiable Component" .	
+	
+	dpo:Place
+		a		rdfs:Class ;
+		rdfs:comment "Non-quantifiable presence information concerning the type of location that an agent is currently near to. Multiple distinct locations can correspond to the same place instance." ;
+		rdfs:label "Place" ;
+		rdfs:subClassOf dpo:NonQuantifiableComponent .
+		
+	dpo:Availability
+		a		rdfs:Class ;
+		rdfs:comment "Non-quantifiable presence information concerning the current broadcast virtual availability of the agent." ;
+		rdfs:label "Availability" ;
+		rdfs:subClassOf dpo:NonQuantifiableComponent .
+			
+	dpo:Activity
+		a		rdfs:Class ;
+		rdfs:comment "Non-quantifiable presence information concerning the current activity of the agent." ;
+		rdfs:label "Activity" ;
+		rdfs:subClassOf dpo:NonQuantifiableComponent .
+	
+	dpo:Mood
+		a		rdfs:Class ;
+		rdfs:comment "Non-quantifiable presence information concerning the current broadcast virtual mood of the agent." ;
+		rdfs:label "Mood" ;
+		rdfs:subClassOf dpo:NonQuantifiableComponent .
+	
+		
+	dpo:EnvironmentalIndicator
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence components concerning the environment surrounding the agent are grouped under this abstract class. " ;
+		rdfs:label "Environmental Indicator" ;
+		rdfs:subClassOf dpo:QuantifiableComponent .
+		
+	dpo:Temperature
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence components concerning the detected temperature in the environment surrounding the agent." ;
+		rdfs:label "Temperature" ;
+		rdfs:subClassOf dpo:EnvironmentalIndicator .
+		
+	dpo:Noise
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence components concerning the audible noise levels in the environment surrounding the agent." ;
+		rdfs:label "Noise" ;
+		rdfs:subClassOf dpo:EnvironmentalIndicator .
+
+	dpo:Brightness
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence components concerning the brightness levels in the environment surrounding the agent." ;
+		rdfs:label "Brightness" ;
+		rdfs:subClassOf dpo:EnvironmentalIndicator .
+
+	dpo:Movement
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence information concerning the agent's sensed speed of movement." ;
+		rdfs:label "Movement" ;
+		rdfs:subClassOf dpo:QuantifiableComponent .
+
+	dpo:Altitude
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence information concerning the agent's sensed absolute and relative altitude." ;
+		rdfs:label "Altitude" ;
+		rdfs:subClassOf dpo:QuantifiableComponent .
+
+	dpo:Direction
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence information concerning the agent's sensed absolute and relative altitude." ;
+		rdfs:label "Direction" ;
+		rdfs:subClassOf dpo:QuantifiableComponent .
+
+	dpo:TimePeriod
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence information concerning pre-established time periods in an agent's days, weeks, months, and years." ;
+		rdfs:label "Time Period" ;
+		rdfs:subClassOf dpo:QuantifiableComponent .
+
+	dpo:WeatherConditions
+		a		rdfs:Class ;
+		rdfs:comment "Quantifiable presence information concerning the weather (current, forecast) in the agent's surroundings." ;
+		rdfs:label "Weather Conditions" ;
+		rdfs:subClassOf dpo:QuantifiableComponent .
+
+	
+	# Properties
+    
+	dpo:hasPresenceComponent
+          a       rdf:Property ;
+          rdfs:comment "Defines the owner (pimo:Agent) of the presence component, who is typically also the owner of the PIM instance. In contrast to other presence ontologies, this property is not intended to be used to describe an agent's current presence. The DCON ontology is provided to fulfil this purpose." ;
+          rdfs:domain 	pimo:Agent ;
+          rdfs:label "has Presence Component" ;
+          rdfs:range dpo:PresenceComponent .	
+	
+	
+	dpo:lastActive
+          a       rdf:Property ;
+          rdfs:comment "Stores the last date and time at which a particular presence component was last observed, by any of an agent's sensors." ;
+          rdfs:domain 	dpo:PresenceComponent ;
+          rdfs:label "Last Active" ;
+          rdfs:range xsd:dateTime .	
+	
+	dpo:altLocation
+          a       rdf:Property ;
+          rdfs:comment "Links a generic place type to specific locations (pimo:Location instances) that are known to be of the same type, e.g., a dpo:Place representing 'restaurants' to actual location instances representing specific restaurants. This property is also used to link generic activities (dpo:Activity instances) to one or more specific locations at which they habitually take place, e.g., an activity representing 'sports' to location instances representing sports grounds, gymnasia, etc. Due to the multiple assocations of locations to places and activities, the domain for this property is bound to dpo:NonQuantifiableComponent instances. However, it is not intended to associate locations to other subclasses of that domain." ;
+          rdfs:domain 	dpo:NonQuantifiableComponent ;
+		  rdfs:label "Alternative Location" ;
+          rdfs:range pimo:Location .	
+		  
+	dpo:recurringProcess
+          a       rdf:Property ;
+          rdfs:comment "Links a generic activity to specific tasks and events (pimo:ProcessConcept instances) that are also stored in the PIM and that are known to be of the same type, e.g., a dpo:Activity representing 'sports' to a recurring event representing 'swimming lessons' stored in the agent's calendar." ;
+		  rdfs:domain	dpo:Activity ;
+          rdfs:label "Recurring Process" ;
+          rdfs:range pimo:ProcessConcept .	
+		  
+	dpo:relatedActivity
+		  a       rdf:Property ;
+		  rdfs:subPropertyOf nao:isRelated ;
+		  rdfs:comment "Links a place to specific activities, both of which are stored in the PIM, e.g., a dpo:Place representing 'SportsCentre' to a dpo:Activity representing 'Sports'." ;
+		  rdfs:domain dpo:Place ;
+		  rdfs:range dpo:Activity ;	
+		  rdfs:label "Related Activity" .          
+		  
+	dpo:value
+          a       rdf:Property ;
+          rdfs:comment "A generic property that assign a quantifiable value to a presence component. Minimum and maximum values are provided as its subproperties. Various subproperties of different types of values are also provided and apply to specific types of presence components." ;
+		  rdfs:label "Value" ;
+          rdfs:domain dpo:QuantifiableComponent .
+
+	dpo:minValue
+          a       rdf:Property ;
+		  rdfs:subPropertyOf dpo:value ;
+          rdfs:comment "A subproperty of dpo:value defining a lowerbound on the value observed for a real-world entity for it to classify as an instance of a specific quantifiable presence component. Various subproperties are provided and apply to specific types of presence components." ;
+		  rdfs:domain	dpo:QuantifiableComponent ;
+          rdfs:label "Minimum Value" .
+
+	dpo:maxValue
+          a       rdf:Property ;
+          rdfs:subPropertyOf dpo:value ;
+		  rdfs:comment "A subproperty of dpo:value defining an upperbound on the value observed for a real-world entity for it to classify as an instance of a specific quantifiable presence component. Various subproperties are provided and apply to specific types of presence components." ;
+		  rdfs:domain	dpo:QuantifiableComponent ;
+          rdfs:label "Maximum Value" .
+
+	dpo:minTemperature
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed temperature value (in degrees celcius) such that it can classify as a dpo:Temperature or dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxTemperature, i.e. specific instances of the former two classes have a pre-defined range of observable real-world temperatures. Since this property has the described dual-domain, the domain is generic. However, it is not meant to be attached to other types of quantifiable component instances." ;
+		  rdfs:domain	dpo:QuantifiableComponent;
+          rdfs:label "Minimum Temperature" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxTemperature
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed temperature value (in degrees celcius) such that it can classify as a dpo:Temperature or dpo:WeatherCondition instance. It can be used in conjunction with dpo:minTemperature, i.e. specific instances of the former two classes have a pre-defined range of observable real-world temperatures. Since this property has the described dual-domain, the domain is generic. However, it is not meant to be attached to other types of quantifiable component instances." ;
+		  rdfs:domain	dpo:QuantifiableComponent;
+          rdfs:label "Maximum Temperature" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:maxValue .
+	
+	dpo:minNoiseLevel
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines an lowerbound on the observed loudness level value (in decibels) such that it can classify as a dpo:Noise instance. It can be used in conjunction with dpo:maxNoiseLevel, i.e. specific instances of dpo:Noise have a pre-defined range of observable real-world surrounding noise levels." ;
+		  rdfs:domain	dpo:Noise ;
+          rdfs:label "Minimum Noise Level" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxNoiseLevel
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed loudness level value (in decibels) such that it can classify as a dpo:Noise instance. It can be used in conjunction with dpo:minNoiseLevel, i.e. specific instances of dpo:Noise have a pre-defined range of observable real-world surrounding noise levels." ;
+		  rdfs:domain	dpo:Noise ;
+          rdfs:label "Maximum Noise Level" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:minBrightnessLevel
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines an lowerbound on the observed brightness level value (in SI lux units) such that it can classify as a dpo:Brightness instance. It can be used in conjunction with dpo:maxBrightnessLevel, i.e. specific instances of dpo:Brightness have a pre-defined range of observable real-world surrounding brightness levels." ;
+		  rdfs:domain	dpo:Brightness ;
+          rdfs:label "Minimum Brightness Level" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxBrightnessLevel
+          a       rdf:Property ;
+         rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed brightness level value (in SI lux units) such that it can classify as a dpo:Brightness instance. It can be used in conjunction with dpo:minBrightnessLevel, i.e. specific instances of dpo:Brightness have a pre-defined range of observable real-world surrounding brightness levels." ;
+		  rdfs:domain	dpo:Brightness ;
+          rdfs:label "Maximum Brightness Level" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:minSpeed
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines an lowerbound on the observed speed value (in metres per second) such that it can classify as a dpo:Movement instance. It can be used in conjunction with dpo:maxSpeed, i.e. specific instances of dpo:Movement have a pre-defined range of observable real-world agent speed levels." ;
+		  rdfs:domain	dpo:Movement ;
+          rdfs:label "Minimum Speed" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxSpeed
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed speed value (in metres per second) such that it can classify as a dpo:Movement instance. It can be used in conjunction with dpo:minSpeed, i.e. specific instances of dpo:Movement have a pre-defined range of observable real-world agent speed levels." ;
+		  rdfs:domain	dpo:Movement ;
+          rdfs:label "Maximum Speed" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  
+	dpo:minAltitude
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed altitude height value (in metres) such that it can classify as a dpo:Altitude instance. It can be used in conjunction with dpo:maxAltitude, i.e. specific instances of dpo:Altitude have a pre-defined range of observable real-world agent altitude." ;
+		  rdfs:domain	dpo:Altitude ;
+          rdfs:label "Minimum Altitude" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxAltitude
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed altitude height value (in metres) such that it can classify as a dpo:Altitude instance. It can be used in conjunction with dpo:minAltitude, i.e. specific instances of dpo:Altitude have a pre-defined range of observable real-world agent altitude." ;
+		  rdfs:domain	dpo:Altitude ;
+          rdfs:label "Maximum Altitude" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  
+	dpo:minAbsoluteAltitude
+          a       rdf:Property ;
+          rdfs:comment "A variant subproperty of dpo:minAltitude that defines a lowerbound on the computed absolute altitude (i.e. altitude relative to the level of the terrain in the area), rather the observed true altitude. Can be in conjunction with dpo:maxAbsoulateAltitude." ;
+		  rdfs:domain	dpo:Altitude ;
+          rdfs:label "Minimum Absolute Altitude" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxAbsoluteAltitude
+          a       rdf:Property ;
+          rdfs:comment "A variant subproperty of dpo:maxAltitude that defines an upperbound on the computed absolute altitude (i.e. altitude relative to the level of the terrain in the area), rather the observed true altitude. Can be used in conjunction with dpo:minAbsoulateAltitude." ;
+		  rdfs:domain	dpo:Altitude ;
+          rdfs:label "Maximum Absolute Altitude" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:minTime
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed time value (in xsd:time format) such that it can classify as a dpo:TimePeriod instance.  It can be used in conjunction with dpo:maxTime, i.e. specific instances of dpo:TimePeriod have a pre-defined range of observable real-world time periods." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Minimum Time" ;
+		  rdfs:range xsd:time ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxTime
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed time value (in xsd:time format) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:minTime, i.e. specific instances of dpo:TimePeriod have a pre-defined range of observable time periods." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Maximum Time" ;
+		  rdfs:range xsd:time ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:dayOfMonth
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:value that defines an exact date/time value (a day in a month, i.e., between 1 and 31) such that it can classify as a dpo:TimePeriod instance." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Day of the Month" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:value .
+	
+	dpo:minDayOfMonth
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:minValue that defines a lowerbound on the observed day of the month (i.e., between 1 and 31) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:maxDayOfMonth, i.e. specific instances of dpo:TimePeriod have a pre-defined observable monthly period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Minimum Day of the Month" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxDayOfMonth
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:maxValue that defines an upperbound on the observed day of the month (i.e., between 1 and 31) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:minDayOfMonth, i.e. specific instances of dpo:TimePeriod have a pre-defined observable monthly period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Maximum Day of the Month" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:month
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:value that defines an exact date/time value (a month, i.e., between 1 signifying January and 12 signifying December) such that it can classify as a dpo:TimePeriod instance." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Month" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:value .
+		  
+	dpo:minMonth
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:minValue that defines a lowerbound on the observed month (i.e., between 1 signifying January and 12 signifying December) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:maxMonth, i.e. specific instances of dpo:TimePeriod have a pre-defined observable month number-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Minimum Month" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  
+	dpo:maxMonth
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:maxValue that defines an upperbound on the observed month (i.e., between 1 signifying January and 12 signifying December) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:minMonth, i.e. specific instances of dpo:TimePeriod have a pre-defined observable month number-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Maximum Month" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:maxValue .		  
+
+	dpo:dayOfWeek
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:value that defines an exact date/time value (a day in a week, i.e., between 1 signifying Monday and 7 signifying Sunday) such that it can classify as a dpo:TimePeriod instance." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Day of the Week" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:value .
+	
+	dpo:minDayOfWeek
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:minValue that defines a lowerbound on the observed day of the week (i.e., between 1 signifying Monday and 7 signifying Sunday) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:maxDayOfWeek, i.e. specific instances of dpo:TimePeriod have a pre-defined observable 7-day week-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Minimum Day of the Week" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  
+	dpo:maxDayOfWeek
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:maxValue that defines an upperbound on the observed day of the week (i.e., between 1 signifying Monday and 7 signifying Sunday) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:minDayOfWeek, i.e. specific instances of dpo:TimePeriod have a pre-defined observable 7-day week-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Maximum Day of the Week" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:minWeek
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:minValue that defines a lowerbound on the observed week of the year (i.e., between 1 and 52) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:maxWeek, i.e. specific instances of dpo:TimePeriod have a pre-defined observable week number-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Minimum Week" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxWeek
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:maxValue that defines an upperbound on the observed week of the year (i.e., between 1 and 52) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:minWeek, i.e. specific instances of dpo:TimePeriod have a pre-defined observable week number-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Maximum Week" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:minYear
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:minValue that defines a lowerbound on the observed calendar year such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:maxYear, i.e. specific instances of dpo:TimePeriod have a pre-defined observable year-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Minimum Year" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:minValue .
+	
+	dpo:maxYear
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:maxValue that defines an upperbound on the observed calendar year such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:minYear, i.e. specific instances of dpo:TimePeriod have a pre-defined observable year-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Maximum Year" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:minHour
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:minValue that defines a lowerbound on the observed time (in hours, i.e., between 0 signifying midnight and 23 signifying 11pm) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:maxHour, i.e. specific instances of dpo:TimePeriod have a pre-defined observable 24-hour-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Minimum Hour" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  
+	dpo:maxHour
+          a       rdf:Property ;
+          rdfs:comment  "A subproperty of dpo:maxValue that defines an upperbound on the observed time (in hours, i.e., between 0 signifying midnight and 23 signifying 11pm) such that it can classify as a dpo:TimePeriod instance. It can be used in conjunction with dpo:minHour, i.e. specific instances of dpo:TimePeriod have a pre-defined observable 24-hour-based period." ;
+		  rdfs:domain	dpo:TimePeriod ;
+          rdfs:label "Maximum Hour" ;
+		  rdfs:range xsd:integer ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+		  		  
+	dpo:minHumidity
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed humidity value (as a percentage) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxHumidity to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world humidity levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Minimum Humidity" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:minValue .
+
+	dpo:maxHumidity
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed humidity value (as a percentage) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:minHumidity to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world humidity levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain dpo:WeatherConditions ;
+          rdfs:label "Maximum Humidity" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:minCloudcover
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed cloud cover (as a percentage) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxCloudCover to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world cloud cover levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Minimum Cloud Cover" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxCloudcover
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed cloud cover (as a percentage) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:minCloudCover to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world cloud cover levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Maximum Cloud Cover" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  	
+	dpo:minPrecipitation
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed precipitation levels (in millimetres per hour) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxPrecipitation to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world precipitation levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Minimum Precipitation" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxPrecipitation
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed precipitation levels (in millimetres per hour) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:minPrecipitation to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world precipitation levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Maximum Precipitation" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  	
+	dpo:minUVIndex
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed uv index levels (linear scale of between 0 and 12 signifying 11+) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxUVIndex to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world UV index levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+          rdfs:comment "" ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Minimum UV Index" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxUVIndex
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines an upperbound on the observed uv index levels (linear scale of between 0 and 12 signifying 11+) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:minUVIndex to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world UV index levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Maximum UV Index" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  	
+	dpo:minSnowfallDegree
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed snowfall (in millimetres per hour) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxSnowfallDegree to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world snowfall levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Minimum Snowfall Degree" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxSnowfallDegree
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed snowfall (in millimetres per hour) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:minSnowfallDegree to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world snowfall levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Maximum Snowfall Degree" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:maxValue .
+		  	
+	dpo:minVisibility
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed visibility (in kilometres) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxVisibility to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world visibility levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Minimum Visibility" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxVisibility
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed visibility (in kilometres) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:minVisibility to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world visibility levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Maximum Visibility" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:maxValue .
+
+	dpo:minWindScale
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed windscale (on the Beaufort scale) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxWindScale to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world wind levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Minimum Wind Scale" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxWindScale
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:maxValue that defines an upperbound on the observed windscale (on the Beaufort scale) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:minWindScale to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world wind levels. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Maximum Wind Scale" ;
+		  rdfs:range xsd:nonNegativeInteger ;
+		  rdfs:subPropertyOf dpo:maxValue .
+	
+	dpo:minWaveHeight
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:minValue that defines a lowerbound on the observed wave height (in metres) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:maxWaveHeight to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world wave heights in a body of water. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Maximum Wave Height" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:minValue .
+		  
+	dpo:maxWaveHeight
+          a       rdf:Property ;
+          rdfs:comment "A subproperty of dpo:axValue that defines an upperbound on the observed wave height (in metres) such that it can classify as a dpo:WeatherCondition instance. It can be used in conjunction with dpo:minWaveHeight to state that specific instances of dpo:WeatherCondition have a pre-defined range of observable real-world wave heights in a body of water. In addition, they can also be used with various other weather conditions values and ranges to define complex weather condition types." ;
+		  rdfs:domain	dpo:WeatherConditions ;
+          rdfs:label "Minimum Wave Height" ;
+		  rdfs:range xsd:float ;
+		  rdfs:subPropertyOf dpo:maxValue .
+	}
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/dpo/metadata> {
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/dpo/metadata>
+          a       nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor <http://www.semanticdesktop.org/ontologies/2011/10/05/dpo> .
+
+
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/dpo>
+          a       nrl:Ontology , nrl:DocumentGraph ;
+          nao:hasDefaultNamespace "http://www.semanticdesktop.org/ontologies/2011/10/05/dpo#" ;
+          nao:hasDefaultNamespaceAbbreviation "dpo" ;
+          nao:lastModified "2013-09-10T00:00:00Z" ;
+          nao:serializationLanguage "TriG" ;
+          nao:status "Recommendation" ;
+          nrl:updatable "0" ;
+		  nao:creator <http://www.deri.ie/about/team/member/simon_scerri> ;
+          nao:version "1.0" ;
+          nao:prefLabel "digital.me Presence Ontology" ;
+          nao:description "This ontology can be utilised to represents a wide variety of components relating to a user's presence, which is considerd to be an ensemble of physical and virtual context properties relating to an agent's circumstances and activities. User context properties obtained from different kinds of sensors can be interpreted, resolved or mapped to loosely-defined or fuzzy presence component counterparts. A characteristic of these components is that they are independent of time, i.e., each component can characterise an agent's presence in multiple and different times. Although the ontology can be used on its own to attach observable presence information to an agent, it is intended for it to be used in conjunction with the DCON ontology. The latter is able to dynamically represent context information that is observed for an agent, in terms of both actual crisp values/items, as well as their fuzzy/recurring categories or interpretable values, as supported by the DPO Ontology. Originally provided for the digital.me EU-FP7 project, the ontology is independent of any project/infrastructure and can thus be readily adopted and applied by anyone." .
+}

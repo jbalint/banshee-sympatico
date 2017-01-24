@@ -1,0 +1,244 @@
+#
+# Copyright (c) 2012 di.me Consortium
+#
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix geo:	<http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix dlpo:	<http://www.semanticdesktop.org/ontologies/2011/10/05/dlpo#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nie:     <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#> .
+@prefix nrl:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sioc: 	 <http://rdfs.org/sioc/ns#> .
+@prefix sioct:   <http://rdfs.org/sioc/types#> .
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/dlpo> {
+	
+	# Classes
+	dlpo:LivePost
+		a	rdfs:Class ;
+		rdfs:comment "A generic representation of personal information intended for instant online sharing, typically over social networks. Extended through various subclasses. When an item is shared as a livepost, it can be managed as a separate new entity. For this purpose, all LivePost instances also become instances of nie:InformationElements." ;
+		rdfs:subClassOf nie:InformationElement , sioc:Post ;
+		rdfs:label "LivePost" .
+						
+	dlpo:MultimediaPost
+		a	rdfs:Class ;
+		rdfs:comment "A livepost consisting of a multimedia item, including links to online items. Further subclasses represent video, audio or image posts, as defined by various instances of the NFO (File Ontology)." ;
+		rdfs:label "Multimedia Post" ;
+		rdfs:subClassOf dlpo:LivePost .
+	
+	dlpo:VideoPost
+		a	rdfs:Class ;
+		rdfs:comment "Represents the live posting of a video file, or a link to an online media such as podcasts, videos, etc., as defined by instances of nfo:Video." ;
+		rdfs:label "Video Post" ;
+		rdfs:subClassOf dlpo:MultimediaPost .
+	
+	dlpo:AudioPost
+		a	rdfs:Class ;
+		rdfs:comment "Represents the live posting of audio file, or a link to online media such as podcasts, music, etc., as defined by instances of nfo:Audio." ;
+		rdfs:label "Audio Post" ;
+		rdfs:subClassOf dlpo:MultimediaPost .
+		
+	dlpo:ImagePost
+		a	rdfs:Class ;
+		rdfs:comment "Represents the live posting of an image file, or a link to an online image, as defined by instances of nfo:Image." ;
+		rdfs:label "Image Post" ;
+		rdfs:subClassOf dlpo:MultimediaPost .
+		
+	dlpo:PresencePost
+		a	rdfs:Class ;
+		rdfs:comment "A livepost consisting of information related to a user's presence, as defined by a set of DPO (Presence Ontology) instances." ;
+		rdfs:label "Presence Post" ;
+		rdfs:subClassOf dlpo:LivePost .
+		
+	dlpo:AvailabilityPost
+		a	rdfs:Class ;
+		rdfs:comment "Represents the live posting of information related to a user's detected or proclaimed availability, as defined by a set of instances of dpo:Availability." ;
+		rdfs:label "Availability Post" ;
+		rdfs:subClassOf dlpo:PresencePost .
+		
+	dlpo:ActivityPost
+		a	rdfs:Class ;
+		rdfs:comment "Represents the live posting of information related to a user's detected or proclaimed activity, as defined by a set of instances of dpo:Activity." ;
+		rdfs:label "Activity Post" ;
+		rdfs:subClassOf dlpo:PresencePost .	
+			
+	dlpo:EventPost
+		a	rdfs:Class ;
+		rdfs:comment "Represents the live posting of information related to a user's detected or proclaimed attendance in an ongoing event, as defined by an established instance of pimo:Event." ;
+		rdfs:label "Event Post" ;
+		rdfs:subClassOf dlpo:PresencePost .
+		
+	dlpo:Checkin
+		a	rdfs:Class ;
+		rdfs:comment "Represents the live posting of information related to a user's detected or proclaimed physical location, as defined by an established instance of pimo:Location." ;
+		rdfs:label "Checkin Post" ;
+		rdfs:subClassOf dlpo:PresencePost .	
+		
+	dlpo:Message
+		a	rdfs:Class ;
+		rdfs:comment "A livepost consisting of a textual message posted by either a user, or a contact, as defined by further subclasses." ;
+		rdfs:label "Message" ;
+		rdfs:subClassOf dlpo:LivePost .	
+		
+	dlpo:Status
+		a	rdfs:Class ;
+		rdfs:comment "Represents a status message, tweet, etc. shared by a user." ;
+		rdfs:label "Status Message" ;
+		rdfs:subClassOf dlpo:Message .	
+	
+	dlpo:Comment
+		a	rdfs:Class ;
+		rdfs:comment "Represents comments shared by a user or a contact, in reply to existing liveposts." ;
+		rdfs:label "Comment" ;
+		rdfs:subClassOf dlpo:Message, sioct:Comment .	
+		
+	dlpo:WebDocumentPost
+		a	rdfs:Class ;
+		rdfs:comment "A livepost consisting of links to remote web documents, as defined by further subclasses." ;
+		rdfs:label "Web Document Post" ;
+		rdfs:subClassOf dlpo:LivePost .
+	
+	dlpo:NotePost
+		a	rdfs:Class ;
+		rdfs:comment "Represents a livepost referring to an online note, as defined by instances of nfo:RemoteDataObject, or known instances of pimo:Note." ;
+		rdfs:label "Note Post" ;
+		rdfs:subClassOf dlpo:WebDocumentPost .
+	
+	dlpo:BlogPost
+		a	rdfs:Class ;
+		rdfs:comment "Represents a livepost referring to an online note, as defined by instances of nfo:RemoteDataObject, or known instances of pimo:Blogpost." ;
+		rdfs:label "Blogpost" ;
+		rdfs:subClassOf dlpo:WebDocumentPost, sioct:BlogPost .
+
+	# Properties
+	dlpo:hasReply
+		a	rdf:Property ;
+		rdfs:comment "Links a livepost to its reply or response, also in the form of a livepost. This property is transitive, and is the inverse of dlpo:replyOf." ;
+		rdfs:domain dlpo:LivePost ;
+		rdfs:label "has reply" ;
+		rdfs:range dlpo:LivePost ;
+		rdfs:subPropertyOf sioc:has_reply ;
+		nrl:inverseProperty dlpo:replyOf .
+		
+	dlpo:replyOf
+		a	rdf:Property ;
+		rdfs:comment "Links an in-reply-to livepost to the original livepost. This property is transitive, and is the inverse of dlpo:hasReply." ;
+		rdfs:domain dlpo:LivePost ;
+		rdfs:label "reply of" ;
+		rdfs:range dlpo:LivePost ;
+		rdfs:subPropertyOf sioc:reply_of ;
+		nrl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+		nrl:inverseProperty dlpo:hasReply .
+		
+	dlpo:hasRepost
+		a	rdf:Property, nrl:TransitiveProperty ;
+		rdfs:comment "Links to the repost(s) of a livepost. This property is transitive, and is the inverse of dlpo:repostOf." ;
+		rdfs:domain dlpo:LivePost ;
+		rdfs:label "has repost" ;
+		rdfs:range dlpo:LivePost ;
+		nrl:inverseProperty dlpo:repostOf .
+		
+	dlpo:repostOf
+		a	rdf:Property, nrl:TransitiveProperty ;
+		rdfs:comment "Links to the original of a reposted livepost. This property is transitive, and is the inverse of dlpo:hasRepost." ;
+		rdfs:domain dlpo:LivePost ;
+		rdfs:label "repost of" ;
+		rdfs:range dlpo:LivePost ;
+		nrl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+		nrl:inverseProperty dlpo:hasRepost .
+		
+	dlpo:isComposedOf
+		a	rdf:Property ;
+		rdfs:comment "One online post can simultaneously consist of various types of livepost subclasses as defined by DLPO. These are semantically related to the parent post through this property." ;
+		rdfs:domain dlpo:LivePost ;
+		rdfs:label "is composed of" ;
+		rdfs:subPropertyOf nao:hasSubResource ;
+		rdfs:range dlpo:LivePost .	
+		
+	dlpo:definingResource
+		a	rdf:Property ;
+		rdfs:comment "As many resources that are shared as liveposts exist beforehand, this property (a sub-property of nao:hasSuperResource) is provided to make this link explicit. Therefore a livepost (videopost, eventpost, availabilitypost, etc.) can be linked to the representation of the original resource being shared online (video, event, availability, etc.)"; 
+		rdfs:domain	dlpo:LivePost ;
+		rdfs:label	"has defining resource" ;
+		rdfs:range	rdfs:Resource ;
+		rdfs:subPropertyOf nao:hasSuperResource .
+	
+	dlpo:relatedResource
+		a	rdf:Property ;
+		rdfs:comment	"This property (a sub-property of nao:isRelated) is used to refer to resources that are related to the livepost, as opposed to being the resource being shared (refer to dlpo:definingResource). Typical uses for this property is to represent items (e.g. people) tagged to a livepost." ;
+		rdfs:domain	dlpo:LivePost ;
+		rdfs:label	"has related resource" ;
+		rdfs:range	rdfs:Resource ;
+		rdfs:subPropertyOf nao:isRelated .
+		
+	dlpo:timestamp
+		a	rdf:Property ;
+		rdfs:comment	"Records the time and date at which a Livepost is published at." ;
+		rdfs:domain	dlpo:LivePost ;
+		rdfs:label	"Timestamp" ;
+		nrl:cardinality "1"^^xsd:nonNegativeInteger ;
+		rdfs:range	xsd:datetime .
+		
+	dlpo:textualContent
+		a	rdf:Property ;
+		rdfs:comment	"The textual content of a Livepost, as it appears an online stream." ;
+		rdfs:domain	dlpo:LivePost ;
+		rdfs:label	"Textual Content" ;
+		nrl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+		rdfs:range xsd:string .
+}
+
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/dlpo/metadata> {
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/dlpo/metadata>
+          a       nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor <http://www.semanticdesktop.org/ontologies/2011/10/05/dlpo> .
+
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/dlpo>
+          a       nrl:Ontology , nrl:DocumentGraph ;
+          nao:hasDefaultNamespace "http://www.semanticdesktop.org/ontologies/2011/10/05/dlpo#" ;
+          nao:hasDefaultNamespaceAbbreviation "dlpo" ;
+          nao:lastModified "2012-06-18T00:00:00Z" ;
+          nao:serializationLanguage "TriG" ;
+          nao:status "Recommendation" ;
+          nrl:updatable "0" ;
+		  nao:creator <http://www.deri.ie/about/team/member/simon_scerri> ;
+		  nao:contributor <http://www.deri.ie/about/team/member/keith_cortis> ;
+          nao:version "1.0" ;
+          nao:prefLabel "digital.me LivePost Ontology" ;
+          nao:description "The DLPO represents social interactions taking place within social networks, and all sorts of items that can conventionally be shared through them." .
+}

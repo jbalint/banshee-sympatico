@@ -1,0 +1,111 @@
+#
+# Copyright (c) 2012 di.me Consortium
+#
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcon:     <http://www.semanticdesktop.org/ontologies/2011/10/05/dcon#> .
+@prefix duho:	<http://www.semanticdesktop.org/ontologies/2011/10/05/duho#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nrl:    <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/duho> {
+
+	# Classes
+	duho:Log
+		a		rdfs:Class ;
+		rdfs:subClassOf nrl:InstanceBase ;
+		rdfs:comment "A log documenting a direct or indirect aspect of user history. This includes logging changing resources such as user activities, contexts, preferences, or events in the user's system. Logging can be initiated by the user, by the system, or be set to execute automatically every period of time. Logs are instances of named graphs, and thus will contain a set of descriptive triples. The contained descriptions are bound to the logging time, and may thus no longer be valid at a later time." ;
+		rdfs:label "Log" .
+
+	duho:PrivacyPreferenceLog
+		a		rdfs:Class ;
+		rdfs:subClassOf duho:Log ;
+		rdfs:comment "A log that is used to document a specific type of resources: a user's changing privacy preferences. Thus, it is meant to contain past instances of ppo:PrivacyPreference from the Privacy Prefernece Ontology (PPO)." ;
+		rdfs:label "Privacy Preference Log" .
+		
+	duho:ContextLog
+		a		rdfs:Class ;
+		rdfs:subClassOf duho:Log ;
+		rdfs:comment "A log that is used to document a specific type of resource: a user's changing context. Thus, it is meant to contain past instances, or snapshots, of dcon:Context from the Context Ontology (DCON)." ;
+		rdfs:label "Context Log" .
+	
+	#Properties
+    
+    duho:timestamp
+          a       rdf:Property ;
+          rdfs:comment "The time of creation for the Log." ;
+          rdfs:domain 	duho:Log ;
+		  rdfs:subPropertyOf nao:created ;
+          rdfs:label "Timestamp" ;
+          rdfs:range xsd:dateTime .	
+	
+	duho:hasPastDataGraph a rdf:Property ;
+          rdfs:label "has past data graph" ;
+          rdfs:comment "Links a resource to the graph which contains its earlier metadata, before a change. Its typical usage would be to refer to a persisted copy of a file's metadata before it is changed. Inverse property of duho:isPastDataGraphFor." ;
+          rdfs:domain rdfs:Resource ;
+		  rdfs:subPropertyOf nao:hasDataGraph ;
+		  nrl:inverseProperty nao:isPastDataGraphFor ;
+	      rdfs:range duho:Log .
+	
+	duho:isPastDataGraphFor a rdf:Property ;
+          rdfs:label "has past data graph" ;
+          rdfs:comment "Links a graph to the resource for which contains earlier metadata, before it changed. Its typical usage would be to persist a copy of a file's metadata before it is changed. Inverse property of duho:isPastDataGraphFor." ;
+          rdfs:subPropertyOf nao:isDataGraphFor ;
+		  nrl:inverseProperty nao:hasPastDataGraph ;
+	      rdfs:domain duho:Log ;
+		  rdfs:range rdfs:Resource .		  
+}
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/duho/metadata> {
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/duho/metadata>
+          a       nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor <http://www.semanticdesktop.org/ontologies/2011/10/05/duho> .
+
+
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/duho>
+          a       nrl:Ontology , nrl:DocumentGraph ;
+          nao:hasDefaultNamespace "http://www.semanticdesktop.org/ontologies/2011/10/05/duho#" ;
+          nao:hasDefaultNamespaceAbbreviation "duho" ;
+          nao:lastModified "2012-10-04T00:00:00Z" ;
+          nao:serializationLanguage "TriG" ;
+          nao:status "Testing" ;
+          nrl:updatable "0" ;
+		  nao:creator <http://www.deri.ie/about/team/member/simon_scerri> ;
+          nao:version "1.0" ;
+          nao:prefLabel "digital.me User History Ontology" ;
+          nao:description "Stores logs of information that is no longer valid in a person's Personal Information Model, but is still important for issues of security, and manual or automatic user monitoring." .
+}

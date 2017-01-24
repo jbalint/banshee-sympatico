@@ -1,0 +1,162 @@
+#
+# Copyright (c) 2009 Leo Sauermann <leo.sauermann@dfki.de>
+# Copyright (c) 2013 di.me Consortium
+#
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+@prefix nco:     <http://www.semanticdesktop.org/ontologies/2007/03/22/nco#> .
+@prefix nrl:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix nso:     <http://www.semanticdesktop.org/ontologies/2009/11/08/nso#> .
+@prefix pimo:    <http://www.semanticdesktop.org/ontologies/2007/11/01/pimo#> .
+@prefix dao:	<http://www.semanticdesktop.org/ontologies/2011/10/05/dao#> .
+@prefix ppo: 	 <http://vocab.deri.ie/ppo#> .
+
+<http://www.semanticdesktop.org/ontologies/2009/11/08/nso> {
+    nso:sharedWithContact
+          a       rdf:Property ;
+          rdfs:comment """The subject resource is shared with the object contact. 
+The resource and its subresources are transferred to the receiver.
+An existing sharedWithContact relation implies that updates on the resource should be transferred to the contact. 
+The contact may ask for updates actively, then the sharing party's software should send a new copy of the shared resource to the contact.
+Domain should be either a nie:InformationElement or a pimo:Thing but no DataObject. This includes ncal:Event instances and other resources we find on a desktop.
+DataObjects are the specific binary stream where an Information Element is stored, and can't be shared because the recipient will form a new binary stream to store the data object. 
+As there is no superclass of both nie:InformationElement and pimo:Thing, the domain is rdfs:Resource. 
+One resource can be shared to multiple contacts, the cardinality is 0..n. """;
+          rdfs:domain rdfs:Resource ;
+          rdfs:subPropertyOf nso:sharedWith ;
+		  rdfs:label "shared with contact" ;
+          rdfs:range nco:Contact .
+          
+    nso:sharedWithGroup 
+          a       rdf:Property ;
+          rdfs:comment """The subject resource is shared with all contacts belonging to the object contact group. 
+The resource and its subresources are transferred to the receivers.
+An existing sharedWithGroup relation implies that updates on the resource should be transferred to the members belonging to the group. 
+The contact may ask for updates actively, then the sharing party's software should send a new copy of the shared resource to the contact.
+Domain should be either a nie:InformationElement or a pimo:Thing but no DataObject. This includes ncal:Event instances and other resources we find on a desktop.
+DataObjects are the specific binary stream where an Information Element is stored, and can't be shared because the recipient will form a new binary stream to store the data object. 
+As there is no superclass of both nie:InformationElement and pimo:Thing, the domain is rdfs:Resource. 
+One resource can be shared to multiple contact groups, the cardinality is 0..n. """;
+          rdfs:domain rdfs:Resource ;
+          rdfs:label "shared with group" ;
+		  rdfs:subPropertyOf nso:sharedWith ;
+          rdfs:range nco:ContactGroup .
+		  
+    nso:sharedBy     a rdf:Property;
+         rdfs:comment "This property establishes a provenance relationship between a resource(pimo:Thing or nie:InformationElement) and the pimo:Agent (individual, or group) through which it was acquired.";
+         rdfs:domain rdfs:Resource;
+         rdfs:label "shared by";
+         rdfs:range pimo:Agent .
+    
+    nso:sharedWith     a rdf:Property;
+         rdfs:comment "An alternative to nso:sharedWithContact/Group which enables the establishment of a 'shared with' relationship between a resource (pimo:Thing or nie:InformationElement) with a pimo:Agent (individual, or group).";
+         rdfs:domain rdfs:Resource;
+         rdfs:label "shared with";
+         rdfs:range pimo:Agent .
+
+	nso:sharedOn     a rdf:Property;
+         rdfs:comment "Records the time and date of when a resource was shared. Effectively, this could also coincide with the creation time of a local copy of the shared resource. This does not conflict with the original resource and content creation times, as defined by nao:created, nao:modified, nao:lastMofied and the subproperties nie:created, nie:modified, nie:lastModified, nie:contentCreated,nie:contentModified and nie:contentLastModified.";
+         rdfs:domain rdfs:Resource;
+         rdfs:label "shared on";
+         rdfs:range xsd:dateTime .  		 
+		 
+	nso:AccessSpace a rdfs:Class;
+	     rdfs:comment "A subclass of ppo:AccessSpace, this class enables the regulation of access to a space containing resources. Resource membership is still defined through the PPO properties, e.g. ppo:appliesToResource. However, within the context of this ontology, access is given to agents using the local nso:includes and nso:excludes relationships. In addition, multiple access spaces can be defined for a privacy preference, each regulating access to different agents through different access means (e.g. personal accounts). This relationship is defined using the nso:sharedThrough property.";
+         rdfs:subClassOf ppo:AccessSpace ;
+         rdfs:label "Access Space".
+	
+	nso:hasPrivacyPreference     a rdf:Property;
+         rdfs:comment "Enables the possibility of creating and maintaining privacy preferences regulating an agent's (typically only the current system user) access to third parties. For more information refer to the PPO Ontology, and the pimo:excludes, pimo:includes properties below.";
+         rdfs:domain pimo:Agent;
+		 nrl:inverseProperty nso:isPrivacyPreferenceOf ;
+         rdfs:label "has privacy preference";
+         rdfs:range ppo:PrivacyPreference .
+		 
+	nso:isPrivacyPreferenceOf     a rdf:Property;
+         rdfs:comment "Links privacy preferences to the agent that owns them. Inverse of hasPrivacyPreference.";
+         rdfs:range pimo:Agent;
+		 nrl:inverseProperty nso:hasPrivacyPreference ;
+         rdfs:label "is privacy preference of";
+         rdfs:domain ppo:PrivacyPreference .
+    
+	nso:excludes     a rdf:Property;
+         rdfs:comment "Enables a 'blacklist' membership property for agents with respect to privacy preferences as defined by the PPO Ontology. This is useful for the logical computation of privacy preference exclusion, e.g. sharing an access space with a predefined agent group, except for agent x.";
+         rdfs:domain nso:AccessSpace;
+		 rdfs:subPropertyOf ppo:hasAccessAgent ;
+         rdfs:label "excludes";
+         rdfs:range pimo:Agent .
+		 
+	nso:includes     a rdf:Property;
+         rdfs:comment "Enables a 'whitelist' membership property for agents with respect to privacy preferences as defined by the PPO Ontology. If included within the access space of a privacy preference, an agent will have access to the resources within. At least one agent must be defined for whitelist membership in an access space.";
+         nrl:minCardinality "1"^^xsd:nonNegativeInteger;
+		 rdfs:domain nso:AccessSpace;
+		 rdfs:subPropertyOf ppo:hasAccessAgent ;
+         rdfs:label "includes";
+         rdfs:range pimo:Agent .
+		 
+	nso:sharedThrough     a rdf:Property;
+         rdfs:comment "Determines the means (exactly one, required) that enable the access regulation for an access space. The supported access mean needs to be an instance of a dao:Account (e.g. a personal online account).";
+         nrl:cardinality "1"^^xsd:nonNegativeInteger;
+		 rdfs:domain nso:AccessSpace;
+         rdfs:label "includes";
+         rdfs:range dao:Account .
+}
+
+<http://www.semanticdesktop.org/ontologies/2009/11/08/nso/metadata> {
+    <http://www.semanticdesktop.org/ontologies/2009/11/08/nso/metadata>
+          a       nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor <http://www.semanticdesktop.org/ontologies/2009/11/08/nso> .
+
+
+    <http://www.semanticdesktop.org/ontologies/2009/11/08/nso>
+          a       nrl:Ontology , nrl:DocumentGraph ;
+          nao:hasDefaultNamespace "http://www.semanticdesktop.org/ontologies/2009/11/08/nso#" ;
+          nao:hasDefaultNamespaceAbbreviation "nso" ;
+          nao:lastModified "2013-03-27T18:00:00Z" ;
+          nao:serializationLanguage "TriG" ;
+		  nao:contributor <http://www.deri.ie/about/team/member/simon_scerri> ;
+          nao:status "Recommendation" ;
+ 		  nao:contributor <http://www.deri.ie/about/team/member/simon_scerri> ;
+		  nrl:updatable "0" ;
+          nao:version "v1.1" ;
+          nao:prefLabel "Nepomuk Sharing Ontology" ;
+          nao:description "The Nepomuk Sharing Ontology defines basic classes and properties for defining permissions with respect to sharing information in a network." .
+}
+

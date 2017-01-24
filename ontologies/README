@@ -1,1 +1,11 @@
 Standard ontologies converted with ttl2flr.
+
+Generating Java code for Ontologies can be done with the following SPARQL query:
+
+stardog query execute -f TSV test 'select (concat("public static final IRI ", ?name, " = INSTANCE.term(\"", ?name, "\"); // ", ?comment) as ?SS)
+where
+{
+{ ?s a rdfs:Class } UNION { ?s a rdf:Property }
+BIND(<tag:stardog:api:functions:localname>(?s) as ?name)
+{ select distinct ?s ?comment where { ?s rdfs:comment ?comment } }
+}' | perl -lpe's/(^"|"$)//;s/\\//g' >> outfile

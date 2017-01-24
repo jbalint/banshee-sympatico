@@ -1,0 +1,90 @@
+#
+# Copyright (c) 2013 di.me Consortium
+#
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix nco:     <http://www.semanticdesktop.org/ontologies/2007/03/22/nco#> .
+@prefix dao:	<http://www.semanticdesktop.org/ontologies/2011/10/05/dao#> .
+@prefix nie:     <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nrl:    <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix pimo:    <http://www.semanticdesktop.org/ontologies/2007/11/01/pimo#> .
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sioc:    <http://rdfs.org/sioc/ns#> .
+
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/dao> {
+
+	# Classes
+	
+	dao:Account     a rdfs:Class;
+         rdfs:comment "A person account, hosted in a local application or in a remote service, typically associated with a set of 		
+credentials and containing identity-related as well as other forms of personal user information. Subclass of nie:DataSource, as a source of personal information.";
+         rdfs:label "Account";
+		 rdfs:subClassOf pimo:Agent , sioc:Container, nie:DataSource .
+
+		 
+	# Properties
+	
+	dao:accountType
+		a	rdf:Property ;
+		rdfs:comment "Type of the account. This may be the name of the service where the account is created in. Examples might include Facebook, Twitter, di.me, etc." ;
+		rdfs:domain dao:Account ;
+		rdfs:label  "accountType" ;
+		rdfs:range 	xsd:string ;
+		nrl:maxCardinality "1"^^xsd:nonNegativeInteger .
+}	
+
+<http://www.semanticdesktop.org/ontologies/2011/10/05/dao/metadata> {
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/dao/metadata>
+          a       nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor <http://www.semanticdesktop.org/ontologies/2011/10/05/dao> .
+
+
+    <http://www.semanticdesktop.org/ontologies/2011/10/05/dao>
+          a       nrl:Ontology , nrl:DocumentGraph ;
+          nao:hasDefaultNamespace "http://www.semanticdesktop.org/ontologies/2011/10/05/dao#" ;
+          nao:hasDefaultNamespaceAbbreviation "dao" ;
+          nao:creator <http://www.deri.ie/about/team/member/simon_scerri> ;
+		  nao:lastModified "2013-09-23T00:00:00Z" ;
+          nao:serializationLanguage "TriG" ;
+          nao:status "Testing" ;
+          nrl:updatable "0" ;
+		  nao:creator <http://www.deri.ie/about/team/member/simon_scerri> ;
+          nao:version "1.0" ;
+          nao:prefLabel "digital.me Account Ontology" ;
+          nao:description "The DAO can be used to represent online user accounts, including social networks. As an agent, the user can interact with the online account, e.g. by sharing data with it, or through it." .
+}
