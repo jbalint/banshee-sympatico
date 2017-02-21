@@ -9,11 +9,12 @@ import org.openrdf.model.IRI;
 public class BsLib extends Vocabulary {
 	private static final BsLib INSTANCE = new BsLib();
 
-	public BsLib() {
+	private BsLib() {
 		super("http://banshee-sympatico/lib#");
 	}
 
 	public static final IRI Book = INSTANCE.term("Book");
 
 	public static final IRI relativePath = INSTANCE.term("relativePath");
+	public static final IRI hasBibtex = INSTANCE.term("hasBibtex");
 }
