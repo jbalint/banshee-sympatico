@@ -7,18 +7,20 @@
 #set -x
 QUERY=$(cat<<EOF
 select *
-where {
-      ?page a swivt:Subject.
-      ?page rdfs:label ?title.
-      ?page swivt:page ?url.
-      ?page swivt:wikiPageModificationDate ?d.
-      filter(not exists {?page swivt:file ?f })
-} order by desc(?d) limit 999
+from <virtual://mediawiki> {
+  ?page a mw:Page ;
+     mw:pageNamespaceId ?nsid ;
+     mw:pageTitle ?title ;
+     mw:pageUrl ?url ;
+     mw:pageLatestRev ?latestRev ;
+     # TODO : improve this, remove magic constants
+     FILTER(?nsid IN (0, 2))
+} order by desc(?latestRev) limit 5
 EOF
 )
 #echo "$QUERY"
 echo '`(' ; \
-    curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/semantic-mediawiki/query \
+    curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
         | jq -r '.results.bindings[] | @text "(\"WIKI: \(.title.value)\" . \"\(.url.value)\")"' \
     ; echo ")"
