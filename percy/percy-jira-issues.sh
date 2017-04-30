@@ -10,7 +10,9 @@ select ?summary ?key ?pkey ?pname {
     ?x a jira:Issue; jira:summary ?summary ; jira:issueKey ?key ; jira:project ?proj.
     ?proj jira:projectKey ?pkey ; jira:name ?pname.
   }
-} order by ?key limit 9999
+# TODO : order by removed until Stardog issue #3774 is fixed
+#} order by ?key limit 9999
+}
 EOF
 )
 #echo "$QUERY"
