@@ -14,8 +14,10 @@ from <virtual://mediawiki> {
      mw:pageUrl ?url ;
      mw:pageLatestRev ?latestRev ;
      # TODO : improve this, remove magic constants
-     FILTER(?nsid IN (0, 2))
-} order by desc(?latestRev) limit 5
+     # skip 6 (file pages) and 102 (something from SemanticMediaWiki)
+     # c.f. namespaces in LocalSettings.php
+     FILTER(?nsid IN (0, 2, 14, 3100, 3101, 3102, 3103, 3104, 3105, 3106, 3107))
+} order by desc(?latestRev) limit 9999
 EOF
 )
 #echo "$QUERY"
