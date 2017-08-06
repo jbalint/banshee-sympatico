@@ -1,6 +1,9 @@
 ;; Percy - the UI stuff
 (require 'cl-lib)
 
+;; How to test this? Run it in Emacs without the shell scripts. Load up the
+;; Helm sources, can manipulate them, and use `percy-anything'.
+
 ;; copied from xml.el's `xml-escape-string'
 (defun xml-unescape-string (string)
   (with-temp-buffer
@@ -30,6 +33,13 @@
 (defun percy--xdg-open (c)
   "Helm action to open a candidate with `xdg-open'"
   (start-process "" nil "xdg-open" c))
+
+(defun percy--chromozol-open (tabId)
+  "Help action to activate a tab via Chromozol"
+  ;; execute: bash -c 'echo tabActivate 1234.5678 > /tmp/chromozol-control.fifo'
+  (let ((command
+         (concat "echo tabActivate " tabId " > /tmp/chromozol-control.fifo")))
+    (start-process "chromozol-open" nil "bash" "-c" command)))
 
 (defun percy--generate-source-candidates (desc)
   "Run the script to generate the candidates for the source"
@@ -75,7 +85,10 @@
                :action percy--xdg-open)
         (:name "Bookstore"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-bookstore.sh")
-               :action percy--xdg-open)))
+               :action percy--xdg-open)
+        (:name "Browser Tabs"
+               :script ,(concat (getenv "BS_HOME") "/bin/percy-chromozol.sh")
+               :action percy--chromozol-open)))
 
 ;; Build the sources when the file is loaded
 (setq percy--sources (cl-mapcar 'percy--build-source percy--source-descriptors))
