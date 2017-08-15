@@ -39,7 +39,7 @@ public class FileMetadataGenerator {
 	 * Does an entry for the corresponding path exist in the DB?
 	 */
 	boolean existsInDb(Path p) {
-		return conn.get().context(context).predicate(Nepomuk.NIE.url).object(getIRI(p)).statements().findFirst().isPresent();
+		return conn.get().context(context).predicate(Nepomuk.NIE.url).object(getIRI(p)).ask();
 	}
 
 	/**
