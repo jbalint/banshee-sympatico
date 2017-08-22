@@ -33,7 +33,7 @@ EOF
 echo '`(' ; \
     curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/test/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
-        | jq -r '.results.bindings[] | @text "(\"CMZL: \(.title.value) \(.url.value)\" . \"\(.tabId.value)\")"' \
+        | jq -r '.results.bindings[] | @text "(\"CMZL: \(.title.value | gsub("\""; "\\\"")) \(.url.value)\" . \"\(.tabId.value)\")"' \
     ; echo ")"
 
 # Output is something like
