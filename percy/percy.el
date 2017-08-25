@@ -59,13 +59,17 @@
   ;; `candidates-symbol') for `update-fn'
   (lexical-let* ((desc desc-arg)
                  (name (plist-get desc :name))
-                 (candidates-symbol (intern (concat "percy--candidates-"
-                                                    (replace-regexp-in-string "\s" "-" name))))
+                 (cached (plist-get desc :cached))
+                 (candidates (if cached
+                                 (let ((sym (intern (concat "percy--candidates-"
+                                                            (replace-regexp-in-string "\s" "-" name)))))
+                                   ;; eagerly load the candidates (could use :init but this is slightly clearer)
+                                   (percy--update-source desc sym)
+                                   sym)
+                               (lambda () (percy--generate-source-candidates desc))))
                  (update-fn (lambda () (percy--update-source desc candidates-symbol))))
-    ;; eagerly load the candidates (could use :init but this is slightly clearer)
-    (percy--update-source desc candidates-symbol)
     (helm-build-sync-source name
-      :candidates candidates-symbol
+      :candidates candidates
       :update update-fn
       :action (plist-get desc :action)
       :nomark t
@@ -75,17 +79,20 @@
 (setq percy--source-descriptors
       `((:name "Wiki Pages"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-wiki-pages.sh")
-               :action percy--xdg-open)
+               :action percy--xdg-open
+               :cached 1)
         ;; TODO - this has to be a different type of source to pass the query string to the script
         ;; (:name "Jira Search"
         ;;        :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-search.sh")
         ;;        :action percy--xdg-open)
         (:name "Jira Issues"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-issues.sh")
-               :action percy--xdg-open)
+               :action percy--xdg-open
+               :cached 1)
         (:name "Bookstore"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-bookstore.sh")
-               :action percy--xdg-open)
+               :action percy--xdg-open
+               :cached 1)
         (:name "Browser Tabs"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-chromozol.sh")
                :action percy--chromozol-open)))
