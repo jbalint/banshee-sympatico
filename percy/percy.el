@@ -67,7 +67,7 @@
                                    (percy--update-source desc sym)
                                    sym)
                                (lambda () (percy--generate-source-candidates desc))))
-                 (update-fn (lambda () (percy--update-source desc candidates-symbol))))
+                 (update-fn (when cached (lambda () (percy--update-source desc candidates)))))
     (helm-build-sync-source name
       :candidates candidates
       :update update-fn
