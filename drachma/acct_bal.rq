@@ -1,0 +1,24 @@
+
+prefix ledger: <https://github.com/jbalint/ledger-ontology#>
+
+# stardog query -b 'acct=<https://github.com/jbalint/ledger-ontology#MyAcct>' -- test acct_bal.rq
+
+select ?acct (sum(?amt) as ?bal)
+from <http://banshee-sympatico/ledger>
+where {
+  # Transfers and income TO this acct
+  { ?x
+      ledger:destination ?acct ;
+      ledger:time ?time ;
+      ledger:post [ ledger:amount ?amt ] 
+  }
+  # Transfers and payments FROM this acct
+  UNION
+  { ?x
+      ledger:source ?acct ;
+      ledger:time ?time ;
+      ledger:post [ ledger:amount ?transfer_amt ]
+      BIND(?transfer_amt * -1 as ?amt) }
+}
+group by ?acct
+order by ?acct
