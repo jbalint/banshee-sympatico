@@ -12,10 +12,14 @@ print """
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 """
 
-file = "m1.ledger"
+file = "main.ledger"
+#file = "m1.ledger"
 
-# TODO : save all expense categories and assert them
+# save all expense/income categories and assert them
 categories = {}
+
+acct_reconciliations = {}
+reconciliations = []
 
 def is_expense(acctname):
     return acctname.startswith("Expenses:")
@@ -26,8 +30,11 @@ def rdf_name(acctname):
     return "ledger:" + v2
 
 def rdf_cat(cat):
+    label = re.sub(r".*:", "", cat)
     cat = re.sub(r":(\w)", lambda m: m.group(1).upper(), cat)
-    return re.sub(r" (\w)", lambda m: m.group(1).upper(), cat)
+    cat = re.sub(r" (\w)", lambda m: m.group(1).upper(), cat)
+    categories[cat] = label
+    return cat
 
 def escape(astr):
     return astr.replace("\"", "\\\"")
@@ -43,6 +50,22 @@ def print_post(post):
         note = note.strip()
         print "    ledger:note \"%s\" ;" % (escape(note))
     print "  ] ;"
+
+def print_reconcile(acctname, post):
+    shortname = re.sub(".*:", "", rdf_name(acctname))
+    if not acctname in acct_reconciliations:
+        acct_reconciliations[acctname] = 0
+    num = acct_reconciliations[acctname]
+    print "  ledger:reconciledAt ledger:Reconciliation-%s-%s ; " % (shortname, num)
+    if post.assigned_amount:
+        amt = post.assigned_amount.number()
+        r = "ledger:Reconciliation-%s-%s a ledger:AccountReconciliation ;\n" % (num, shortname)
+        r = r + "  ledger:account %s ; \n" % (rdf_name(acctname))
+        r = r + "  ledger:balance \"%s\"^^xsd:decimal ; \n" % (amt)
+        r = r + "  ledger:time \"%sT00:00:00Z\"^^xsd:dateTime ; \n" % (post.date)
+        r = r + ".\n"
+        acct_reconciliations[acctname] = num + 1
+        reconciliations.append(r)
 
 for xact in ledger.read_journal(file).xacts():
     first = True
@@ -79,14 +102,23 @@ for xact in ledger.read_journal(file).xacts():
             print "    ledger:amount \"%s\"^^xsd:decimal ; " % (post.amount.number())
             print "  ] ; "
             print "  ledger:destination %s ; " % (rdf_name(acctname))
+            print_reconcile(acctname, post)
         elif is_transfer:
             print "  ledger:source %s ; " % (rdf_name(acctname))
+            print_reconcile(acctname, post)
         elif not is_expense(acctname):
             print "  ledger:source %s ; " % (rdf_name(acctname))
+            print_reconcile(acctname, post)
         else:
             print_post(post)
     
     print "."
+
+for c in sorted(categories.iterkeys()):
+    print "ledger:%s a ledger:Category ; rdfs:label \"%s\" . " % (c, categories[c])
+
+for p in reconciliations:
+    print p
 
 # Why is this failing?
 # RuntimeError: Assertion failed in "/home/jbalint/aur/ledger-git/src/ledger/src/session.cc", line 182:std::size_t ledger::session_t::read_data(const string&): xact_count == journal->xacts.size()
