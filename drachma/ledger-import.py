@@ -59,7 +59,7 @@ def print_reconcile(acctname, post):
     print "  ledger:reconciledAt ledger:Reconciliation-%s-%s ; " % (shortname, num)
     if post.assigned_amount:
         amt = post.assigned_amount.number()
-        r = "ledger:Reconciliation-%s-%s a ledger:AccountReconciliation ;\n" % (num, shortname)
+        r = "ledger:Reconciliation-%s-%s a ledger:AccountReconciliation ;\n" % (shortname, num)
         r = r + "  ledger:account %s ; \n" % (rdf_name(acctname))
         r = r + "  ledger:balance \"%s\"^^xsd:decimal ; \n" % (amt)
         r = r + "  ledger:time \"%sT00:00:00Z\"^^xsd:dateTime ; \n" % (post.date)
@@ -68,18 +68,20 @@ def print_reconcile(acctname, post):
         reconciliations.append(r)
 
 for xact in ledger.read_journal(file).xacts():
-    first = True
     is_transfer = False
     is_income = False
     income_cat = None
-    for post in xact.posts():
+    post_count = len(xact)
+    for i in xrange(0, post_count):
+        post = xact[i]
         acctname = post.account.fullname()
-        if first:
-            first = False
+        is_last = i == (post_count - 1)
+        is_first = i == 0
+        if is_first:
+            # First post is used to determine transaction type and capture necessary state
             if is_expense(acctname):
                 print "[] a ledger:Payment ; "
                 print "  ledger:payee \"%s\" ;" % (escape(xact.payee))
-                print_post(post)
             elif acctname.startswith("Income:"):
                 is_income = True
                 print "[] a ledger:Income ; "
@@ -89,29 +91,39 @@ for xact in ledger.read_journal(file).xacts():
                 is_transfer = True
                 print "[] a ledger:Transfer ; "
                 print "  ledger:destination %s ; " % (rdf_name(acctname))
-                print "  ledger:post [ a ledger:Post ; "
-                print "    ledger:amount \"%s\"^^xsd:decimal ; ]; " % (post.amount.number())
             note = xact.note
             if note:
                 note = note.strip()
                 print "  ledger:note \"%s\" ;" % (escape(note))
             print "  ledger:time \"%sT00:00:00Z\"^^xsd:dateTime ;" % (post.date)
-        elif is_income:
-            print "  ledger:post [ a ledger:Post ; "
-            print "    ledger:category ledger:%s ;" % (income_cat)
-            print "    ledger:amount \"%s\"^^xsd:decimal ; " % (post.amount.number())
-            print "  ] ; "
-            print "  ledger:destination %s ; " % (rdf_name(acctname))
-            print_reconcile(acctname, post)
+        if is_income:
+            if is_last:
+                print "  ledger:destination %s ; " % (rdf_name(acctname))
+                print_reconcile(acctname, post)
+            else:
+                print "  ledger:post [ a ledger:Post ; "
+                print "    ledger:category ledger:%s ;" % (income_cat)
+                print "    ledger:amount \"%s\"^^xsd:decimal ; " % (-1 * post.amount.number())
+                print "  ] ; "
         elif is_transfer:
-            print "  ledger:source %s ; " % (rdf_name(acctname))
-            print_reconcile(acctname, post)
+            if is_last:
+                print "  ledger:source %s ; " % (rdf_name(acctname))
+                print_reconcile(acctname, post)
+            elif is_first:
+                print "  ledger:post [ a ledger:Post ; "
+                print "    ledger:amount \"%s\"^^xsd:decimal ; ]; " % (post.amount.number())
+                print_reconcile(acctname, post)
+            else:
+                if post_count < 10:
+                    raise Exception("More than one post on transfer on %s" % (post.date))
+                print "  ledger:post [ a ledger:Post ; "
+                print "    ledger:amount \"%s\"^^xsd:decimal ; ]; " % (post.amount.number())
         elif not is_expense(acctname):
             print "  ledger:source %s ; " % (rdf_name(acctname))
             print_reconcile(acctname, post)
         else:
             print_post(post)
-    
+
     print "."
 
 for c in sorted(categories.iterkeys()):
