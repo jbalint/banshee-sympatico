@@ -17,7 +17,7 @@ EOF
 )
 #echo "$QUERY"
 echo '`(' ; \
-    curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/jira-test/query \
+    curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
         | jq -r '.results.bindings[] | @html "(,(xml-unescape-string \"[\(.key.value)] \(.summary.value)\") . \"https://localhost/jira/browse/\(.key.value)\")"' \
     ; echo ")"
