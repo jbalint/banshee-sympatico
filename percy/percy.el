@@ -95,7 +95,10 @@
                :cached 1)
         (:name "Browser Tabs"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-chromozol.sh")
-               :action percy--chromozol-open)))
+               :action percy--chromozol-open)
+        (:name "Bookmarks"
+               :script ,(concat (getenv "BS_HOME") "/bin/percy-bookmarks.sh")
+               :action percy--xdg-open)))
 
 ;; Build the sources when the file is loaded
 (setq percy--sources (cl-mapcar 'percy--build-source percy--source-descriptors))
