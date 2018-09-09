@@ -1,5 +1,6 @@
 # Made a special build of ledger with python support. it created libledger.so.3 with Python support
 # export PYTHONPATH=/home/jbalint/aur/ledger-git/src/ledger
+# ~/aur/ledger-git/src/ledger% PREFIX=/home/jbalint ./acprep --prefix=$PREFIX --debug --python make -j12
 import ledger
 
 import re
