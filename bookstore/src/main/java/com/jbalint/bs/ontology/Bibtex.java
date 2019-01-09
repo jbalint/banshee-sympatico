@@ -1,21 +1,17 @@
 package com.jbalint.bs.ontology;
 
-import com.complexible.common.openrdf.vocabulary.Vocabulary;
-import org.openrdf.model.IRI;
+import com.stardog.stark.IRI;
+import com.stardog.stark.Values;
 
 /**
  * Created by jbalint on 2/20/17.
  */
-public class Bibtex extends Vocabulary {
-	private static final Bibtex INSTANCE = new Bibtex();
+public class Bibtex {
+		private static final String NS = "http://purl.org/net/nknouf/ns/bibtex#";
 
-	private Bibtex() {
-		super("http://purl.org/net/nknouf/ns/bibtex#");
-	}
+	public static final IRI Author = Values.iri(NS, "Author");
+	public static final IRI Misc = Values.iri(NS, "Misc");
 
-	public static final IRI Author = INSTANCE.term("Author");
-	public static final IRI Misc = INSTANCE.term("Misc");
-
-	public static final IRI hasAbstract = INSTANCE.term("hasAbstract");
-	public static final IRI hasTitle = INSTANCE.term("hasTitle");
+	public static final IRI hasAbstract = Values.iri(NS, "hasAbstract");
+	public static final IRI hasTitle = Values.iri(NS, "hasTitle");
 }

@@ -1,20 +1,16 @@
 package com.jbalint.bs.ontology;
 
-import com.complexible.common.openrdf.vocabulary.Vocabulary;
-import org.openrdf.model.IRI;
+import com.stardog.stark.IRI;
+import com.stardog.stark.Values;
 
 /**
  * Created by jbalint on 1/16/17.
  */
-public class BsLib extends Vocabulary {
-	private static final BsLib INSTANCE = new BsLib();
+public class BsLib {
+	private static final String NS = "http://banshee-sympatico/lib#";
 
-	private BsLib() {
-		super("http://banshee-sympatico/lib#");
-	}
+	public static final IRI Book = Values.iri(NS, "Book");
 
-	public static final IRI Book = INSTANCE.term("Book");
-
-	public static final IRI relativePath = INSTANCE.term("relativePath");
-	public static final IRI hasBibtex = INSTANCE.term("hasBibtex");
+	public static final IRI relativePath = Values.iri(NS, "relativePath");
+	public static final IRI hasBibtex = Values.iri(NS, "hasBibtex");
 }

@@ -22,7 +22,7 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.8'
     //compile "xml-apis:xml-apis:1.4.01"
     // TODO : don't need the entire server here, just client and some RDF utils
-    compile "com.complexible.stardog:client-http:5.0.2"
+    compile "com.complexible.stardog:client-http:6.0.1"
     testCompile "junit:junit:4.12"
     // both published locally
     compile ("org.grobid:grobid-core:0.4.2-SNAPSHOT") {

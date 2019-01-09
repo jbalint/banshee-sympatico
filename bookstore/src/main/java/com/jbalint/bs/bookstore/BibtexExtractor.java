@@ -3,31 +3,35 @@ package com.jbalint.bs.bookstore;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import com.complexible.stardog.api.Connection;
+import com.complexible.stardog.api.ConnectionConfiguration;
+import com.stardog.stark.Graphs;
+import com.stardog.stark.Resource;
+import com.stardog.stark.Statement;
+import com.stardog.stark.StatementPattern;
+import com.stardog.stark.Values;
+import com.stardog.stark.io.RDFFormats;
+import com.stardog.stark.io.RDFParsers;
+import com.stardog.stark.query.BindingSet;
+import com.stardog.stark.query.SelectQueryResult;
+import com.stardog.stark.vocabs.RDF;
 
 import be.ugent.mmlab.rml.core.RMLEngine;
 import be.ugent.mmlab.rml.core.StdRMLEngine;
 import be.ugent.mmlab.rml.mapdochandler.extraction.std.StdRMLMappingFactory;
 import be.ugent.mmlab.rml.mapdochandler.retrieval.RMLDocRetrieval;
 import be.ugent.mmlab.rml.model.RMLMapping;
-import com.complexible.common.openrdf.model.ModelIO;
-import com.complexible.common.openrdf.model.Models2;
-import com.complexible.common.rdf.model.StardogValueFactory;
-import com.complexible.common.rdf.model.Values;
-import com.complexible.stardog.api.Connection;
-import com.complexible.stardog.api.ConnectionConfiguration;
 import com.jbalint.bs.ontology.Bibtex;
 import com.jbalint.bs.ontology.BsLib;
 import org.grobid.core.data.BiblioItem;
 import org.grobid.core.engines.Engine;
 import org.grobid.core.factory.GrobidFactory;
 import org.grobid.core.mock.MockContext;
-import org.openrdf.model.Model;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
 import org.openrdf.rio.RDFFormat;
 import org.slf4j.Logger;
@@ -39,6 +43,7 @@ import org.slf4j.LoggerFactory;
  * TODO : lots of constants here need to be parameterized
  */
 public class BibtexExtractor {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(BibtexExtractor.class);
 
 	private static final String GROBID_HOME = "/home/jbalint/sw/java-sw/grobid/grobid-home";
@@ -56,7 +61,8 @@ public class BibtexExtractor {
 		try {
 			MockContext.setInitialContext(GROBID_HOME,
 			                              GROBID_HOME + "/config/grobid.properties");
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LOGGER.error("Failed to initialize GROBID", e);
 		}
 	}
@@ -124,15 +130,15 @@ public class BibtexExtractor {
 		aConn.begin();
 		String aQuery = "select * from <BSLIB-GRAPH> { ?book a bslib:Book ; nie:isStoredAs/bslib:relativePath ?path }";
 		aQuery = aQuery.replaceAll("BSLIB-GRAPH", aBslibGraph);
-		TupleQueryResult aResult = aConn.select(aQuery).execute();
+		SelectQueryResult aResult = aConn.select(aQuery).execute();
 
 		init();
 		BibtexExtractor aExtractor = new BibtexExtractor();
 
 		while (aResult.hasNext()) {
 			BindingSet aBindings = aResult.next();
-			Resource aBook = (Resource) aBindings.getValue("book");
-			String aPath = aBindings.getValue("path").stringValue();
+			Resource aBook = aBindings.resource("book").get();
+			String aPath = aBindings.literal("path").get().label();
 			if (!aPath.endsWith(".pdf")) {
 				continue;
 			}
@@ -152,12 +158,13 @@ public class BibtexExtractor {
 				LOGGER.error("Failed to map RDF: " + aPath, theE);
 				continue;
 			}
-			Model aStatements = ModelIO.read(Paths.get("/tmp/rml-grobid-output.ttl"), RDFFormat.TURTLE);
-			Statement aBibtex = aStatements.filter(null, StardogValueFactory.RDF.TYPE, Bibtex.Misc).stream().findFirst().orElse(null);
-			if (aBibtex != null) {
-				Model aBibtexRef = Models2.newModel(Values.statement(aBook, BsLib.hasBibtex, aBibtex.getSubject()));
-				aConn.add().graph(aBibtexRef, Values.iri(aBslibGraph));
-			}
+			Set<Statement> aStatements = RDFParsers.read(Paths.get("/tmp/rml-grobid-output.ttl"), RDFFormats.TURTLE);
+			Graphs.matching(aStatements, StatementPattern.po(RDF.TYPE, Bibtex.Misc))
+			      .findFirst()
+			      .ifPresent(aBibtex -> {
+				      Set<Statement> aBibtexRef = Collections.singleton(Values.statement(aBook, BsLib.hasBibtex, aBibtex.subject()));
+				      aConn.add().graph(aBibtexRef, Values.iri(aBslibGraph));
+			      });
 			aConn.add().graph(aStatements, Values.iri("http://banshee-sympatico/bookstore/grobid-extract-2017-02-20"));
 		}
 		aConn.commit();
