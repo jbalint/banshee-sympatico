@@ -10,6 +10,9 @@ select ?tabId ?title ?url
 from cmzl:
 where
 {
+#pragma join.bind off
+# Getting a bad plan here, c.f. [BS-49]
+
   # Get the current session (was using max ?start and joining outside this scope, but #4114 prevents that for now)
   {select (max(?ses) as ?ses) {  ?x a cmzl:SessionStartEvent ; cmzl:time ?start ; cmzl:session ?ses }}
 
@@ -37,3 +40,11 @@ echo '`(' ; \
     ; echo ")"
 
 # Output is something like
+
+
+
+exit
+    #echo "$QUERY"
+    curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
+         --data-urlencode query="$QUERY" 2> /dev/null \
+        | jq -r '.results.bindings[] | @text "`(\"CMZL: \(.title.value | gsub("\""; "\\\"")) \(.url.value)\" . \"\(.tabId.value)\")"' \
