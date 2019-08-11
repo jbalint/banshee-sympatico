@@ -1,0 +1,31 @@
+# SPARQL query for text search
+
+prefix fts: <tag:stardog:api:search:>
+
+select ?url ?title ?pred ?h ?score {
+
+  graph <virtual://mediawiki> {
+
+    # n.b. this works in VG because the graph is _cached_
+    service <tag:stardog:api:search:textMatch> {
+      [] fts:result ?l ;
+      fts:query ?textQuery ;
+      fts:score ?score ;
+      fts:highlight ?h ;
+    }
+
+    {
+      # page texts
+      ?rev ?pred ?l .
+      ?page mw:pageLatestRev ?rev ; mw:pageUrl ?url ; mw:pageTitle ?title
+    }
+    UNION
+    {
+      # page titles
+      ?page mw:pageUrl ?url ; mw:pageTitle ?l
+      bind(?l as ?title)
+    }
+
+  }
+
+} order by desc(?score) limit 20

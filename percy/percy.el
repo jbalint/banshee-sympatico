@@ -1,6 +1,9 @@
 ;; Percy - the UI stuff
 (require 'cl-lib)
 
+(require 'percy-action)
+(require 'percy-text-search-source)
+
 ;; How to test this? Run it in Emacs without the shell scripts. Load up the
 ;; Helm sources, can manipulate them, and use `percy-anything'.
 
@@ -29,17 +32,6 @@
 
 (defvar percy-helm-fuzzy-match nil)
 (defvar percy-helm-multimatch t)
-
-(defun percy--xdg-open (c)
-  "Helm action to open a candidate with `xdg-open'"
-  (start-process "" nil "xdg-open" c))
-
-(defun percy--chromozol-open (tabId)
-  "Help action to activate a tab via Chromozol"
-  ;; execute: bash -c 'echo tabActivate 1234.5678 > /tmp/chromozol-control.fifo'
-  (let ((command
-         (concat "echo tabActivate " tabId " > /tmp/chromozol-control.fifo")))
-    (start-process "chromozol-open" nil "bash" "-c" command)))
 
 (defun percy--generate-source-candidates (desc)
   "Run the script to generate the candidates for the source"
@@ -81,10 +73,6 @@
                :script ,(concat (getenv "BS_HOME") "/bin/percy-wiki-pages.sh")
                :action percy--xdg-open
                :cached 1)
-        ;; TODO - this has to be a different type of source to pass the query string to the script
-        ;; (:name "Jira Search"
-        ;;        :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-search.sh")
-        ;;        :action percy--xdg-open)
         (:name "Jira Issues"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-issues.sh")
                :action percy--xdg-open
@@ -101,12 +89,13 @@
                :action percy--xdg-open)))
 
 ;; Build the sources when the file is loaded
-(setq percy--sources (cl-mapcar 'percy--build-source percy--source-descriptors))
+(setq percy--sources
+      (cons percy--text-search-source (cl-mapcar 'percy--build-source percy--source-descriptors)))
 
 (defun percy--close-if-client ()
   "Close the frame if it's an Emacs client"
   (if (and (boundp 'server-name)
-           (equals server-name percy-emacs-server-name))
+           (equal server-name percy-emacs-server-name))
       (delete-frame)))
 
 (defun percy-wiki-page ()
@@ -122,3 +111,5 @@
   "Use Percy to open ANYTHING!"
   (helm :sources percy--sources)
   (percy--close-if-client))
+
+(provide 'percy)

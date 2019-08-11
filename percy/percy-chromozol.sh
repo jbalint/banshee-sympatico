@@ -10,9 +10,6 @@ select ?tabId ?title ?url
 from cmzl:
 where
 {
-#pragma join.bind off
-# Getting a bad plan here, c.f. [BS-49]
-
   # Get the current session (was using max ?start and joining outside this scope, but #4114 prevents that for now)
   {select (max(?ses) as ?ses) {  ?x a cmzl:SessionStartEvent ; cmzl:time ?start ; cmzl:session ?ses }}
 

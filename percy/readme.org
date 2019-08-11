@@ -1,0 +1,3 @@
+Percy
+
+* Percy directory needs to be on Emacs =load-path=
