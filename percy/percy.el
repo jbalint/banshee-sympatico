@@ -83,6 +83,7 @@
                :cached 1)
         (:name "Browser Tabs"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-chromozol.sh")
+               :cached 1
                :action percy--chromozol-open)
         (:name "Bookmarks"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-bookmarks.sh")
@@ -90,7 +91,9 @@
 
 ;; Build the sources when the file is loaded
 (setq percy--sources
-      (cons percy--text-search-source (cl-mapcar 'percy--build-source percy--source-descriptors)))
+      (append
+       (list percy--text-search-source)
+       (cl-mapcar 'percy--build-source percy--source-descriptors)))
 
 (defun percy--close-if-client ()
   "Close the frame if it's an Emacs client"
@@ -113,3 +116,7 @@
   (percy--close-if-client))
 
 (provide 'percy)
+
+;; TODO : shouldn't have to run these manually, but do until [BS-78] is fixed
+;;(setq server-name "percy")
+;;(server-start)
