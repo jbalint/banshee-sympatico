@@ -1,0 +1,14 @@
+# Percy is a UI
+
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix percy: <http://banshee-sympatico/percy/> .
+
+percy:Entity a rdfs:Class .
+
+# percy:ViewMethod a rdfs:Class .
+
+# percy:WebLink rdfs:subClassOf percy:ViewMethod .
+
+# percy:url rdfs:domain percy:WebLink ;
+#   rdfs:range rdf:Resource .
