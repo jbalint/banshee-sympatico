@@ -1,0 +1,30 @@
+# List all TXNs for the given month
+# This does not include the car payment because it's a transfer
+
+prefix ledger: <https://github.com/jbalint/ledger-ontology#>
+
+select
+?payee
+?amt
+?category
+(str(date(?time)) as ?date)
+#(group_concat(?note; separator=", ") as ?notes)
+from <http://banshee-sympatico/ledger>
+{
+  ?tx a ledger:Payment ; ledger:payee ?payee .
+  ?tx ledger:time ?time ; ledger:post ?p.
+  ?p ledger:amount ?amt ; ledger:category ?category
+
+  optional { { ?tx ledger:note ?note } union { ?p ledger:note ?note } }
+
+  FILTER(!bound(?note) || !contains(?note, "[XJ]"))
+
+  # TODO : this one is clearer, but slower on Stardog as of 7.0.1
+  #bind("2019-07-01"^^xsd:date as ?month)
+  #filter(?time >= dateTime(?month) &&
+  #       ?time <= dateTime(?month + "P1M"^^xsd:duration))
+  filter(year(?time) = 2019 && month(?time) = 12)
+}
+group by ?payee ?amt ?category ?time
+order by ?category ?time
+
