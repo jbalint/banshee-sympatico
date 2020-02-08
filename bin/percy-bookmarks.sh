@@ -1,0 +1,1 @@
+../percy/percy-bookmarks.sh
