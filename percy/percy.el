@@ -120,7 +120,3 @@
   (percy--close-if-client))
 
 (provide 'percy)
-
-;; TODO : shouldn't have to run these manually, but do until [BS-78] is fixed
-;;(setq server-name "percy")
-;;(server-start)

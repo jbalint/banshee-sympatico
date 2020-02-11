@@ -9,7 +9,7 @@
 
 (defconst percy--text-search-query
   (with-temp-buffer
-    (insert-file-contents "percy-text-search.rq")
+    (insert-file-contents (concat (getenv "BS_HOME") "/percy/percy-text-search.rq"))
     (buffer-string))
   "The SPARQL query to perform the text search")
 
