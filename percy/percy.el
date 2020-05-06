@@ -3,6 +3,7 @@
 
 (require 'percy-action)
 (require 'percy-text-search-source)
+(require 'percy-code-snippet-source)
 
 ;; How to test this? Run it in Emacs without the shell scripts. Load up the
 ;; Helm sources, can manipulate them, and use `percy-anything'.
@@ -96,8 +97,10 @@
 ;; Build the sources when the file is loaded
 (setq percy--sources
       (append
-       (list percy--text-search-source)
-       (cl-mapcar 'percy--build-source percy--source-descriptors)))
+       (list percy--text-search-source
+             percy--code-snippet-source)
+       (cl-mapcar 'percy--build-source percy--source-descriptors)
+       ))
 
 (defun percy--close-if-client ()
   "Close the frame if it's an Emacs client"

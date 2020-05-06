@@ -86,3 +86,4 @@
   (helm :sources '(percy--text-search-source)))
 
 (provide 'percy-text-search-source)
+
