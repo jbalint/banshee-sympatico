@@ -1,0 +1,27 @@
+<idea-plugin>
+    <id>jbalint.synthesis</id>
+    <name>Code Synthesis</name>
+    <vendor email="jbalint@gmail.com" url="http://www.x.com">Jess Balint</vendor>
+
+    <description><![CDATA[
+    Code synthesis by way of using some external data - work in progress
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action class="jbalint.sythesis.MyAction"
+                description="a1"
+                id="a1"
+                text="a1">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
