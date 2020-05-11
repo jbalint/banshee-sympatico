@@ -19,6 +19,8 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = "2020.1.1"
+//    pluginName = ""
+    setPlugins("java")
 }
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8

@@ -1,2 +1,2 @@
-rootProject.name = "intellij-dynamic-plugin-example"
+rootProject.name = "bs-intellij-lab"
 
