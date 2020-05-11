@@ -1,4 +1,4 @@
-package jbalint.sythesis;
+package jbalint.synthesis;
 
 import java.util.UUID;
 

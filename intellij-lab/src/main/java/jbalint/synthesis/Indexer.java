@@ -1,8 +1,7 @@
-package jbalint.sythesis;
+package jbalint.synthesis;
 
 import com.google.common.collect.Maps;
 import com.intellij.lang.java.JavaParserDefinition;
-import com.intellij.psi.impl.cache.impl.todo.TodoIndexEntry;
 import com.intellij.util.indexing.*;
 import com.intellij.util.io.DataExternalizer;
 import com.intellij.util.io.KeyDescriptor;

@@ -16,13 +16,13 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-<!--        <fileBasedIndex implementation="jbalint.sythesis.Indexer"/>-->
-        <compiler.task execute="AFTER" implementation="jbalint.sythesis.MyCompileTask"/>
+<!--        <fileBasedIndex implementation="jbalint.synthesis.Indexer"/>-->
+        <compiler.task execute="AFTER" implementation="jbalint.synthesis.MyCompileTask"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action class="jbalint.sythesis.MyAction"
+        <action class="jbalint.synthesis.MyAction"
                 description="a1"
                 id="a1"
                 text="a1">

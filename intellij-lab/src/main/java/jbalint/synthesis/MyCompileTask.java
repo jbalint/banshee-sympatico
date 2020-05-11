@@ -1,4 +1,4 @@
-package jbalint.sythesis;
+package jbalint.synthesis;
 
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileTask;

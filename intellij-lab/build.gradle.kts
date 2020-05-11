@@ -9,10 +9,22 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("http://maven.stardog.com")
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation(files("/home/jbalint/sw/java-sw/jcfl/build/libs/jcfl-0.1.jar"))
+//    implementation("com.stardog.stark:client-http:7.2.1")
+    implementation("com.complexible.stardog:client-http:7.2.1") {
+        // conflicts with IntelliJ's version
+        exclude(group = "org.slf4j")
+        // contains a non-shadowed slf4j (WTF!)
+        exclude(group = "org.apache.directory.server")
+        // DatatypeFactory issues w/j11. originated in Stark's `Values` static initializer
+        exclude(group = "xerces")
+        exclude(group = "xml-apis")
+    }
     testImplementation("junit", "junit", "4.12")
 }
 
