@@ -1,0 +1,35 @@
+@prefix sql: <tag:stardog:api:sql:> .
+@prefix ledger: <https://github.com/jbalint/ledger-ontology#> .
+
+:Posts a sql:TableMapping ;
+  sql:class ledger:Post ;
+  sql:hasField [ sql:property ledger:amount ; sql:type xsd:decimal ] ;
+.
+
+:Transfers a sql:TableMapping ;
+  sql:class ledger:Transfer ;
+  sql:hasField [ sql:property ledger:time ; sql:type xsd:dateTime ] ;
+  sql:hasField [ sql:property ledger:destination ; sql:type xsd:anyURI ] ;
+  sql:hasField [ sql:property ledger:source ; sql:type xsd:anyURI ] ;
+  sql:hasField [ sql:property ledger:note ; sql:optional true ] ;
+.
+
+:TransferPosts a sql:TableMapping ;
+  sql:tableName "TransferPosts" ;
+  sql:hasField [ sql:property ledger:post ; sql:refersTo :Posts ] ;
+  sql:hasField [ sql:property ledger:post ; sql:refersTo :Transfers ; sql:invers true ] ;
+.
+
+:Payments a sql:TableMapping ;
+  sql:class ledger:Payment ;
+  sql:hasField [ sql:property ledger:time ; sql:type xsd:dateTime ] ;
+  sql:hasField [ sql:property ledger:source ; sql:type xsd:anyURI ] ;
+  sql:hasField [ sql:property ledger:note ; sql:optional true ] ;
+  sql:hasField [ sql:property ledger:payee ] ;
+.
+
+:PaymentPosts a sql:TableMapping ;
+  sql:tableName "PaymentPosts" ;
+  sql:hasField [ sql:property ledger:post ; sql:refersTo :Posts ] ;
+  sql:hasField [ sql:property ledger:post ; sql:refersTo :Payments ; sql:inverse true ] ;
+.
