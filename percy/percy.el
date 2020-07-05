@@ -4,6 +4,7 @@
 (require 'percy-action)
 (require 'percy-text-search-source)
 (require 'percy-code-snippet-source)
+(require 'percy-stardew-valley-source)
 
 ;; How to test this? Run it in Emacs without the shell scripts. Load up the
 ;; Helm sources, can manipulate them, and use `percy-anything'.
@@ -98,7 +99,8 @@
 (setq percy--sources
       (append
        (list percy--text-search-source
-             percy--code-snippet-source)
+             percy--code-snippet-source
+             percy--stardew-valley-source)
        (cl-mapcar 'percy--build-source percy--source-descriptors)
        ))
 
