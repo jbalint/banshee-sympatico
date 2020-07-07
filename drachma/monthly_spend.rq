@@ -23,7 +23,7 @@ from <http://banshee-sympatico/ledger>
   #bind("2019-07-01"^^xsd:date as ?month)
   #filter(?time >= dateTime(?month) &&
   #       ?time <= dateTime(?month + "P1M"^^xsd:duration))
-  filter(year(?time) = 2020 && month(?time) = 05)
+  filter(year(?time) = 2020 && month(?time) = 06)
 }
 group by ?payee ?amt ?category ?time
 order by ?category ?time
