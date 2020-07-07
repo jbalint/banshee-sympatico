@@ -1,0 +1,40 @@
+
+prefix ledger: <https://github.com/jbalint/ledger-ontology#>
+
+select ?category ?year
+(sum(?amt_01) as ?amount_Jan)
+(sum(?amt_02) as ?amount_Feb)
+(sum(?amt_03) as ?amount_Mar)
+(sum(?amt_04) as ?amount_Apr)
+(sum(?amt_05) as ?amount_May)
+from <http://banshee-sympatico/ledger>
+{
+  #bind(2 as ?input_month)
+  #filter(?month = ?input_month)
+  bind(2020 as ?input_year)
+  filter(?year = ?input_year)
+  {
+    ?tx a ledger:Payment ; ledger:payee ?payee .
+    ?tx ledger:time ?time ; ledger:post ?p.
+    ?p ledger:amount ?pay_amt ; ledger:category ?category
+    bind(year(?time) as ?year)
+    bind(month(?time) as ?month)
+    bind(?pay_amt * -1 as ?amt)
+  }
+  UNION
+  {
+    ?tx a ledger:Income .
+    ?tx ledger:time ?time ; ledger:post ?p.
+    ?p ledger:amount ?amt ; ledger:category ?category
+    bind(year(?time) as ?year)
+    bind(month(?time) as ?month)
+  }
+  FILTER NOT EXISTS {?tx ledger:note ?note FILTER(contains(?note, "[XJ]"))}
+  bind(if(?month = 1, ?amt, 0) as ?amt_01)
+  bind(if(?month = 2, ?amt, 0) as ?amt_02)
+  bind(if(?month = 3, ?amt, 0) as ?amt_03)
+  bind(if(?month = 4, ?amt, 0) as ?amt_04)
+  bind(if(?month = 5, ?amt, 0) as ?amt_05)
+}
+group by ?category ?year
+order by ?category
