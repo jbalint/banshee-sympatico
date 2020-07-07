@@ -1,0 +1,18 @@
+
+prefix ledger: <https://github.com/jbalint/ledger-ontology#>
+
+select
+?payee (xsd:integer(?pay_amt) as ?pay) (xsd:date(?time) as ?date) ?category ?note
+#(sum(?pay_amt) as ?total)
+from <http://banshee-sympatico/ledger>
+{
+  ?tx a ledger:Payment ; ledger:payee ?payee .
+  ?tx ledger:time ?time ; ledger:post ?p.
+  ?p ledger:amount ?pay_amt ; ledger:category ?category
+  filter exists {
+    { ?tx ledger:note ?note } union { ?p ledger:note ?note }
+    filter(contains(?note, "[XYZ-123]"))
+  }
+  #filter(xsd:date(?time) > "2020-01-31"^^xsd:date)
+}
+order by ?date ?tx
