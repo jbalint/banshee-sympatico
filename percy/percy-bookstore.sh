@@ -20,7 +20,7 @@ EOF
 echo '`(' ; \
     curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
-        | jq -r '.results.bindings[] | @text "(\"BOOK: \(.fileName.value)\" . \"\(.url.value)\")"' \
+        | jq -r '.results.bindings[] | @text "((title . \"\(.fileName.value)\") (url . \"\(.url.value)\"))"' \
     ; echo ")"
 
     

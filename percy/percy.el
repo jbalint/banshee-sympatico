@@ -43,6 +43,12 @@
   (with-current-buffer percy-temp-output-buffer-name
     (eval (car (read-from-string (buffer-string))))))
 
+(defun percy--candidate-transformer (raw-candidates)
+  "Create the Helm candidates by extracting the title and create the list of pairs"
+  (mapcar (lambda (raw)
+            (cons (alist-get 'title raw) raw))
+          raw-candidates))
+
 (defun percy--update-source (desc candidates-symbol)
   "Update a source's list of candidates"
   (set candidates-symbol (percy--generate-source-candidates desc)))
@@ -64,6 +70,7 @@
                  (update-fn (when cached (lambda () (percy--update-source desc candidates)))))
     (helm-build-sync-source name
       :candidates candidates
+      :candidate-transformer 'percy--candidate-transformer
       :update update-fn
       :action (plist-get desc :action)
       :nomark t
@@ -71,7 +78,8 @@
       :fuzzy-match percy-helm-fuzzy-match)))
 
 (setq percy--source-descriptors
-      `((:name "Wiki Pages"
+      `(
+        (:name "Wiki Pages"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-wiki-pages.sh")
                :action percy--xdg-open
                :cached 1)

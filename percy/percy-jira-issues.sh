@@ -19,7 +19,7 @@ EOF
 echo '`(' ; \
     curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
-        | jq -r '.results.bindings[] | @html "(,(xml-unescape-string \"[\(.key.value)] \(.summary.value)\") . \"https://localhost/jira/browse/\(.key.value)\")"' \
+        | jq -r '.results.bindings[] | @html "((key . \"\(.key.value)\") (title . ,(xml-unescape-string \"[\(.key.value)] \(.summary.value)\")) (url . \"https://localhost/jira/browse/\(.key.value)\"))"' \
     ; echo ")"
 
 # Outputs (note: escaped characters must be fixed. this must be passed through `eval', also note the backquote action):

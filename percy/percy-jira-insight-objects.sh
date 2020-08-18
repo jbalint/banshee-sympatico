@@ -19,5 +19,5 @@ EOF
 echo '`(' ; \
     curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
-        | jq -r '.results.bindings[] | @html "(,(xml-unescape-string \"[\(.key.value)] \(.label.value) - (\(.typeName.value))\") . \"https://localhost/jira/secure/ShowObject.jspa?id=\(.id.value)\")"' \
+        | jq -r '.results.bindings[] | @html "((key . \"\(.key.value)\") (title . ,(xml-unescape-string \"[\(.key.value)] \(.label.value) - (\(.typeName.value))\")) (url . \"https://localhost/jira/secure/ShowObject.jspa?id=\(.id.value)\"))"' \
     ; echo ")"
