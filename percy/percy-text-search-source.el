@@ -38,7 +38,7 @@
     (concat header display-text)))
 
 (defun percy--text-search-open-url (candidate)
-  (percy--xdg-open (percy--sparql-json-value 'url candidate)))
+  (percy--xdg-open `((url . ,(percy--sparql-json-value 'url candidate)))))
 
 ;; perform a SPARQL query, returning the result as a JSON object, as parsed by json.el
 (defun percy--text-search-fetch-candidates (text-query)
@@ -51,6 +51,7 @@
                             ("$textQuery" . ,(format "'%s'" text-query)))
                   :parser 'json-read
                   :headers '(("Accept" . "application/sparql-results+json")
+                             ;; TODO: use env for credentials
                              ("Authorization" . "Basic YWRtaW46YWRtaW4="))))
            ;; this returns a vector
            (bindings (cdr (cadr (cadr (request-response-data resp))))))
