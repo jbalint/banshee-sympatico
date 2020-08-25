@@ -106,10 +106,10 @@
 ;; Build the sources when the file is loaded
 (setq percy--sources
       (append
+       (cl-mapcar 'percy--build-source percy--source-descriptors)
        (list percy--text-search-source
              percy--code-snippet-source
              percy--stardew-valley-source)
-       (cl-mapcar 'percy--build-source percy--source-descriptors)
        ))
 
 (defun percy--close-if-client ()
