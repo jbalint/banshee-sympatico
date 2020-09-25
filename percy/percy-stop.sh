@@ -1,3 +1,3 @@
 #!/bin/bash
 
-emacsclient -s /tmp/emacs$UID/percy -e '(kill-emacs)'
+emacsclient -s /run/user/$UID/emacs/percy -e '(kill-emacs)'

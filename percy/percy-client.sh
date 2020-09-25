@@ -2,7 +2,7 @@
 # Percy client - will start Emacs session if necessary
 # TODO - refactor function from h1g1.sh
 
-SOCK=/tmp/emacs$UID/percy
+SOCK=/run/user/$UID/emacs/percy
 
 if [ ! -S $SOCK ] ; then
     emacs --eval '(setq server-name "percy")' \
