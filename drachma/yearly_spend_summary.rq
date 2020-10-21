@@ -7,6 +7,10 @@ select ?category ?year
 (sum(?amt_03) as ?amount_Mar)
 (sum(?amt_04) as ?amount_Apr)
 (sum(?amt_05) as ?amount_May)
+(sum(?amt_06) as ?amount_Jun)
+(sum(?amt_07) as ?amount_Jul)
+(sum(?amt_08) as ?amount_Aug)
+(sum(?amt_09) as ?amount_Sep)
 from <http://banshee-sympatico/ledger>
 {
   #bind(2 as ?input_month)
@@ -35,6 +39,10 @@ from <http://banshee-sympatico/ledger>
   bind(if(?month = 3, ?amt, 0) as ?amt_03)
   bind(if(?month = 4, ?amt, 0) as ?amt_04)
   bind(if(?month = 5, ?amt, 0) as ?amt_05)
+  bind(if(?month = 6, ?amt, 0) as ?amt_06)
+  bind(if(?month = 7, ?amt, 0) as ?amt_07)
+  bind(if(?month = 8, ?amt, 0) as ?amt_08)
+  bind(if(?month = 9, ?amt, 0) as ?amt_09)
 }
 group by ?category ?year
 order by ?category
