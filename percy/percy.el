@@ -81,7 +81,7 @@
       `(
         (:name "Wiki Pages"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-wiki-pages.sh")
-               :action percy--xdg-open
+               :action percy--link-actions
                :cached 1)
         (:name "Jira Issues"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-issues.sh")
@@ -93,15 +93,15 @@
                :cached 1)
         (:name "Bookstore"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-bookstore.sh")
-               :action percy--xdg-open
+               :action percy--link-actions
                :cached 1)
         (:name "Browser Tabs"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-chromozol.sh")
                :cached 1
-               :action percy--chromozol-open)
+               :action percy--chromozol-tab-actions)
         (:name "Bookmarks"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-bookmarks.sh")
-               :action percy--xdg-open)))
+               :action percy--link-actions)))
 
 ;; Build the sources when the file is loaded
 (setq percy--sources

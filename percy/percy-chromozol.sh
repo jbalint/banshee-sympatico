@@ -6,7 +6,7 @@
 
 #set -x
 QUERY=$(cat<<EOF
-select ?tabId ?title ?url
+select ?tabId ?title ?url ?favIconUrl
 from cmzl:
 where
 {
@@ -24,8 +24,13 @@ where
       FILTER NOT EXISTS {?closed a cmzl:TabClosedEvent ; cmzl:tab ?tab}
     } group by ?tab ?ses
   }
-  ?event cmzl:tab ?tab ; cmzl:time ?latest ; cmzl:content [ cmzl:title ?title ; cmzl:url ?url ].
+  ?event cmzl:tab ?tab ; cmzl:time ?latest ; cmzl:content ?content .
+  ?content cmzl:title ?title ; cmzl:url ?url .
   ?tab cmzl:tabId ?tabId
+
+  # Do the quoting of the JSON value here as we know if it's bound or not
+  OPTIONAL { ?content cmzl:favIconUrl ?favIconUrlRaw }
+  bind(if(bound(?favIconUrlRaw), concat("\"", str(?favIconUrlRaw), "\""), "nil") as ?favIconUrl)
 } order by desc(?latest) xsd:integer(strafter(?tabId, "."))
 EOF
 )
@@ -33,5 +38,5 @@ EOF
 echo '`(' ; \
     curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
-        | jq -r '.results.bindings[] | @text "((title . \"\(.title.value | gsub("\""; "\\\"")) \(.url.value)\") (id . \"\(.tabId.value)\"))"' \
+        | jq -r '.results.bindings[] | @text "((title . \"\(.title.value | gsub("\""; "\\\"")) \(.url.value)\") (url . \"\(.url.value)\") (favIconUrl . \(.favIconUrl.value)) (id . \"\(.tabId.value)\"))"' \
     ; echo ")"
