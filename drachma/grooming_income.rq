@@ -1,0 +1,13 @@
+select ?issueKey ?summary ?scheduled ?price ?tip
+{
+  graph <virtual://jira> {
+    ?issue a jira:Issue ;
+    jira:project / jira:projectKey "PUP" ;
+    jira:issueKey ?issueKey ;
+    jira:summary ?summary ;
+    ^jira:issue [ jira:customNumberValue ?price ; jira:customField / jira:name "Price" ] ;
+    ^jira:issue [ jira:customDateTimeValue ?scheduled ; jira:customField / jira:name "Scheduled" ]
+    OPTIONAL { ?issue ^jira:issue [ jira:customNumberValue ?tip ; jira:customField / jira:name "Tip" ] ; }
+  }
+}
+order by asc(?scheduled)
