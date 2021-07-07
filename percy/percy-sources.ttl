@@ -1,0 +1,67 @@
+# stardog data remove bs -g percy:sources
+# stardog data add bs -g percy:sources percy-sources.ttl
+
+@prefix percy: <http://banshee-sympatico/percy#> .
+
+percy:BookmarksSource a percy:NamedGraphSource ;
+  percy:namedGraph <http://banshee-sympatico/bookmarks> ;
+.
+
+# TODO: How to model this?
+#       I have a big query, also the custom "id" property
+percy:ChromozolSource a percy:Source ;
+.
+
+# TODO: ???
+percy:JiraInsightObjectsSource a percy:Source ;
+.
+
+# TODO: ???
+percy:JiraIssuesSource a percy:NamedGraphSource ;
+  percy:namedGraph <virtual://jira> ;
+.
+
+percy:FrdcsaCodebasesSource a percy:Source ;
+.
+
+percy:StardogJiraIssuesSource a percy:Source ;
+.
+
+percy:StardewValleyWikiPagesSource a percy:Source ;
+.
+
+percy:CodeSnippetsSource a percy:NamedGraphSource ;
+.
+
+percy:MediawikiPagesSource a percy:Source ;
+.
+
+
+mw:Page rdfs:subClassOf percy:WebEntity .
+mw:pageTitle rdfs:subPropertyOf percy:title .
+mw:pageUrl rdfs:subPropertyOf percy:url .
+
+bslib:Book rdfs:subClassOf percy:WebEntity .
+percy:title owl:propertyChainAxiom ( nie:isStoredAs nfo:fileName ) .
+percy:url owl:propertyChainAxiom ( nie:isStoredAs nie:url ) .
+
+jira:Issue rdfs:subClassOf percy:WebEntity .
+
+RULE percy:JiraIssueTitle
+IF {
+  ?issue jira:summary ?summary ;
+         jira:issueKey ?key
+  BIND(concat("[", ?key, "] ", ?summary) as ?title)
+}
+THEN {
+  ?issue percy:title ?title
+}
+
+RULE percy:JiraIssueUrl
+IF {
+  ?issue jira:issueKey ?key
+  BIND(concat("https://localhost/jira/browse/", ?key) as ?url)
+}
+THEN {
+  ?issue percy:url ?url
+}
