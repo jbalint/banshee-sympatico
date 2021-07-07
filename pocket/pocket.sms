@@ -1,0 +1,26 @@
+prefix pckt: <https://
+
+MAPPING
+FROM JSON
+{
+  "list" : {
+    "?item_key" : {
+      "item_id" : "?item_id",
+      // resolved_id unused
+      "given_url" : "?given_url",
+      "given_title" : "?given_title",
+      "time_added" : "?time_added",
+      // time_updated, ...., etc
+      "excerpt" : "?excerpt",
+      "time_to_read" : "?time_to_read",
+      // TODO : images
+    }
+  }
+}
+TO
+{
+  ?bookmark a 
+}
+WHERE
+{
+}
