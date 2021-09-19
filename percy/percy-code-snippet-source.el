@@ -17,6 +17,9 @@ new TextTableQueryResultWriter(System.out, Options.empty()));")
           ("IntelliJ structure search" . "class $C$ {
 	static String $method$(java.util.Properties $arg$);
 }")
+          ("Mediawiki NOTOCNUM and FORCETOC" . "__FORCETOC__
+__NOTOCNUM__
+")
           )
 ;;;        :action 'kill-new
         :action 'percy--code-paste
