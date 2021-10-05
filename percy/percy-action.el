@@ -12,6 +12,18 @@
   "Open a URL with `firefox'"
   (start-process "" nil "firefox" (alist-get 'url candidate)))
 
+(defun percy--xdotool-type (string)
+  "Type a string in the last focused window"
+  (start-process "percy--xdotool-type" nil "xdotool" "type" string))
+
+(defun percy--xdotool-type-link-url (candidate)
+  "Action to type a link's URL"
+  (percy--xdotool-type (alist-get 'url candidate)))
+
+(defun percy--xdotool-type-link-title (candidate)
+  "Action to type a link's title"
+  (percy--xdotool-type (alist-get 'title candidate)))
+
 (defun percy--chromozol-open (candidate)
   "Activate a tab via Chromozol"
   ;; execute: bash -c 'echo tabActivate 1234.5678 > /tmp/chromozol-control.fifo'
@@ -50,6 +62,8 @@
       (helm-make-actions
        "Open in browser" 'percy--xdg-open
        "Open in Firefox" 'percy--firefox-open
+       "Paste URL" 'percy--xdotool-type-link-url
+       "Paste title" 'percy--xdotool-type-link-title
        "Link to Jira issue" 'percy--add-jira-web-link))
 
 (setq percy--chromozol-tab-actions

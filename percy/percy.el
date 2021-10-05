@@ -85,11 +85,11 @@
                :cached 1)
         (:name "Jira Issues"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-issues.sh")
-               :action percy--xdg-open
+               :action percy--link-actions
                :cached 1)
         (:name "Jira Insight Objects"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-jira-insight-objects.sh")
-               :action percy--xdg-open
+               :action percy--link-actions
                :cached 1)
         (:name "Bookstore"
                :script ,(concat (getenv "BS_HOME") "/bin/percy-bookstore.sh")

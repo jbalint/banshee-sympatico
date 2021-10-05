@@ -84,6 +84,7 @@
 ;;     map) "Keymap to refresh Percy text search source")
 
 (defun percy--text-search--run-me ()
+  "Utility function to test this source"
   (helm :sources '(percy--text-search-source)))
 
 (provide 'percy-text-search-source)

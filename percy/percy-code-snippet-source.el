@@ -22,16 +22,13 @@ __NOTOCNUM__
 ")
           )
 ;;;        :action 'kill-new
-        :action 'percy--code-paste
+        :action 'percy--xdotool-type
         :nomark t
         :volatile t
         :multiline nil))
 
-(defun percy--code-paste (code)
-  "Paste code to the last focused window"
-  (start-process "percy--code-paste" nil "xdotool" "type" code))
-
 (defun percy--code-snippet--run-me ()
+  "Utility function to test this source"
   (helm :sources '(percy--code-snippet-source)))
 
 (provide 'percy-code-snippet-source)
