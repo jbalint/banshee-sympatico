@@ -52,7 +52,7 @@ pyzmq==18.1.1
 qtconsole==4.6.0
 requests==2.22.0
 requests-toolbelt==0.9.1
-scipy==1.4.1
+scipy
 seaborn==0.9.0
 Send2Trash==1.5.0
 six==1.13.0

@@ -2,15 +2,18 @@
 prefix ledger: <https://github.com/jbalint/ledger-ontology#>
 
 select ?category ?year
-(sum(?amt_01) as ?amount_Jan)
-(sum(?amt_02) as ?amount_Feb)
-(sum(?amt_03) as ?amount_Mar)
-(sum(?amt_04) as ?amount_Apr)
-(sum(?amt_05) as ?amount_May)
-(sum(?amt_06) as ?amount_Jun)
-(sum(?amt_07) as ?amount_Jul)
-(sum(?amt_08) as ?amount_Aug)
-(sum(?amt_09) as ?amount_Sep)
+(sum(?amt_01) as ?amt_Jan)
+(sum(?amt_02) as ?amt_Feb)
+(sum(?amt_03) as ?amt_Mar)
+(sum(?amt_04) as ?amt_Apr)
+(sum(?amt_05) as ?amt_May)
+(sum(?amt_06) as ?amt_Jun)
+(sum(?amt_07) as ?amt_Jul)
+(sum(?amt_08) as ?amt_Aug)
+(sum(?amt_09) as ?amt_Sep)
+(sum(?amt_10) as ?amt_Oct)
+(sum(?amt_11) as ?amt_Nov)
+(sum(?amt_12) as ?amt_Dec)
 from <http://banshee-sympatico/ledger>
 {
   #bind(2 as ?input_month)
@@ -43,6 +46,9 @@ from <http://banshee-sympatico/ledger>
   bind(if(?month = 7, ?amt, 0) as ?amt_07)
   bind(if(?month = 8, ?amt, 0) as ?amt_08)
   bind(if(?month = 9, ?amt, 0) as ?amt_09)
+  bind(if(?month = 10, ?amt, 0) as ?amt_10)
+  bind(if(?month = 11, ?amt, 0) as ?amt_11)
+  bind(if(?month = 12, ?amt, 0) as ?amt_12)
 }
 group by ?category ?year
 order by ?category

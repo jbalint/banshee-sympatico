@@ -1,5 +1,8 @@
+# c.f. [BS-40]
+# https://www.ledger-cli.org/3.0/doc/ledger3.html#Extending-with-Python
+
 # Made a special build of ledger with python support. it created libledger.so.3 with Python support
-# export PYTHONPATH=/home/jbalint/aur/ledger-git/src/ledger
+# DON'T NEED THIS ANYMORE: export PYTHONPATH=/home/jbalint/aur/ledger-git/src/ledger
 import ledger
 
 import re

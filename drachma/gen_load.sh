@@ -1,5 +1,6 @@
 
-export PYTHONPATH=/home/jbalint/aur/ledger-git/src/ledger
+# Switched to main ledger package (not ledger-git) and no longer need this
+#export PYTHONPATH=/home/jbalint/aur/ledger-git/src/ledger
 python ledger-import.py > main-MONEY-191.ttl
 
 STARDOG_BIN=/home/jbalint/sw/java-sw/stardog-bin/bin
