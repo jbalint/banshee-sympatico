@@ -39,10 +39,11 @@ fn find_repo_modifications(repo_locations: &Vec<PathBuf>) -> Vec<GitRepoWithModi
         .iter()
         .map(|p| Repository::open(p))
         .filter_map(Result::ok)
+        .filter(|repo| !repo.is_bare())
         .filter_map(|repo| {
             let changed_paths = repo
                 .statuses(Some(StatusOptions::new().include_untracked(false)))
-                .expect("getting statuses")
+                .expect("getting statuses") // TODO: better error handling and/or logging
                 .iter()
                 .filter(|se| se.status() != Status::CURRENT)
                 .filter_map(|se| se.path().map(String::from))
