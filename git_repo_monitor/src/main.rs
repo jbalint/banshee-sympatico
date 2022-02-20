@@ -3,7 +3,7 @@
 #![deny(missing_docs)]
 
 use std::error::Error;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use clap::{App, SubCommand};
@@ -23,12 +23,10 @@ struct GitRepoWithModifications {
 
 /// Locate the Git repos on the system
 fn locate_git_repos() -> Result<Vec<PathBuf>, Box<dyn Error>> {
-    let locate_output =
-        Command::new("locate")
-            .args(&["-r", "\\.git$"])
-            .output()?
-            .stdout
-        ;
+    let locate_output = Command::new("locate")
+        .args(&["-r", "\\.git$"])
+        .output()?
+        .stdout;
     Ok(String::from_utf8(locate_output)?
         .split("\n")
         .map(|p| PathBuf::from(p))
@@ -42,19 +40,18 @@ fn find_repo_modifications(repo_locations: &Vec<PathBuf>) -> Vec<GitRepoWithModi
         .map(|p| Repository::open(p))
         .filter_map(Result::ok)
         .filter_map(|repo| {
-            let changed_paths = repo.statuses(Some(StatusOptions::new().include_untracked(false)))
+            let changed_paths = repo
+                .statuses(Some(StatusOptions::new().include_untracked(false)))
                 .expect("getting statuses")
                 .iter()
                 .filter(|se| se.status() != Status::CURRENT)
                 .filter_map(|se| se.path().map(String::from))
-                .collect::<Vec<_>>()
-                ;
+                .collect::<Vec<_>>();
             match changed_paths {
-                x if !x.is_empty() =>
-                    Some(GitRepoWithModifications {
-                        repo_path: String::from(repo.path().to_str().unwrap()),
-                        modified_files: x,
-                    }),
+                x if !x.is_empty() => Some(GitRepoWithModifications {
+                    repo_path: String::from(repo.path().to_str().unwrap()),
+                    modified_files: x,
+                }),
                 _ => None,
             }
         })
@@ -63,7 +60,9 @@ fn find_repo_modifications(repo_locations: &Vec<PathBuf>) -> Vec<GitRepoWithModi
 
 /// TODO : unused
 /// Save the modified repos list along with their modifications
-fn save_modified_repos(_repos_with_mods: &Vec<GitRepoWithModifications>) -> Result<(), Box<dyn Error>> {
+fn save_modified_repos(
+    _repos_with_mods: &Vec<GitRepoWithModifications>,
+) -> Result<(), Box<dyn Error>> {
     let form = Form::new()
         .text("database", "wordnet")
         .part("mappings", Part::file(Path::new("git_modified_repo.sms"))?)
@@ -71,7 +70,8 @@ fn save_modified_repos(_repos_with_mods: &Vec<GitRepoWithModifications>) -> Resu
         // .part("input_file", Part::stream("x"))
         ;
     let client = Client::new();
-    let _res = client.post("https://localhost/stardog/admin/virtual/import")
+    let _res = client
+        .post("https://localhost/stardog/admin/virtual/import")
         .basic_auth("admin", Some("admin"))
         .multipart(form)
         .send();
@@ -80,32 +80,39 @@ fn save_modified_repos(_repos_with_mods: &Vec<GitRepoWithModifications>) -> Resu
 
 ///
 fn print_modified_repo_json(repos_with_mods: &Vec<GitRepoWithModifications>) {
-    println!("{}", repos_with_mods.into_iter()
-        .map(|repo_with_mod| serde_json::to_string(&repo_with_mod).unwrap())
-        .join("\n"))
+    println!(
+        "{}",
+        repos_with_mods
+            .into_iter()
+            .map(|repo_with_mod| serde_json::to_string(&repo_with_mod).unwrap())
+            .join("\n")
+    )
 }
 
 /// `main()`
 fn main() {
     let app_m = App::new("git_repo_monitor")
         .about("Find Git repositories needing attention")
-        .subcommand(SubCommand::with_name("print_json")
-            .about("Print the list of repositories as JSON"))
-        .subcommand(SubCommand::with_name("save_to_stardog")
-            .about("Save the list of repositories to Stardog"))
+        .subcommand(
+            SubCommand::with_name("print_json").about("Print the list of repositories as JSON"),
+        )
+        .subcommand(
+            SubCommand::with_name("save_to_stardog")
+                .about("Save the list of repositories to Stardog"),
+        )
         .get_matches();
 
     let repos_with_mods =
         find_repo_modifications(&locate_git_repos().expect("Failed to locate repos"));
 
     match app_m.subcommand_name() {
-        Some("print_json") =>
-            print_modified_repo_json(&repos_with_mods),
+        Some("print_json") => print_modified_repo_json(&repos_with_mods),
         Some("save_to_stardog") =>
         // save_modified_repos(&repos_with_mods).expect("Save failed");
-            println!("save_to_stardog command not implemented"),
-        _ =>
-            println!("No command specified"),
+        {
+            println!("save_to_stardog command not implemented")
+        }
+        _ => println!("No command specified"),
     }
 }
 
