@@ -24,26 +24,6 @@ dependencies {
     // TODO : don't need the entire server here, just client and some RDF utils
     implementation "com.complexible.stardog:client-http:6.0.1"
     testImplementation "junit:junit:4.12"
-    // both published locally
-    implementation ("org.grobid:grobid-core:0.4.2-SNAPSHOT") {
-        // pulling in v1.2
-        exclude group: "log4j", module: "log4j"
-        exclude group: "org.slf4j", module: "slf4j-log4j12"
-    }
-    implementation "be.ugent.mmlab.rml:RML-Mapper:1.1"
-    implementation ("be.ugent.mmlab.rml:RML-MapDocHandler:1.1-SNAPSHOT") {
-        exclude group: "org.openrdf.sesame"
-        exclude group: "log4j", module: "log4j"
-        exclude group: "org.slf4j", module: "slf4j-log4j12"
-    }
-
-    implementation ("be.ugent.mmlab.rml:RML-Processor:0.3") {
-        exclude group: "org.openrdf.sesame"
-        exclude group: "log4j", module: "log4j"
-        exclude group: "org.slf4j", module: "slf4j-log4j12"
-    }
-    // To replace Sesame in RML-Mapper AND be compatible with Stardog on Sesame 4.0
-    implementation "org.openrdf.sesame:sesame-runtime:4.0.0"
 }
 configurations.all {
  resolutionStrategy {
