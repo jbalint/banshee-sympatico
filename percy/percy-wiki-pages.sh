@@ -24,7 +24,7 @@ EOF
 echo '`(' ; \
     curl -u admin:admin  -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
-        | jq -r '.results.bindings[] | @text "((title . \"\(.title.value)\") (url . \"\(.url.value)\"))"' \
+        | jq -r '.results.bindings[] | @text "((title . \(.title.value | tojson)) (url . \(.url.value | tojson)))"' \
     ; echo ")"
 
 # Output is something like
