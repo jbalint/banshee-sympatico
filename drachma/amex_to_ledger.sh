@@ -4,6 +4,8 @@
 
 INFILE="$1"
 LEDGER_FILE="/home/jbalint/tagore_home/Dropbox/important/ledger/main.ledger"
+cp "$LEDGER_FILE" /tmp/main.ledger
+LEDGER_FILE="/tmp/main.ledger"
 
 # The first line here is a lot but basically we have three fields:
 # 1 the date transformed from mm/dd/yyyy to yyyy-mm-dd
@@ -13,7 +15,7 @@ JQ_CODE=$(cat <<EOF
 reverse | .[] | ["\(.Reference | ltrimstr("'") | rtrimstr("'"))",
 "\(.Date | gsub("(?<month>[[:digit:]]+)/(?<day>[[:digit:]]+)/(?<year>[[:digit:]]+)"; "\(.year)/\(.month)/\(.day)")) (#\(.Reference | ltrimstr("'") | rtrimstr("'"))) \(.Description[0:20] | ltrimstr("IC* ") | ltrimstr("TST* ") | gsub("[0-9 \\\-]+$"; ""))  ;
     Expenses:AMEX-\(.Category | gsub(" "; "-"))              $\(.Amount)
-    Liabilities:AMEX
+    AMEX-\(."Card Member" | gsub(" .*"; ""))
 "] | @tsv
 EOF
 )
