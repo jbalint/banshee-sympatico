@@ -1,7 +1,7 @@
 plugins {
-    id("org.jetbrains.intellij") version "0.4.20"
+    // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
+    id("org.jetbrains.intellij") version "1.11.0"
     java
-    kotlin("jvm") version "1.3.71"
 }
 
 group = "org.example"
@@ -9,13 +9,11 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    maven("http://maven.stardog.com")
+    maven("https://maven.stardog.com")
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
     implementation(files("/home/jbalint/sw/java-sw/jcfl/build/libs/jcfl-0.1.jar"))
-//    implementation("com.stardog.stark:client-http:7.2.1")
     implementation("com.complexible.stardog:client-http:7.2.1") {
         // conflicts with IntelliJ's version
         exclude(group = "org.slf4j")
@@ -30,25 +28,22 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "2020.1.1"
-//    pluginName = ""
-    setPlugins("java")
+    version.set("2022.2.1")
+    type.set("IC")
+    plugins.set(listOf("java"))
 }
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-}
+
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+    // Set the JVM compatibility versions
+    withType<JavaCompile> {
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
     }
 }
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
-    changeNotes("""
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>""")
+//    changeNotes("""
+//      Add change notes here.<br>
+//      <em>most HTML tags may be used</em>""")
 }
 //
 //// TODO : already set by default in RunIdeBase?
