@@ -1,3 +1,5 @@
 #!/bin/bash
 
-emacsclient -s /run/user/$UID/emacs/percy -e '(kill-emacs)'
+DELEGATE="$(dirname $0)/percy-client.sh"
+
+"$DELEGATE" stop
