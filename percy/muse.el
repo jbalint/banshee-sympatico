@@ -6,7 +6,7 @@
 (require 'org-table)
 
 (defvar muse:stardog-url
-  "https://admin:admin@localhost/stardog/bs/query"
+  "https://bs:GET_PASSWORD_FROM_PASS_COMMAND@localhost/stardog/bs/query"
   "SPARQL endpoint URL")
 
 (defvar muse:query-get-all-types
