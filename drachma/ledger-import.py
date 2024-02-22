@@ -35,6 +35,9 @@ def rdf_name(acctname):
 
 def rdf_cat(cat):
     label = re.sub(r".*:", "", cat)
+    # Remove & from the AMEX string.
+    # TODO: better regex to fix any invalid RDF/TTL identifiers
+    cat = cat.replace("&", "_")
     cat = re.sub(r":(\w)", lambda m: m.group(1).upper(), cat)
     cat = re.sub(r" (\w)", lambda m: m.group(1).upper(), cat)
     categories[cat] = label
