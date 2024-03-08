@@ -2,9 +2,10 @@
 (require 'cl-lib)
 
 (require 'percy-action)
-(require 'percy-text-search-source)
 (require 'percy-code-snippet-source)
 (require 'percy-stardew-valley-source)
+(require 'percy-text-search-source)
+(require 'percy-x11-window-source)
 
 ;; How to test this? Run it in Emacs without the shell scripts. Load up the
 ;; Helm sources, can manipulate them, and use `percy-anything'.
@@ -106,6 +107,7 @@
 ;; Build the sources when the file is loaded
 (setq percy--sources
       (append
+       (list percy--x11-window-source)
        (cl-mapcar 'percy--build-source percy--source-descriptors)
        (list percy--text-search-source
              percy--code-snippet-source
