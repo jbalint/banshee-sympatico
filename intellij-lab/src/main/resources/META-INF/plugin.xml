@@ -15,8 +15,24 @@
     <depends>com.intellij.modules.xdebugger</depends>
     -->
 
+    <!-- https://plugins.jetbrains.com/docs/intellij/plugin-listeners.html -->
+    <applicationListeners>
+        <listener class="jbalint.poc.listener.POCProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+        <listener class="jbalint.poc.listener.POCBulkFileListener"
+                  topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
+        <listener class="jbalint.poc.listener.POCAnActionListener"
+                  topic="com.intellij.openapi.actionSystem.ex.AnActionListener"/>
+    </applicationListeners>
+
+    <!-- https://plugins.jetbrains.com/docs/intellij/plugin-listeners.html#defining-project-level-listeners -->
+    <projectListeners>
+        <listener class="jbalint.poc.listener.POCIdeDocumentHistoryImpl_RecentPlacesListener"
+                  topic="com.intellij.openapi.fileEditor.impl.IdeDocumentHistoryImpl$RecentPlacesListener"/>
+    </projectListeners>
+
     <extensions defaultExtensionNs="com.intellij">
-<!--        <fileBasedIndex implementation="jbalint.synthesis.Indexer"/>-->
+        <!--        <fileBasedIndex implementation="jbalint.synthesis.Indexer"/>-->
         <compiler.task execute="AFTER" implementation="jbalint.synthesis.MyCompileTask"/>
     </extensions>
 
