@@ -3,6 +3,7 @@
 # Amex to Ledger [BS-120]
 
 INFILE="$1"
+# TODO: check existence and bail
 LEDGER_FILE="/home/jbalint/tagore_home/Dropbox/important/ledger/main.ledger"
 cp "$LEDGER_FILE" /tmp/main.ledger
 LEDGER_FILE="/tmp/main.ledger"
