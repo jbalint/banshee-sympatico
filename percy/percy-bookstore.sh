@@ -3,6 +3,8 @@
 
 # TODO: error handling is bad
 
+source $(dirname $0)/curl-params.sh
+
 #set -x
 QUERY=$(cat<<EOF
 select *
@@ -18,7 +20,7 @@ EOF
 )
 #echo "$QUERY"
 echo '`(' ; \
-    curl -u "bs:$(pass show Insight/N88-683/password)" -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
+    curl $CURL_PARAMS -H "Accept: application/sparql-results+json" -G https://jessandmorgan.com/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
         | jq -r '.results.bindings[] | @text "((title . \"\(.fileName.value)\") (url . \"\(.url.value)\"))"' \
     ; echo ")"

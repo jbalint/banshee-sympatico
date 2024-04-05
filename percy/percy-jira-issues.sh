@@ -1,6 +1,8 @@
 #!/bin/bash
 # Script to query the Jira issues for Helm completion source
 
+source $(dirname $0)/curl-params.sh
+
 # TODO did I want to do something with ?pkey and ?pname? (later, for narrowing)
 
 #set -x
@@ -17,7 +19,7 @@ EOF
 )
 #echo "$QUERY"
 echo '`(' ; \
-    curl -u "bs:$(pass show Insight/N88-683/password)" -H "Accept: application/sparql-results+json" -G https://localhost/stardog/bs/query \
+    curl $CURL_PARAMS -H "Accept: application/sparql-results+json" -G https://jessandmorgan.com/stardog/bs/query \
          --data-urlencode query="$QUERY" 2> /dev/null \
         | jq -r '.results.bindings[] | @html "((key . \"\(.key.value)\") (title . ,(xml-unescape-string \"[\(.key.value)] \(.summary.value)\")) (url . \"https://jessandmorgan.com/jira/browse/\(.key.value)\"))"' \
     ; echo ")"
