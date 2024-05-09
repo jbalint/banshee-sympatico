@@ -1,1 +1,0 @@
-../percy/percy-jira-insight-objects.sh

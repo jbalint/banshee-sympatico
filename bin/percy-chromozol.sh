@@ -1,1 +1,0 @@
-../percy/percy-chromozol.sh

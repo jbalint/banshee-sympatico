@@ -1,1 +1,0 @@
-../percy/percy-add-jira-link.sh

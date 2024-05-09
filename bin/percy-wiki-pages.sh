@@ -1,1 +1,0 @@
-../percy/percy-wiki-pages.sh

@@ -1,1 +1,0 @@
-../percy/percy-bookstore.sh
