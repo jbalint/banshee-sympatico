@@ -28,9 +28,11 @@ fn locate_git_repos() -> Result<Vec<PathBuf>, Box<dyn Error>> {
         .output()?
         .stdout;
     Ok(String::from_utf8(locate_output)?
-        .split("\n")
-        .map(|p| PathBuf::from(p))
-        .collect())
+       .split("\n")
+       // Exclude files in Arch Linux `yay` cache
+       .filter(|p| !p.starts_with("/home/jbalint/.cache/yay"))
+       .map(|p| PathBuf::from(p))
+       .collect())
 }
 
 /// Given a list Git repos, return the ones which have modifications, including the modifications
