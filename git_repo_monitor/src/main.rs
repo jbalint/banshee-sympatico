@@ -50,7 +50,7 @@ fn find_repo_modifications(repo_locations: &Vec<PathBuf>) -> Vec<GitRepoWithModi
                 .collect::<Vec<_>>();
             match changed_paths {
                 x if !x.is_empty() => Some(GitRepoWithModifications {
-                    repo_path: String::from(repo.path().to_str().unwrap()),
+                    repo_path: String::from(repo.workdir().unwrap().to_str().unwrap()),
                     modified_files: x,
                 }),
                 _ => None,
